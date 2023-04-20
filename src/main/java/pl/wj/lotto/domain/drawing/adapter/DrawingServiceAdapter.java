@@ -1,7 +1,8 @@
 package pl.wj.lotto.domain.drawing.adapter;
 
 import lombok.RequiredArgsConstructor;
-import pl.wj.lotto.domain.drawing.model.Drawing;
+import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
+import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
 import pl.wj.lotto.domain.drawing.port.in.DrawingServicePort;
 import pl.wj.lotto.domain.drawing.service.DrawingService;
 
@@ -12,7 +13,18 @@ public class DrawingServiceAdapter implements DrawingServicePort {
     private final DrawingService drawingService;
 
     @Override
-    public List<Drawing> getDrawings(int drawingTypeId) {
-        return drawingService.getDrawings(drawingTypeId);
+    public List<DrawingResponseDto> getDrawingsByType(int drawingTypeId) {
+        return drawingService.getDrawingsByType(drawingTypeId);
     }
+
+    @Override
+    public DrawingResponseDto addDrawing(DrawingRequestDto drawingRequestDto) {
+        return drawingService.addDrawing(drawingRequestDto);
+    }
+
+    @Override
+    public DrawingResponseDto getDrawingById(String id) {
+        return drawingService.getDrawingById(id);
+    }
+
 }

@@ -1,22 +1,17 @@
-package pl.wj.lotto.domain.drawing.model;
+package pl.wj.lotto.domain.drawing.model.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@Setter
 @Builder
-@AllArgsConstructor
-public class Drawing {
+public class DrawingResponseDto {
     String id;
-    DrawingType type;
+    String type;
     List<Integer> mainNumbers;
     List<Integer> extraNumbers;
     LocalDateTime drawingTime;
-
 }
