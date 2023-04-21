@@ -3,6 +3,8 @@ package pl.wj.lotto.domain.drawing.adapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.DrawingType.DrawingType;
+import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbersTemplate;
+import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbersTemplate;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
@@ -32,12 +34,18 @@ class DrawingServiceAdapterComponentTest {
         // given
         int expectedSize = 2;
         DrawingType drawingType = DrawingType.EJP;
-        Drawing drawing = new Drawing(null, drawingType, List.of(1,2,3,4,5), List.of(1,2), null);
-        drawingRepositoryPort.save(drawing);
-        drawing = new Drawing(null, drawingType, List.of(1,2,3,4,6), List.of(1,3), null);
-        drawingRepositoryPort.save(drawing);
-        drawing = new Drawing(null, DrawingType.LOTTO, List.of(1,2,3,4,6,8), null, null);
-        drawingRepositoryPort.save(drawing);
+        EuroJackpotNumbersTemplate numbersEJP;
+        numbersEJP = new EuroJackpotNumbersTemplate();
+        numbersEJP.setMainNumbers(List.of(1,2,3,4,5));
+        numbersEJP.setExtraNumbers(List.of(1,2));
+        drawingRepositoryPort.save(Drawing.builder().type(drawingType).numbers(numbersEJP).build());
+        numbersEJP = new EuroJackpotNumbersTemplate();
+        numbersEJP.setMainNumbers(List.of(1,2,3,4,6));
+        numbersEJP.setExtraNumbers(List.of(1,3));
+        drawingRepositoryPort.save(Drawing.builder().type(drawingType).numbers(numbersEJP).build());
+        LottoNumbersTemplate numbersLotto = new LottoNumbersTemplate();
+        numbersLotto.setMainNumbers(List.of(3,4,5,6,7,8));
+        drawingRepositoryPort.save(Drawing.builder().type(DrawingType.LOTTO).numbers(numbersLotto).build());
         List<String> unwantedDrawingTypes =
                 Stream.of(DrawingType.values())
                         .filter(dt -> !dt.equals(drawingType))

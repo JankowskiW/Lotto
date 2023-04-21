@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.DrawingType.DrawingType;
+import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbersTemplate;
+import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbersTemplate;
 import pl.wj.lotto.domain.drawing.mapper.DrawingMapper;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
@@ -69,10 +71,12 @@ class DrawingServiceTest {
         String id = UUID.randomUUID().toString();
         LocalDateTime drawingTime = LocalDateTime.now();
         DrawingType drawingType = DrawingType.EJP;
+        EuroJackpotNumbersTemplate numbers = new EuroJackpotNumbersTemplate();
+        numbers.setMainNumbers(List.of(1,2,3,4,5));
+        numbers.setExtraNumbers(List.of(1,2));
         DrawingRequestDto drawingRequestDto = DrawingRequestDto.builder()
                 .type(drawingType.getName())
-                .mainNumbers(List.of(1,2,3,4,5))
-                .extraNumbers(List.of(1,2))
+                .numbers(numbers)
                 .build();
         Drawing drawing = DrawingMapper.toDrawing(drawingRequestDto);
         drawing.setId(id);
@@ -102,10 +106,12 @@ class DrawingServiceTest {
         // given
         String id = UUID.randomUUID().toString();
         LocalDateTime drawingTime = LocalDateTime.now();
+        LottoNumbersTemplate numbers = new LottoNumbersTemplate();
+        numbers.setMainNumbers(List.of(1,2,3,4,5,6));
         Drawing drawing = Drawing.builder()
                 .id(id)
                 .type(DrawingType.LOTTO)
-                .mainNumbers(List.of(1,2,3,4,5,6))
+                .numbers(numbers)
                 .drawingTime(drawingTime)
                 .build();
         DrawingResponseDto expectedResult = DrawingMapper.toDrawingResponseDto(drawing);

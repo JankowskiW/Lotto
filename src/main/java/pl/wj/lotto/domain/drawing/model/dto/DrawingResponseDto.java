@@ -1,15 +1,14 @@
 package pl.wj.lotto.domain.drawing.model.dto;
 
 import lombok.Builder;
+import pl.wj.lotto.domain.common.numberstemplate.model.NumbersTemplate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 public record DrawingResponseDto (
     String id,
     String type,
-    List<Integer> mainNumbers,
-    List<Integer> extraNumbers,
+    NumbersTemplate numbers,
     LocalDateTime drawingTime) {
 }

@@ -19,8 +19,7 @@ public class DrawingMapper {
         return DrawingResponseDto.builder()
                 .id(drawing.getId())
                 .type(drawing.getType().getName())
-                .extraNumbers(drawing.getExtraNumbers())
-                .mainNumbers(drawing.getMainNumbers())
+                .numbers(drawing.getNumbers())
                 .drawingTime(drawing.getDrawingTime())
                 .build();
     }
@@ -32,8 +31,7 @@ public class DrawingMapper {
                 .orElseThrow(() -> new RuntimeException("Not found"));
         return Drawing.builder()
                 .type(type)
-                .mainNumbers(drawingRequestDto.mainNumbers())
-                .extraNumbers(drawingRequestDto.extraNumbers())
+                .numbers(drawingRequestDto.numbers())
                 .build();
     }
 

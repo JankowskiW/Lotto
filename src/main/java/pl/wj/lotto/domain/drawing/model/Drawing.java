@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import pl.wj.lotto.domain.common.DrawingType.DrawingType;
+import pl.wj.lotto.domain.common.numberstemplate.model.NumbersTemplate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +16,6 @@ import java.util.List;
 public class Drawing {
     String id;
     DrawingType type;
-    List<Integer> mainNumbers;
-    List<Integer> extraNumbers;
+    NumbersTemplate numbers;
     LocalDateTime drawingTime;
 }
