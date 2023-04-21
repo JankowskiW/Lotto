@@ -28,7 +28,7 @@ public class DrawingService {
     }
 
     public DrawingResponseDto getDrawingById(String id) {
-        Drawing drawing = drawingRepositoryPort.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        Drawing drawing = drawingRepositoryPort.findById(id).orElseThrow(() -> new RuntimeException("Drawing not found"));
         return DrawingMapper.toDrawingResponseDto(drawing);
     }
 
