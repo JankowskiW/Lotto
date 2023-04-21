@@ -13,26 +13,22 @@ import java.util.stream.Collectors;
 
 public class DrawingInMemoryAdapter implements DrawingRepositoryPort {
 
-    private static final Map<String, Drawing> database;
-
-    static {
-        database = new ConcurrentHashMap<>();
-    }
-
+    private final Map<String, Drawing> drawingsTable = new ConcurrentHashMap<>();
     @Override
     public List<Drawing> findAllByType(DrawingType type) {
-        return database.values().stream().filter(d -> d.getType().equals(type)).collect(Collectors.toList());
+        return drawingsTable.values().stream().filter(d -> d.getType().equals(type)).collect(Collectors.toList());
     }
 
     @Override
     public Drawing save(Drawing drawing) {
-        drawing.setId(UUID.randomUUID().toString());
-        database.put(drawing.getId(), drawing);
+        String id = drawing.getId() == null ? UUID.randomUUID().toString() : drawing.getId();
+        drawing.setId(id);
+        drawingsTable.put(id, drawing);
         return drawing;
     }
 
     @Override
     public Optional<Drawing> findById(String id) {
-        return Optional.of(database.get(id));
+        return Optional.of(drawingsTable.get(id));
     }
 }
