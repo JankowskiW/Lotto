@@ -1,8 +1,5 @@
 package pl.wj.lotto.domain.common.numberstemplate.model;
 
-import lombok.Builder;
-import pl.wj.lotto.domain.drawing.model.DrawingType;
-
 import java.util.List;
 
 public class KenoNumbersTemplate extends NumbersTemplate {
@@ -13,7 +10,7 @@ public class KenoNumbersTemplate extends NumbersTemplate {
     private final int mainMinNumbersAmount;
     private final int mainMaxNumbersAmount;
     public KenoNumbersTemplate() {
-        super(DrawingType.KENO.getId(), MAIN_NUMBERS_MIN_VALUE, MAIN_NUMBERS_MAX_VALUE);
+        super(MAIN_NUMBERS_MIN_VALUE, MAIN_NUMBERS_MAX_VALUE);
         this.mainMinNumbersAmount = MAIN_MIN_NUMBERS_AMOUNT;
         this.mainMaxNumbersAmount = MAIN_MAX_NUMBERS_AMOUNT;
     }

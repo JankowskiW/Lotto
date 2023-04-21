@@ -2,7 +2,6 @@ package pl.wj.lotto.infrastructure.application.rest.ticket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.wj.lotto.domain.common.notification.EmailNotificationPort;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.ticket.adapter.TicketServiceAdapter;
 import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;

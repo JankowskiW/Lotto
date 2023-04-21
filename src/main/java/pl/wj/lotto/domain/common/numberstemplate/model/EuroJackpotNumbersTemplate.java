@@ -1,8 +1,6 @@
 package pl.wj.lotto.domain.common.numberstemplate.model;
 
 import lombok.Getter;
-import lombok.Setter;
-import pl.wj.lotto.domain.drawing.model.DrawingType;
 
 import java.util.List;
 
@@ -16,10 +14,10 @@ public class EuroJackpotNumbersTemplate extends NumbersTemplate{
     private final int extraNumbersAmount;
     private final int extraNumbersMinValue;
     private final int extraNumbersMaxValue;
-    @Getter @Setter
+    @Getter
     private List<Integer> extraNumbers;
     public EuroJackpotNumbersTemplate() {
-        super(DrawingType.EJP.getId(), MAIN_NUMBERS_AMOUNT, MAIN_NUMBERS_MIN_VALUE, MAIN_NUMBERS_MAX_VALUE);
+        super(MAIN_NUMBERS_AMOUNT, MAIN_NUMBERS_MIN_VALUE, MAIN_NUMBERS_MAX_VALUE);
         this.extraNumbersAmount = EXTRA_NUMBERS_AMOUNT;
         this.extraNumbersMinValue = EXTRA_NUMBERS_MIN_VALUE;
         this.extraNumbersMaxValue = EXTRA_NUMBERS_MAX_VALUE;
