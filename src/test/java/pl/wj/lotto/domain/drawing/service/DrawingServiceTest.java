@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.drawing.mapper.DrawingMapper;
 import pl.wj.lotto.domain.drawing.model.Drawing;
-import pl.wj.lotto.domain.drawing.model.DrawingType;
+import pl.wj.lotto.domain.common.DrawingType.DrawingType;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
@@ -75,9 +75,9 @@ class DrawingServiceTest {
                 .extraNumbers(List.of(1,2))
                 .build();
         Drawing drawing = DrawingMapper.toDrawing(drawingRequestDto);
+        drawing.setId(id);
+        drawing.setDrawingTime(drawingTime);
         DrawingResponseDto expectedResult = DrawingMapper.toDrawingResponseDto(drawing);
-        expectedResult.setId(id);
-        expectedResult.setDrawingTime(drawingTime);
         given(drawingRepositoryPort.save(any(Drawing.class)))
                 .willAnswer(
                         i -> {

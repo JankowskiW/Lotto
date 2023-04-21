@@ -1,4 +1,4 @@
-package pl.wj.lotto.domain.drawing.model;
+package pl.wj.lotto.domain.common.DrawingType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
