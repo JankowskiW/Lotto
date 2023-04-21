@@ -1,7 +1,7 @@
 package pl.wj.lotto.infrastructure.persistence.inmemory.drawing;
 
 import pl.wj.lotto.domain.drawing.model.Drawing;
-import pl.wj.lotto.domain.drawing.model.DrawingType;
+import pl.wj.lotto.domain.common.DrawingType.DrawingType;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
 
 import java.util.List;

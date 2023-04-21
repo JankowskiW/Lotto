@@ -3,7 +3,7 @@ package pl.wj.lotto.domain.drawing.adapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.drawing.model.Drawing;
-import pl.wj.lotto.domain.drawing.model.DrawingType;
+import pl.wj.lotto.domain.common.DrawingType.DrawingType;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
 import pl.wj.lotto.domain.drawing.service.DrawingService;
