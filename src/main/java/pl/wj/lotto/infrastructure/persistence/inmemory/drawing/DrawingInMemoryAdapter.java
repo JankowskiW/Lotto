@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class DrawingInMemoryAdapter implements DrawingRepositoryPort {
-
     private final Map<String, Drawing> drawingsTable = new ConcurrentHashMap<>();
     @Override
     public List<Drawing> findAllByType(DrawingType type) {
