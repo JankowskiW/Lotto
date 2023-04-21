@@ -15,7 +15,7 @@ public class TicketService {
 
     public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
         Ticket ticket = TicketMapper.toTicket(ticketRequestDto);
-        if (ticket != null && !ticket.userId().isBlank()) {
+        if (ticket != null && !ticket.getUserId().isBlank()) {
             notificationPort.send("email@email.com", "Message");
         }
         return TicketMapper.toTicketResponseDto(ticketRepositoryPort.save(ticket));
