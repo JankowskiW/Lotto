@@ -1,4 +1,10 @@
 package pl.wj.lotto.domain.ticket.model.dto;
 
-public class TicketRequestDto {
+import lombok.Builder;
+
+@Builder
+public record TicketRequestDto(
+        String id,
+        String userId,
+        String drawingTypeId) {
 }
