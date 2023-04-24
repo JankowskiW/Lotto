@@ -1,6 +1,5 @@
 package pl.wj.lotto.infrastructure.persistence.inmemory.drawing;
 
-import pl.wj.lotto.domain.common.DrawingType.DrawingType;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
 
@@ -14,8 +13,8 @@ import java.util.stream.Collectors;
 public class DrawingInMemoryAdapter implements DrawingRepositoryPort {
     private final Map<String, Drawing> drawingsTable = new ConcurrentHashMap<>();
     @Override
-    public List<Drawing> findAllByType(DrawingType type) {
-        return drawingsTable.values().stream().filter(d -> d.getType().equals(type)).collect(Collectors.toList());
+    public List<Drawing> findAllByTypeId(int typeId) {
+        return drawingsTable.values().stream().filter(d -> d.getType().getId() == typeId).collect(Collectors.toList());
     }
 
     @Override

@@ -17,7 +17,7 @@ public class DrawingService {
 
 
     public List<DrawingResponseDto> getDrawingsByType(int drawingTypeId) {
-        List<Drawing> drawings = drawingRepositoryPort.findAllByType(getDrawingTypeById(drawingTypeId));
+        List<Drawing> drawings = drawingRepositoryPort.findAllByTypeId(drawingTypeId);
         return DrawingMapper.toDrawingResponseDtos(drawings);
     }
 

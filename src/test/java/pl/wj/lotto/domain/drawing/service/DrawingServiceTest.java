@@ -22,8 +22,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,7 +36,7 @@ class DrawingServiceTest {
     void shouldReturnEmptyListWhenThereIsNoDrawingWithGivenType() {
         // given
         DrawingType drawingType = DrawingType.EJP;
-        given(drawingRepositoryPort.findAllByType(any(DrawingType.class))).willReturn(new ArrayList<>());
+        given(drawingRepositoryPort.findAllByTypeId(anyInt())).willReturn(new ArrayList<>());
 
         // when
         List<DrawingResponseDto> result = drawingService.getDrawingsByType(drawingType.getId());
@@ -54,7 +53,7 @@ class DrawingServiceTest {
         DrawingType drawingType = DrawingType.EJP;
         List<Drawing> drawings = new ArrayList<>();
         List<DrawingResponseDto> expectedResult = DrawingMapper.toDrawingResponseDtos(drawings);
-        given(drawingRepositoryPort.findAllByType(any(DrawingType.class))).willReturn(drawings);
+        given(drawingRepositoryPort.findAllByTypeId(anyInt())).willReturn(drawings);
 
         // when
         List<DrawingResponseDto> result = drawingService.getDrawingsByType(drawingType.getId());

@@ -6,7 +6,8 @@ import pl.wj.lotto.domain.drawing.adapter.DrawingServiceAdapter;
 import pl.wj.lotto.domain.drawing.port.in.DrawingServicePort;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
 import pl.wj.lotto.domain.drawing.service.DrawingService;
-import pl.wj.lotto.infrastructure.persistence.inmemory.drawing.DrawingInMemoryAdapter;
+import pl.wj.lotto.infrastructure.persistence.database.drawing.DrawingDatabaseAdapter;
+import pl.wj.lotto.infrastructure.persistence.database.drawing.repository.DrawingRepository;
 
 @Configuration
 public class DrawingConfig {
@@ -16,8 +17,13 @@ public class DrawingConfig {
         return new DrawingServiceAdapter(drawingService);
     }
 
+//    @Bean
+//    public DrawingRepositoryPort drawingRepositoryPort() {
+//        return new DrawingInMemoryAdapter();
+//    }
+
     @Bean
-    public DrawingRepositoryPort drawingRepositoryPort() {
-        return new DrawingInMemoryAdapter();
+    public DrawingRepositoryPort drawingRepositoryPort(DrawingRepository drawingRepository) {
+        return new DrawingDatabaseAdapter(drawingRepository);
     }
 }
