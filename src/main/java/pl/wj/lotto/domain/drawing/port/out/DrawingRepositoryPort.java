@@ -1,12 +1,13 @@
 package pl.wj.lotto.domain.drawing.port.out;
 
+import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface DrawingRepositoryPort {
-    List<Drawing> findAllByTypeId(int typeId);
+    List<Drawing> findAllByType(DrawingType drawingType);
 
     Drawing save(Drawing drawing);
 

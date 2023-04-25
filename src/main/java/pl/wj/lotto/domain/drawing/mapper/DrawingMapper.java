@@ -1,6 +1,11 @@
 package pl.wj.lotto.domain.drawing.mapper;
 
-import pl.wj.lotto.domain.common.DrawingType.DrawingType;
+import pl.wj.lotto.domain.common.drawingtype.DrawingType;
+import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbers;
+import pl.wj.lotto.domain.common.numberstemplate.model.KenoNumbers;
+import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbers;
+import pl.wj.lotto.domain.common.numberstemplate.model.Quick600Numbers;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
@@ -26,12 +31,22 @@ public class DrawingMapper {
 
     public static Drawing toDrawing(DrawingRequestDto drawingRequestDto) {
         DrawingType type = Stream.of(DrawingType.values())
-                .filter(dt -> dt.getName().equals(drawingRequestDto.type()))
+                .filter(dt -> dt.getId() == drawingRequestDto.typeId())
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Not found"));
+
+        NumbersTemplate numbers;
+        switch(type) {
+            case LOTTO -> numbers = new LottoNumbers();
+            case Q600 -> numbers = new Quick600Numbers();
+            case EJP -> numbers = new EuroJackpotNumbers();
+            case KENO -> numbers = new KenoNumbers();
+            default -> numbers = null;
+        }
+        numbers.setNumbers(drawingRequestDto.mainNumbers(), drawingRequestDto.extraNumbers());
         return Drawing.builder()
                 .type(type)
-                .numbers(drawingRequestDto.numbers())
+                .numbers(numbers)
                 .build();
     }
 
@@ -42,7 +57,8 @@ public class DrawingMapper {
     public static Drawing toDrawing(DrawingEntity drawingEntity) {
         return Drawing.builder()
                 .id(drawingEntity.getId())
-                .type(null)
+                .type(drawingEntity.getType())
+                .numbers(drawingEntity.getNumbers())
                 .drawingTime(drawingEntity.getDrawingTime())
                 .build();
     }
@@ -50,7 +66,8 @@ public class DrawingMapper {
     public static DrawingEntity toDrawingEntity(Drawing drawing) {
         return DrawingEntity.builder()
                 .id(drawing.getId())
-                .typeId(drawing.getType().getId())
+                .type(drawing.getType())
+                .numbers(drawing.getNumbers())
                 .drawingTime(drawing.getDrawingTime())
                 .build();
     }

@@ -6,7 +6,7 @@ import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
 import java.util.List;
 
 public interface DrawingServicePort {
-    List<DrawingResponseDto> getDrawingsByType(int drawingTypeId);
+    List<DrawingResponseDto> getDrawingsByTypeId(int typeId);
 
     DrawingResponseDto addDrawing(DrawingRequestDto drawingRequestDto);
 

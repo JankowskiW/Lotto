@@ -1,10 +1,12 @@
 package pl.wj.lotto.domain.drawing.model.dto;
 
 import lombok.Builder;
-import pl.wj.lotto.domain.common.numberstemplate.model.NumbersTemplate;
+
+import java.util.List;
 
 @Builder
 public record DrawingRequestDto (
-        String type,
-        NumbersTemplate numbers) {
+        int typeId,
+        List<Integer> mainNumbers,
+        List<Integer> extraNumbers) {
 }

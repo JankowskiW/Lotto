@@ -5,9 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.wj.lotto.domain.common.DrawingType.DrawingType;
-import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbersTemplate;
-import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbersTemplate;
+import pl.wj.lotto.domain.common.drawingtype.DrawingType;
+import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbers;
 import pl.wj.lotto.domain.drawing.mapper.DrawingMapper;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
@@ -22,7 +22,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,10 +37,10 @@ class DrawingServiceTest {
     void shouldReturnEmptyListWhenThereIsNoDrawingWithGivenType() {
         // given
         DrawingType drawingType = DrawingType.EJP;
-        given(drawingRepositoryPort.findAllByTypeId(anyInt())).willReturn(new ArrayList<>());
+        given(drawingRepositoryPort.findAllByType(any(DrawingType.class))).willReturn(new ArrayList<>());
 
         // when
-        List<DrawingResponseDto> result = drawingService.getDrawingsByType(drawingType.getId());
+        List<DrawingResponseDto> result = drawingService.getDrawingsByTypeId(drawingType.getId());
 
         // then
         assertThat(result)
@@ -53,10 +54,10 @@ class DrawingServiceTest {
         DrawingType drawingType = DrawingType.EJP;
         List<Drawing> drawings = new ArrayList<>();
         List<DrawingResponseDto> expectedResult = DrawingMapper.toDrawingResponseDtos(drawings);
-        given(drawingRepositoryPort.findAllByTypeId(anyInt())).willReturn(drawings);
+        given(drawingRepositoryPort.findAllByType(any(DrawingType.class))).willReturn(drawings);
 
         // when
-        List<DrawingResponseDto> result = drawingService.getDrawingsByType(drawingType.getId());
+        List<DrawingResponseDto> result = drawingService.getDrawingsByTypeId(drawingType.getId());
 
         // then
         assertThat(result)
@@ -70,12 +71,10 @@ class DrawingServiceTest {
         String id = UUID.randomUUID().toString();
         LocalDateTime drawingTime = LocalDateTime.now();
         DrawingType drawingType = DrawingType.EJP;
-        EuroJackpotNumbersTemplate numbers = new EuroJackpotNumbersTemplate();
-        numbers.setMainNumbers(List.of(1,2,3,4,5));
-        numbers.setExtraNumbers(List.of(1,2));
         DrawingRequestDto drawingRequestDto = DrawingRequestDto.builder()
-                .type(drawingType.getName())
-                .numbers(numbers)
+                .typeId(drawingType.getId())
+                .mainNumbers(List.of(1,2,3,4,5))
+                .extraNumbers(List.of(1,2))
                 .build();
         Drawing drawing = DrawingMapper.toDrawing(drawingRequestDto);
         drawing.setId(id);
@@ -105,8 +104,8 @@ class DrawingServiceTest {
         // given
         String id = UUID.randomUUID().toString();
         LocalDateTime drawingTime = LocalDateTime.now();
-        LottoNumbersTemplate numbers = new LottoNumbersTemplate();
-        numbers.setMainNumbers(List.of(1,2,3,4,5,6));
+        NumbersTemplate numbers = new LottoNumbers();
+        numbers.setNumbers(List.of(1,2,3,4,5,6), null);
         Drawing drawing = Drawing.builder()
                 .id(id)
                 .type(DrawingType.LOTTO)

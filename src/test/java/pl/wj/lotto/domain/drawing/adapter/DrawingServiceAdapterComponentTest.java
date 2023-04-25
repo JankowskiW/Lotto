@@ -2,9 +2,10 @@ package pl.wj.lotto.domain.drawing.adapter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.wj.lotto.domain.common.DrawingType.DrawingType;
-import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbersTemplate;
-import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbersTemplate;
+import pl.wj.lotto.domain.common.drawingtype.DrawingType;
+import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbers;
+import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbers;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
@@ -34,17 +35,14 @@ class DrawingServiceAdapterComponentTest {
         // given
         int expectedSize = 2;
         DrawingType drawingType = DrawingType.EJP;
-        EuroJackpotNumbersTemplate numbersEJP;
-        numbersEJP = new EuroJackpotNumbersTemplate();
-        numbersEJP.setMainNumbers(List.of(1,2,3,4,5));
-        numbersEJP.setExtraNumbers(List.of(1,2));
+        NumbersTemplate numbersEJP = new EuroJackpotNumbers();
+        numbersEJP.setNumbers(List.of(1,2,3,4,5), List.of(1,2));
         drawingRepositoryPort.save(Drawing.builder().type(drawingType).numbers(numbersEJP).build());
-        numbersEJP = new EuroJackpotNumbersTemplate();
-        numbersEJP.setMainNumbers(List.of(1,2,3,4,6));
-        numbersEJP.setExtraNumbers(List.of(1,3));
+        numbersEJP = new EuroJackpotNumbers();
+        numbersEJP.setNumbers(List.of(1,2,3,4,5), List.of(1,3));
         drawingRepositoryPort.save(Drawing.builder().type(drawingType).numbers(numbersEJP).build());
-        LottoNumbersTemplate numbersLotto = new LottoNumbersTemplate();
-        numbersLotto.setMainNumbers(List.of(3,4,5,6,7,8));
+        NumbersTemplate numbersLotto = new LottoNumbers();
+        numbersLotto.setNumbers(List.of(3,4,5,6,7,8), null);
         drawingRepositoryPort.save(Drawing.builder().type(DrawingType.LOTTO).numbers(numbersLotto).build());
         List<String> unwantedDrawingTypes =
                 Stream.of(DrawingType.values())
@@ -53,7 +51,7 @@ class DrawingServiceAdapterComponentTest {
                         .toList();
 
         // when
-        List<DrawingResponseDto> result = drawingServiceAdapter.getDrawingsByType(drawingType.getId());
+        List<DrawingResponseDto> result = drawingServiceAdapter.getDrawingsByTypeId(drawingType.getId());
 
         // then
         assertAll(

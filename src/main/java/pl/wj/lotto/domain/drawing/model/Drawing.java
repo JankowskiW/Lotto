@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import pl.wj.lotto.domain.common.DrawingType.DrawingType;
-import pl.wj.lotto.domain.common.numberstemplate.model.NumbersTemplate;
+import pl.wj.lotto.domain.common.drawingtype.DrawingType;
+import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 
 import java.time.LocalDateTime;
 

@@ -1,7 +1,7 @@
 package pl.wj.lotto.domain.drawing.service;
 
 import lombok.RequiredArgsConstructor;
-import pl.wj.lotto.domain.common.DrawingType.DrawingType;
+import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.drawing.mapper.DrawingMapper;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
@@ -16,8 +16,9 @@ public class DrawingService {
     private final DrawingRepositoryPort drawingRepositoryPort;
 
 
-    public List<DrawingResponseDto> getDrawingsByType(int drawingTypeId) {
-        List<Drawing> drawings = drawingRepositoryPort.findAllByTypeId(drawingTypeId);
+    public List<DrawingResponseDto> getDrawingsByTypeId(int typeId) {
+        DrawingType type = getDrawingTypeById(typeId);
+        List<Drawing> drawings = drawingRepositoryPort.findAllByType(type);
         return DrawingMapper.toDrawingResponseDtos(drawings);
     }
 

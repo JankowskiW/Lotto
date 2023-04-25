@@ -13,8 +13,8 @@ public class DrawingServiceAdapter implements DrawingServicePort {
     private final DrawingService drawingService;
 
     @Override
-    public List<DrawingResponseDto> getDrawingsByType(int drawingTypeId) {
-        return drawingService.getDrawingsByType(drawingTypeId);
+    public List<DrawingResponseDto> getDrawingsByTypeId(int typeId) {
+        return drawingService.getDrawingsByTypeId(typeId);
     }
 
     @Override
