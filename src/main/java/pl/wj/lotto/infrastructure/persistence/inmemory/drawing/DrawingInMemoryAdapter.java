@@ -4,6 +4,7 @@ import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class DrawingInMemoryAdapter implements DrawingRepositoryPort {
     public Drawing save(Drawing drawing) {
         String id = drawing.getId() == null ? UUID.randomUUID().toString() : drawing.getId();
         drawing.setId(id);
+        drawing.setDrawingTime(LocalDateTime.now());
         drawingsTable.put(id, drawing);
         return drawing;
     }
