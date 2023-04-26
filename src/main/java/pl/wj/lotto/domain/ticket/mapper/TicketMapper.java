@@ -2,11 +2,8 @@ package pl.wj.lotto.domain.ticket.mapper;
 
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.common.drawingtype.DrawingTypeExtractor;
+import pl.wj.lotto.domain.common.numberstemplate.NumberTemplateCreator;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
-import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbers;
-import pl.wj.lotto.domain.common.numberstemplate.model.KenoNumbers;
-import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbers;
-import pl.wj.lotto.domain.common.numberstemplate.model.Quick600Numbers;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
@@ -17,16 +14,7 @@ import java.util.List;
 public class TicketMapper {
     public static Ticket toTicket(TicketRequestDto ticketRequestDto) {
         DrawingType drawingType = DrawingTypeExtractor.getDrawingTypeById(ticketRequestDto.drawingTypeId());
-
-        // TODO: create file in numbertemplate package and put that fragment of code in there
-        NumbersTemplate numbers;
-        switch(drawingType) {
-            case LOTTO -> numbers = new LottoNumbers();
-            case Q600 -> numbers = new Quick600Numbers();
-            case EJP -> numbers = new EuroJackpotNumbers();
-            case KENO -> numbers = new KenoNumbers();
-            default -> numbers = null;
-        }
+        NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByDrawingType(drawingType);
         numbers.setNumbers(ticketRequestDto.mainNumbers(), ticketRequestDto.extraNumbers());
         return Ticket.builder()
                 .id(ticketRequestDto.id())
@@ -55,16 +43,7 @@ public class TicketMapper {
 
     public static TicketResponseDto toTicketResponseDto(TicketRequestDto ticketRequestDto) {
         DrawingType drawingType = DrawingTypeExtractor.getDrawingTypeById(ticketRequestDto.drawingTypeId());
-
-        // TODO: create file in numbertemplate package and put that fragment of code in there
-        NumbersTemplate numbers;
-        switch(drawingType) {
-            case LOTTO -> numbers = new LottoNumbers();
-            case Q600 -> numbers = new Quick600Numbers();
-            case EJP -> numbers = new EuroJackpotNumbers();
-            case KENO -> numbers = new KenoNumbers();
-            default -> numbers = null;
-        }
+        NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByDrawingType(drawingType);
         numbers.setNumbers(ticketRequestDto.mainNumbers(), ticketRequestDto.extraNumbers());
         return TicketResponseDto.builder()
                 .id(null)

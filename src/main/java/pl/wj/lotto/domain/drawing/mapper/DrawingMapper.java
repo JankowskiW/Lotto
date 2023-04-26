@@ -2,11 +2,8 @@ package pl.wj.lotto.domain.drawing.mapper;
 
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.common.drawingtype.DrawingTypeExtractor;
+import pl.wj.lotto.domain.common.numberstemplate.NumberTemplateCreator;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
-import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbers;
-import pl.wj.lotto.domain.common.numberstemplate.model.KenoNumbers;
-import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbers;
-import pl.wj.lotto.domain.common.numberstemplate.model.Quick600Numbers;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
@@ -31,15 +28,7 @@ public class DrawingMapper {
 
     public static Drawing toDrawing(DrawingRequestDto drawingRequestDto) {
         DrawingType drawingType = DrawingTypeExtractor.getDrawingTypeById(drawingRequestDto.typeId());
-        // TODO: create file in numbertemplate package and put that fragment of code in there
-        NumbersTemplate numbers;
-        switch(drawingType) {
-            case LOTTO -> numbers = new LottoNumbers();
-            case Q600 -> numbers = new Quick600Numbers();
-            case EJP -> numbers = new EuroJackpotNumbers();
-            case KENO -> numbers = new KenoNumbers();
-            default -> numbers = null;
-        }
+        NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByDrawingType(drawingType);
         numbers.setNumbers(drawingRequestDto.mainNumbers(), drawingRequestDto.extraNumbers());
         return Drawing.builder()
                 .type(drawingType)
