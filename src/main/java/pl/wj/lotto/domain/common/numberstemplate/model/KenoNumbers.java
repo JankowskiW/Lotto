@@ -36,4 +36,9 @@ public class KenoNumbers implements NumbersValidatable, NumbersTemplate {
             throw new RuntimeException("Invalid parameters");
         }
     }
+
+    @Override
+    public List<Integer> getMainNumbers() {
+        return mainNumbers;
+    }
 }

@@ -1,6 +1,5 @@
 package pl.wj.lotto.domain.common.numberstemplate.model;
 
-import lombok.Getter;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersValidatable;
 
@@ -15,9 +14,7 @@ public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate {
     private static final int EXTRA_NUMBERS_MIN_VALUE = 1;
     private static final int EXTRA_NUMBERS_MAX_VALUE = 12;
 
-    @Getter
     private List<Integer> mainNumbers = new ArrayList<>();
-    @Getter
     private List<Integer> extraNumbers = new ArrayList<>();
 
     @Override
@@ -54,5 +51,15 @@ public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate {
             this.extraNumbers = new ArrayList<>();
             throw new RuntimeException("Invalid parameters");
         }
+    }
+
+    @Override
+    public List<Integer> getMainNumbers() {
+        return mainNumbers;
+    }
+
+    @Override
+    public List<Integer> getExtraNumbers() {
+        return extraNumbers;
     }
 }
