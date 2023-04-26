@@ -1,7 +1,9 @@
 package pl.wj.lotto.infrastructure.persistence.database.ticket.repository;
 
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
 
 @Repository
-public interface TicketRepository {
+public interface TicketRepository extends MongoRepository<TicketEntity, String> {
 }

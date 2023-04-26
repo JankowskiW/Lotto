@@ -30,14 +30,15 @@ public class DrawingMapper {
     }
 
     public static Drawing toDrawing(DrawingRequestDto drawingRequestDto) {
-        DrawingType type = Stream.of(DrawingType.values())
+        // TODO: create file in drawingtype package and put that fragment of code in there
+        DrawingType drawingType = Stream.of(DrawingType.values())
                 .filter(dt -> dt.getId() == drawingRequestDto.typeId())
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Not found"));
 
         // TODO: create file in numbertemplate package and put that fragment of code in there
         NumbersTemplate numbers;
-        switch(type) {
+        switch(drawingType) {
             case LOTTO -> numbers = new LottoNumbers();
             case Q600 -> numbers = new Quick600Numbers();
             case EJP -> numbers = new EuroJackpotNumbers();
@@ -46,7 +47,7 @@ public class DrawingMapper {
         }
         numbers.setNumbers(drawingRequestDto.mainNumbers(), drawingRequestDto.extraNumbers());
         return Drawing.builder()
-                .type(type)
+                .type(drawingType)
                 .numbers(numbers)
                 .build();
     }

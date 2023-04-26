@@ -8,7 +8,7 @@ import java.util.List;
 public record TicketRequestDto(
         String id,
         String userId,
-        String drawingTypeId,
+        int drawingTypeId,
         int numberOfDrawings,
         boolean userNumbers,
         List<Integer> mainNumbers,

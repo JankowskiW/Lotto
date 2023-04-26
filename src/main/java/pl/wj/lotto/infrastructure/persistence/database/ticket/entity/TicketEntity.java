@@ -17,6 +17,7 @@ public class TicketEntity {
     String id;
     String userId;
     DrawingType drawingType;
+    int numberOfDrawings;
     NumbersTemplate numbers;
     LocalDateTime generationTime;
 }

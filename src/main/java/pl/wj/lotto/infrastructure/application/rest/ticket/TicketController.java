@@ -15,7 +15,6 @@ import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 public class TicketController {
     private final TicketServicePort ticketServicePort;
 
-
     @PostMapping
     public TicketResponseDto addTicket(@RequestBody TicketRequestDto ticketRequestDto) {
         return ticketServicePort.addTicket(ticketRequestDto);
