@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 
 @Configuration
-@Profile("mem")
+@Profile("in-memory")
 public class TicketInMemoryConfig {
     @Bean
     public TicketRepositoryPort ticketRepositoryPort() {

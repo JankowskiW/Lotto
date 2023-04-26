@@ -56,11 +56,8 @@ class DrawingServiceAdapterComponentTest {
         // then
         assertAll(
                 () -> assertThat(result).isNotNull().hasSize(expectedSize),
-                () -> {
-                    assert result != null;
-                    assertThat(result.stream().map(DrawingResponseDto::type).collect(Collectors.toList()))
-                            .doesNotContainAnyElementsOf(unwantedDrawingTypes);
-                }
+                () -> assertThat(result.stream().map(DrawingResponseDto::typeName).collect(Collectors.toList()))
+                        .doesNotContainAnyElementsOf(unwantedDrawingTypes)
         );
     }
 

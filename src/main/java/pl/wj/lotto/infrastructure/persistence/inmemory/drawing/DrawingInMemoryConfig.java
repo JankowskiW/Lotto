@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
 
 @Configuration
-@Profile("mem")
+@Profile("in-memory")
 public class DrawingInMemoryConfig {
     @Bean
     public DrawingRepositoryPort drawingRepositoryPort() {

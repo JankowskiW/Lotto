@@ -4,12 +4,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
+import pl.wj.lotto.infrastructure.persistence.database.ticket.repository.TicketRepository;
 
 @Configuration
-@Profile("!mem")
+@Profile("!in-memory")
 public class TicketDatabaseConfig {
     @Bean
-    public TicketRepositoryPort ticketRepositoryPort() {
-        return new TicketDatabaseAdapter();
+    public TicketRepositoryPort ticketRepositoryPort(TicketRepository ticketRepository) {
+        return new TicketDatabaseAdapter(ticketRepository);
     }
 }
