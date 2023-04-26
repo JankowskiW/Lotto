@@ -10,7 +10,6 @@ import pl.wj.lotto.domain.ticket.service.TicketService;
 public class TicketServiceAdapter implements TicketServicePort {
     private final TicketService ticketService;
 
-
     @Override
     public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
         return ticketService.addTicket(ticketRequestDto);

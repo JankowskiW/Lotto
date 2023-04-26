@@ -19,6 +19,7 @@ public class DrawingServiceAdapter implements DrawingServicePort {
 
     @Override
     public DrawingResponseDto addDrawing(DrawingRequestDto drawingRequestDto) {
+        // TODO: that method should be called from scheduler
         return drawingService.addDrawing(drawingRequestDto);
     }
 

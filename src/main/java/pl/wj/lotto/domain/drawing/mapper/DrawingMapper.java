@@ -23,7 +23,7 @@ public class DrawingMapper {
     public static DrawingResponseDto toDrawingResponseDto(Drawing drawing) {
         return DrawingResponseDto.builder()
                 .id(drawing.getId())
-                .type(drawing.getType().getName())
+                .typeName(drawing.getType().getName())
                 .numbers(drawing.getNumbers())
                 .drawingTime(drawing.getDrawingTime())
                 .build();
@@ -35,6 +35,7 @@ public class DrawingMapper {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Not found"));
 
+        // TODO: create file in numbertemplate package and put that fragment of code in there
         NumbersTemplate numbers;
         switch(type) {
             case LOTTO -> numbers = new LottoNumbers();

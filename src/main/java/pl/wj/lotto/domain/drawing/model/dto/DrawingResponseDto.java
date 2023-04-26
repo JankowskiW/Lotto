@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Builder
 public record DrawingResponseDto (
     String id,
-    String type,
+    String typeName,
     NumbersTemplate numbers,
     LocalDateTime drawingTime) {
 }
