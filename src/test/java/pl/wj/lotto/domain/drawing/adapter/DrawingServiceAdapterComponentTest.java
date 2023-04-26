@@ -13,7 +13,6 @@ import pl.wj.lotto.domain.drawing.service.DrawingService;
 import pl.wj.lotto.infrastructure.persistence.inmemory.drawing.DrawingInMemoryAdapter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +30,7 @@ class DrawingServiceAdapterComponentTest {
     }
 
     @Test
-    void shouldReturnDrawingResponseDtosList() {
+    void shouldReturnDrawingResponseDtosListOfSpecificDrawingType() {
         // given
         int expectedSize = 2;
         DrawingType drawingType = DrawingType.EJP;
@@ -56,7 +55,7 @@ class DrawingServiceAdapterComponentTest {
         // then
         assertAll(
                 () -> assertThat(result).isNotNull().hasSize(expectedSize),
-                () -> assertThat(result.stream().map(DrawingResponseDto::typeName).collect(Collectors.toList()))
+                () -> assertThat(result.stream().map(DrawingResponseDto::typeName).toList())
                         .doesNotContainAnyElementsOf(unwantedDrawingTypes)
         );
     }
