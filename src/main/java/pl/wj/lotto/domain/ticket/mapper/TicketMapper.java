@@ -1,6 +1,7 @@
 package pl.wj.lotto.domain.ticket.mapper;
 
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
+import pl.wj.lotto.domain.common.drawingtype.DrawingTypeExtractor;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbers;
 import pl.wj.lotto.domain.common.numberstemplate.model.KenoNumbers;
@@ -12,15 +13,10 @@ import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 public class TicketMapper {
     public static Ticket toTicket(TicketRequestDto ticketRequestDto) {
-        // TODO: create file in drawingtype package and put that fragment of code in there
-        DrawingType drawingType = Stream.of(DrawingType.values())
-                .filter(dt -> dt.getId() == ticketRequestDto.drawingTypeId())
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Not found"));
+        DrawingType drawingType = DrawingTypeExtractor.getDrawingTypeById(ticketRequestDto.drawingTypeId());
 
         // TODO: create file in numbertemplate package and put that fragment of code in there
         NumbersTemplate numbers;
@@ -58,11 +54,7 @@ public class TicketMapper {
     }
 
     public static TicketResponseDto toTicketResponseDto(TicketRequestDto ticketRequestDto) {
-        // TODO: create file in drawingtype package and put that fragment of code in there
-        DrawingType drawingType = Stream.of(DrawingType.values())
-                .filter(dt -> dt.getId() == ticketRequestDto.drawingTypeId())
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Not found"));
+        DrawingType drawingType = DrawingTypeExtractor.getDrawingTypeById(ticketRequestDto.drawingTypeId());
 
         // TODO: create file in numbertemplate package and put that fragment of code in there
         NumbersTemplate numbers;

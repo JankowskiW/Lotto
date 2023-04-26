@@ -1,6 +1,7 @@
 package pl.wj.lotto.domain.drawing.mapper;
 
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
+import pl.wj.lotto.domain.common.drawingtype.DrawingTypeExtractor;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.model.EuroJackpotNumbers;
 import pl.wj.lotto.domain.common.numberstemplate.model.KenoNumbers;
@@ -13,7 +14,6 @@ import pl.wj.lotto.infrastructure.persistence.database.drawing.entity.DrawingEnt
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DrawingMapper {
     public static List<DrawingResponseDto> toDrawingResponseDtos(List<Drawing> drawings) {
@@ -30,12 +30,7 @@ public class DrawingMapper {
     }
 
     public static Drawing toDrawing(DrawingRequestDto drawingRequestDto) {
-        // TODO: create file in drawingtype package and put that fragment of code in there
-        DrawingType drawingType = Stream.of(DrawingType.values())
-                .filter(dt -> dt.getId() == drawingRequestDto.typeId())
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Not found"));
-
+        DrawingType drawingType = DrawingTypeExtractor.getDrawingTypeById(drawingRequestDto.typeId());
         // TODO: create file in numbertemplate package and put that fragment of code in there
         NumbersTemplate numbers;
         switch(drawingType) {
