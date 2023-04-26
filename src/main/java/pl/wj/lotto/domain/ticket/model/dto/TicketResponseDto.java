@@ -1,9 +1,9 @@
 package pl.wj.lotto.domain.ticket.model.dto;
 
 import lombok.Builder;
+import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 public record TicketResponseDto(
@@ -11,8 +11,7 @@ public record TicketResponseDto(
         String userId,
         String drawingTypeName,
         int numberOfDrawings,
-        List<Integer> mainNumbers,
-        List<Integer> extraNumbers,
+        NumbersTemplate numbers,
         LocalDateTime nextDrawingTime
         ) {
 }

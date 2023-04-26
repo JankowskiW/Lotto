@@ -6,6 +6,8 @@ import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class TicketServiceAdapter implements TicketServicePort {
     private final TicketService ticketService;
@@ -13,5 +15,10 @@ public class TicketServiceAdapter implements TicketServicePort {
     @Override
     public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
         return ticketService.addTicket(ticketRequestDto);
+    }
+
+    @Override
+    public List<TicketResponseDto> getTicketsByUserId(String userId) {
+        return ticketService.getTicketsByUserId(userId);
     }
 }

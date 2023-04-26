@@ -8,6 +8,7 @@ import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntit
 import pl.wj.lotto.infrastructure.persistence.database.ticket.repository.TicketRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class TicketDatabaseAdapter implements TicketRepositoryPort {
@@ -18,5 +19,11 @@ public class TicketDatabaseAdapter implements TicketRepositoryPort {
         TicketEntity ticketEntity = TicketMapper.toTicketEntity(ticket);
         ticketEntity = ticketRepository.save(ticketEntity);
         return TicketMapper.toTicket(ticketEntity);
+    }
+
+    @Override
+    public List<Ticket> getByUserId(String userId) {
+        List<TicketEntity> ticketEntities = ticketRepository.getByUserId(userId);
+        return TicketMapper.toTickets(ticketEntities);
     }
 }
