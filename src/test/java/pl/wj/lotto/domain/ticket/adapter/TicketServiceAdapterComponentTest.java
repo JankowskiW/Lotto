@@ -4,14 +4,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
-import pl.wj.lotto.domain.common.numbergenerator.NumberGeneratorPort;
+import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
 import pl.wj.lotto.infrastructure.notification.inmemory.email.EmailNotificationInMemoryAdapter;
-import pl.wj.lotto.infrastructure.numbergenerator.inmemory.NumberGeneratorInMemoryAdapter;
+import pl.wj.lotto.infrastructure.numbergenerator.inmemory.NumbersGeneratorInMemoryAdapter;
 import pl.wj.lotto.infrastructure.persistence.inmemory.ticket.TicketInMemoryAdapter;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class TicketServiceAdapterComponentTest {
     private NotificationPort notificationPort;
-    private NumberGeneratorPort numberGeneratorPort;
+    private NumbersGeneratorPort numbersGeneratorPort;
     private TicketRepositoryPort ticketRepositoryPort;
     private TicketServiceAdapter ticketServiceAdapter;
 
@@ -29,8 +29,8 @@ class TicketServiceAdapterComponentTest {
     void setUp() {
         notificationPort = new EmailNotificationInMemoryAdapter();
         ticketRepositoryPort = new TicketInMemoryAdapter();
-        numberGeneratorPort = new NumberGeneratorInMemoryAdapter();
-        TicketService ticketService = new TicketService(ticketRepositoryPort, notificationPort, numberGeneratorPort);
+        numbersGeneratorPort = new NumbersGeneratorInMemoryAdapter();
+        TicketService ticketService = new TicketService(ticketRepositoryPort, notificationPort, numbersGeneratorPort);
         ticketServiceAdapter = new TicketServiceAdapter(ticketService);
     }
 

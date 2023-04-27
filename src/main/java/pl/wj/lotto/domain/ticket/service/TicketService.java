@@ -3,7 +3,7 @@ package pl.wj.lotto.domain.ticket.service;
 import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
-import pl.wj.lotto.domain.common.numbergenerator.NumberGeneratorPort;
+import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numberstemplate.NumberTemplateCreator;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
@@ -18,7 +18,7 @@ import java.util.List;
 public class TicketService {
     private final TicketRepositoryPort ticketRepositoryPort;
     private final NotificationPort notificationPort;
-    private final NumberGeneratorPort numberGeneratorPort;
+    private final NumbersGeneratorPort numbersGeneratorPort;
 
     public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
         Ticket ticket = TicketMapper.toTicket(ticketRequestDto);
@@ -41,10 +41,10 @@ public class TicketService {
 
     private NumbersTemplate generateNumbers(DrawingType drawingType) {
         NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByDrawingType(drawingType);
-        List<Integer> mainNumbers = numberGeneratorPort.generate(1,1,1);
+        List<Integer> mainNumbers = numbersGeneratorPort.generate(1,1,1);
         List<Integer> extraNumbers = null;
         if (drawingType == DrawingType.EJP) {
-            extraNumbers = numberGeneratorPort.generate(1,1,1);
+            extraNumbers = numbersGeneratorPort.generate(1,1,1);
         }
         numbers.setNumbers(mainNumbers, extraNumbers);
         return numbers;

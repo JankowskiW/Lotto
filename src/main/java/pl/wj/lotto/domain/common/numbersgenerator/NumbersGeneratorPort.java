@@ -1,7 +1,7 @@
-package pl.wj.lotto.domain.common.numbergenerator;
+package pl.wj.lotto.domain.common.numbersgenerator;
 
 import java.util.List;
 
-public interface NumberGeneratorPort {
+public interface NumbersGeneratorPort {
     List<Integer> generate(int lowerBound, int upperBound, int amount);
 }
