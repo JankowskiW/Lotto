@@ -30,4 +30,5 @@ public class TicketService {
         // TODO: Create method which gets next drawing time for specific drawing type somewhere and call it here
         return TicketMapper.toTicketResponseDtos(tickets);
     }
+
 }
