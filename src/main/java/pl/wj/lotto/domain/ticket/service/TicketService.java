@@ -6,6 +6,7 @@ import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numberstemplate.NumberTemplateCreator;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.drawing.port.in.DrawingServicePort;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
@@ -19,6 +20,7 @@ public class TicketService {
     private final TicketRepositoryPort ticketRepositoryPort;
     private final NotificationPort notificationPort;
     private final NumbersGeneratorPort numbersGeneratorPort;
+    private final DrawingServicePort drawingServicePort;
 
     public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
         Ticket ticket = TicketMapper.toTicket(ticketRequestDto);
@@ -30,7 +32,8 @@ public class TicketService {
         } else {
             ticket.setUserId("");
         }
-        return TicketMapper.toTicketResponseDto(ticket);
+        TicketResponseDto ticketResponseDto = TicketMapper.toTicketResponseDto(ticket);
+        return ticketResponseDto.withNextDrawingTime(drawingServicePort.getNextDrawingTime(ticket.getDrawingType()));
     }
 
     public List<TicketResponseDto> getTicketsByUserId(String userId) {

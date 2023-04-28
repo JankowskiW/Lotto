@@ -2,6 +2,7 @@ package pl.wj.lotto.infrastructure.persistence.database.ticket.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
@@ -10,6 +11,7 @@ import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Builder
 @Document(collection = "tickets")
 public class TicketEntity {

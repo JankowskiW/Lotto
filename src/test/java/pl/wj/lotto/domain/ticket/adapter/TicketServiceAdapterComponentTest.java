@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
+import pl.wj.lotto.domain.drawing.adapter.DrawingServiceAdapter;
+import pl.wj.lotto.domain.drawing.port.in.DrawingServicePort;
+import pl.wj.lotto.domain.drawing.service.DrawingService;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
@@ -12,6 +15,7 @@ import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
 import pl.wj.lotto.infrastructure.notification.inmemory.email.EmailNotificationInMemoryAdapter;
 import pl.wj.lotto.infrastructure.numbergenerator.inmemory.NumbersGeneratorInMemoryAdapter;
+import pl.wj.lotto.infrastructure.persistence.inmemory.drawing.DrawingInMemoryAdapter;
 import pl.wj.lotto.infrastructure.persistence.inmemory.ticket.TicketInMemoryAdapter;
 
 import java.util.List;
@@ -23,6 +27,7 @@ class TicketServiceAdapterComponentTest {
     private NotificationPort notificationPort;
     private NumbersGeneratorPort numbersGeneratorPort;
     private TicketRepositoryPort ticketRepositoryPort;
+    private DrawingServicePort drawingServicePort;
     private TicketServiceAdapter ticketServiceAdapter;
 
     @BeforeEach
@@ -30,7 +35,10 @@ class TicketServiceAdapterComponentTest {
         notificationPort = new EmailNotificationInMemoryAdapter();
         ticketRepositoryPort = new TicketInMemoryAdapter();
         numbersGeneratorPort = new NumbersGeneratorInMemoryAdapter();
-        TicketService ticketService = new TicketService(ticketRepositoryPort, notificationPort, numbersGeneratorPort);
+        DrawingService drawingService = new DrawingService(new DrawingInMemoryAdapter());
+        drawingServicePort = new DrawingServiceAdapter(drawingService);
+        TicketService ticketService = new TicketService(
+                ticketRepositoryPort, notificationPort, numbersGeneratorPort, drawingServicePort);
         ticketServiceAdapter = new TicketServiceAdapter(ticketService);
     }
 

@@ -9,6 +9,7 @@ import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
 import pl.wj.lotto.domain.drawing.port.out.DrawingRepositoryPort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -31,5 +32,15 @@ public class DrawingService {
     public DrawingResponseDto getDrawingById(String id) {
         Drawing drawing = drawingRepositoryPort.findById(id).orElseThrow(() -> new RuntimeException("Drawing not found"));
         return DrawingMapper.toDrawingResponseDto(drawing);
+    }
+
+    public LocalDateTime getNextDrawingTime(DrawingType type) {
+        switch(type) {
+            case LOTTO -> LocalDateTime.now();
+            case Q600 -> LocalDateTime.now();
+            case EJP -> LocalDateTime.now();
+            case KENO -> LocalDateTime.now();
+        }
+        return null;
     }
 }

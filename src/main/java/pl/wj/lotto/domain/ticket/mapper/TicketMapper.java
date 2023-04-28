@@ -15,7 +15,9 @@ public class TicketMapper {
     public static Ticket toTicket(TicketRequestDto ticketRequestDto) {
         DrawingType drawingType = DrawingTypeExtractor.getDrawingTypeById(ticketRequestDto.drawingTypeId());
         NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByDrawingType(drawingType);
-        numbers.setNumbers(ticketRequestDto.mainNumbers(), ticketRequestDto.extraNumbers());
+        if (ticketRequestDto.mainNumbers() != null)
+            numbers.setNumbers(ticketRequestDto.mainNumbers(), ticketRequestDto.extraNumbers());
+
         return Ticket.builder()
                 .id(ticketRequestDto.id())
                 .userId(ticketRequestDto.userId())
@@ -37,6 +39,7 @@ public class TicketMapper {
                 .drawingTypeName(ticket.getDrawingType().getName())
                 .numberOfDrawings(ticket.getNumberOfDrawings())
                 .numbers(ticket.getNumbers())
+                .generationTime(ticket.getGenerationTime())
                 .nextDrawingTime(null)
                 .build();
     }
@@ -51,6 +54,7 @@ public class TicketMapper {
                 .drawingTypeName(drawingType.getName())
                 .numberOfDrawings(ticketRequestDto.numberOfDrawings())
                 .numbers(numbers)
+                .generationTime(null)
                 .nextDrawingTime(null)
                 .build();
     }

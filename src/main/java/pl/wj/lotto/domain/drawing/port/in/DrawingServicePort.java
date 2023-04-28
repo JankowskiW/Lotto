@@ -1,8 +1,10 @@
 package pl.wj.lotto.domain.drawing.port.in;
 
+import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingResponseDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface DrawingServicePort {
@@ -11,4 +13,5 @@ public interface DrawingServicePort {
     DrawingResponseDto addDrawing(DrawingRequestDto drawingRequestDto);
 
     DrawingResponseDto getDrawingById(String id);
+    LocalDateTime getNextDrawingTime(DrawingType type);
 }

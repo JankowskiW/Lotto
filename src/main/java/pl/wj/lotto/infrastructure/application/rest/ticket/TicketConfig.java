@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
+import pl.wj.lotto.domain.drawing.port.in.DrawingServicePort;
 import pl.wj.lotto.domain.ticket.adapter.TicketServiceAdapter;
 import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
@@ -14,8 +15,10 @@ public class TicketConfig {
     @Bean
     public TicketServicePort ticketServicePort(TicketRepositoryPort ticketRepositoryPort,
                                                NotificationPort emailNotificationPort,
-                                               NumbersGeneratorPort numbersGeneratorPort) {
-        TicketService ticketService = new TicketService(ticketRepositoryPort, emailNotificationPort, numbersGeneratorPort);
+                                               NumbersGeneratorPort numbersGeneratorPort,
+                                               DrawingServicePort drawingServicePort) {
+        TicketService ticketService = new TicketService(
+                ticketRepositoryPort, emailNotificationPort, numbersGeneratorPort, drawingServicePort);
         return new TicketServiceAdapter(ticketService);
     }
 }
