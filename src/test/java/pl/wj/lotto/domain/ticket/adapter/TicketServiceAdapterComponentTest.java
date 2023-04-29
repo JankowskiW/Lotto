@@ -2,6 +2,7 @@ package pl.wj.lotto.domain.ticket.adapter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.wj.lotto.domain.common.drawtime.DrawTimeChecker;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
@@ -13,11 +14,13 @@ import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
+import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.notification.fake.email.EmailNotificationFakeAdapter;
 import pl.wj.lotto.infrastructure.numbergenerator.fake.NumbersGeneratorFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.ticket.TicketFakeAdapter;
 
+import java.time.Clock;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,10 +35,11 @@ class TicketServiceAdapterComponentTest {
 
     @BeforeEach
     void setUp() {
+        Clock clock = new ClockFakeConfig().clock();
         notificationPort = new EmailNotificationFakeAdapter();
         ticketRepositoryPort = new TicketFakeAdapter();
         numbersGeneratorPort = new NumbersGeneratorFakeAdapter();
-        DrawService drawService = new DrawService(new DrawFakeAdapter());
+        DrawService drawService = new DrawService(new DrawFakeAdapter(), new DrawTimeChecker(clock));
         drawServicePort = new DrawServiceAdapter(drawService);
         TicketService ticketService = new TicketService(
                 ticketRepositoryPort, notificationPort, numbersGeneratorPort, drawServicePort);
@@ -65,8 +69,8 @@ class TicketServiceAdapterComponentTest {
                 () -> assertThat(result).isNotNull(),
                 () -> assertThat(result.gameTypeName()).isEqualTo(expectedResult.gameTypeName()),
                 () -> assertThat(result.numberOfDraws()).isEqualTo(expectedResult.numberOfDraws()),
-                () -> assertThat(result.numbers().getMainNumbers()).isEqualTo(expectedResult.numbers().getMainNumbers()),
-                () -> assertThat(result.numbers().getExtraNumbers()).isEqualTo(expectedResult.numbers().getExtraNumbers())
+                () -> assertThat(result.numbers().mainNumbers()).isEqualTo(expectedResult.numbers().mainNumbers()),
+                () -> assertThat(result.numbers().extraNumbers()).isEqualTo(expectedResult.numbers().extraNumbers())
         );
     }
 

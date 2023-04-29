@@ -1,6 +1,6 @@
 package pl.wj.lotto.domain.draw.port.in;
 
-import pl.wj.lotto.domain.common.drawtime.DrawTimeCheckable;
+import pl.wj.lotto.domain.common.drawtime.model.DrawTime;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 
@@ -13,5 +13,5 @@ public interface DrawServicePort {
     DrawResponseDto addDraw(DrawRequestDto drawRequestDto);
 
     DrawResponseDto getDrawById(String id);
-    LocalDateTime getNextDrawTime(DrawTimeCheckable drawTime);
+    LocalDateTime getNextDrawTime(DrawTime drawTime);
 }

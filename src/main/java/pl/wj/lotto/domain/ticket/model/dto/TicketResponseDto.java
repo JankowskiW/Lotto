@@ -2,7 +2,7 @@ package pl.wj.lotto.domain.ticket.model.dto;
 
 import lombok.Builder;
 import lombok.With;
-import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.numbers.Numbers;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +13,7 @@ public record TicketResponseDto(
         String userId,
         String gameTypeName,
         int numberOfDraws,
-        NumbersTemplate numbers,
+        Numbers numbers,
         LocalDateTime nextDrawTime,
         LocalDateTime generationTime
         ) {

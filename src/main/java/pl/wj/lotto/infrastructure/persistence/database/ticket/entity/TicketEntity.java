@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.numbers.Numbers;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +20,6 @@ public class TicketEntity {
     String userId;
     GameType gameType;
     int numberOfDraws;
-    NumbersTemplate numbers;
+    Numbers numbers;
     LocalDateTime generationTime;
 }

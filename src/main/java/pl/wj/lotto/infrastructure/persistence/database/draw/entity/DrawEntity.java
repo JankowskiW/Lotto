@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.numbers.Numbers;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +16,6 @@ public class DrawEntity {
     @Id
     String id;
     GameType type;
-    NumbersTemplate numbers;
+    Numbers numbers;
     LocalDateTime drawTime;
 }

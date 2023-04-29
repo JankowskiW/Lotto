@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
-import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbers;
+import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
+import pl.wj.lotto.domain.common.numbers.Numbers;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
@@ -104,8 +104,12 @@ class DrawServiceTest {
         // given
         String id = UUID.randomUUID().toString();
         LocalDateTime drawTime = LocalDateTime.now();
-        NumbersTemplate numbers = new LottoNumbers();
-        numbers.setNumbers(List.of(1,2,3,4,5,6), null);
+        GameType gameType = GameType.LOTTO;
+        Numbers numbers = Numbers.builder()
+                .gameType(GameType.LOTTO)
+                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .mainNumbers(List.of(1,2,3,4,5,6))
+                .build();
         Draw draw = Draw.builder()
                 .id(id)
                 .type(GameType.LOTTO)

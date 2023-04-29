@@ -1,7 +1,7 @@
 package pl.wj.lotto.domain.draw.model.dto;
 
 import lombok.Builder;
-import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.numbers.Numbers;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +9,6 @@ import java.time.LocalDateTime;
 public record DrawResponseDto(
     String id,
     String typeName,
-    NumbersTemplate numbers,
+    Numbers numbers,
     LocalDateTime drawTime) {
 }

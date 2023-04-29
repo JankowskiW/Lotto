@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.numbers.Numbers;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +16,6 @@ import java.time.LocalDateTime;
 public class Draw {
     String id;
     GameType type;
-    NumbersTemplate numbers;
+    Numbers numbers;
     LocalDateTime drawTime;
 }

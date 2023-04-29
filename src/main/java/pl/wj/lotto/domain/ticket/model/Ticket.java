@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.numbers.Numbers;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +16,6 @@ public class Ticket {
     String userId;
     GameType gameType;
     int numberOfDraws;
-    NumbersTemplate numbers;
+    Numbers numbers;
     LocalDateTime generationTime;
 }

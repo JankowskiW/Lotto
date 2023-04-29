@@ -2,8 +2,8 @@ package pl.wj.lotto.domain.draw.mapper;
 
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
-import pl.wj.lotto.domain.common.numberstemplate.NumberTemplateCreator;
-import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
+import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
+import pl.wj.lotto.domain.common.numbers.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
@@ -28,8 +28,12 @@ public class DrawMapper {
 
     public static Draw toDraw(DrawRequestDto drawRequestDto) {
         GameType gameType = GameTypeExtractor.getGameTypeById(drawRequestDto.typeId());
-        NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByGameType(gameType);
-        numbers.setNumbers(drawRequestDto.mainNumbers(), drawRequestDto.extraNumbers());
+        Numbers numbers = Numbers.builder()
+                .gameType(gameType)
+                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .mainNumbers(drawRequestDto.mainNumbers())
+                .extraNumbers(drawRequestDto.extraNumbers())
+                .build();
         return Draw.builder()
                 .type(gameType)
                 .numbers(numbers)

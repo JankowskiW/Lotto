@@ -2,10 +2,11 @@ package pl.wj.lotto.domain.ticket.service;
 
 import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
+import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
+import pl.wj.lotto.domain.common.numbers.Numbers;
+import pl.wj.lotto.domain.common.numbers.NumbersValidator;
 import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
-import pl.wj.lotto.domain.common.numberstemplate.NumberTemplateCreator;
-import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
@@ -34,7 +35,7 @@ public class TicketService {
             ticket.setUserId("");
         }
         TicketResponseDto ticketResponseDto = TicketMapper.toTicketResponseDto(ticket);
-        LocalDateTime nextDrawTime = drawServicePort.getNextDrawTime(ticket.getNumbers());
+        LocalDateTime nextDrawTime = drawServicePort.getNextDrawTime(ticket.getNumbers().drawTime());
         return ticketResponseDto.withNextDrawTime(nextDrawTime);
     }
 
@@ -44,14 +45,22 @@ public class TicketService {
         return TicketMapper.toTicketResponseDtos(tickets);
     }
 
-    private NumbersTemplate generateNumbers(GameType gameType) {
-        NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByGameType(gameType);
+    private Numbers generateNumbers(GameType gameType) {
         List<Integer> mainNumbers = numbersGeneratorPort.generate(1,1,1);
         List<Integer> extraNumbers = null;
         if (gameType == GameType.EJP) {
             extraNumbers = numbersGeneratorPort.generate(1,1,1);
         }
-        numbers.setNumbers(mainNumbers, extraNumbers);
-        return numbers;
+        NumbersValidator numbersValidator = new NumbersValidator();
+        if (!numbersValidator.validate(gameType, mainNumbers, extraNumbers)) {
+            throw new RuntimeException("Generated numbers are invalid");
+        }
+
+        return Numbers.builder()
+                .gameType(gameType)
+                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .mainNumbers(mainNumbers)
+                .extraNumbers(extraNumbers)
+                .build();
     }
 }
