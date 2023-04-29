@@ -1,6 +1,7 @@
 package pl.wj.lotto.domain.common.numberstemplate.model;
 
 import pl.wj.lotto.domain.common.drawingtype.DrawingTime;
+import pl.wj.lotto.domain.common.numberstemplate.DrawingTimeCheckable;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersValidatable;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate {
+public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate, DrawingTimeCheckable {
     private static final int MAIN_NUMBERS_AMOUNT = 5;
     private static final int MAIN_NUMBERS_MIN_VALUE = 1;
     private static final int MAIN_NUMBERS_MAX_VALUE = 50;
@@ -81,7 +82,7 @@ public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate {
     }
 
     @Override
-    public DrawingTime getDrawingTime() {
+    public DrawingTime getNextDrawingTime() {
         return DRAWING_TIME;
     }
 }
