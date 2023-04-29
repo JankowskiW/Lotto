@@ -1,10 +1,14 @@
 package pl.wj.lotto.domain.common.numberstemplate.model;
 
+import pl.wj.lotto.domain.common.drawingtype.DrawingTime;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersValidatable;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate {
     private static final int MAIN_NUMBERS_AMOUNT = 5;
@@ -13,9 +17,22 @@ public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate {
     private static final int EXTRA_NUMBERS_AMOUNT = 2;
     private static final int EXTRA_NUMBERS_MIN_VALUE = 1;
     private static final int EXTRA_NUMBERS_MAX_VALUE = 12;
+    private static final DrawingTime DRAWING_TIME;
 
     private List<Integer> mainNumbers = new ArrayList<>();
     private List<Integer> extraNumbers = new ArrayList<>();
+
+    static {
+        LocalTime time = LocalTime.of(21, 0);
+        DRAWING_TIME = DrawingTime.builder()
+                .timeInterval(0)
+                .timeIntervalUnit(TimeUnit.DAYS)
+                .fromTime(time)
+                .toTime(time)
+                .daysOfWeek(List.of(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY))
+                .build();
+    }
+
 
     @Override
     public boolean validate() {
@@ -61,5 +78,10 @@ public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate {
     @Override
     public List<Integer> getExtraNumbers() {
         return extraNumbers;
+    }
+
+    @Override
+    public DrawingTime getDrawingTime() {
+        return DRAWING_TIME;
     }
 }

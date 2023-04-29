@@ -1,17 +1,34 @@
 package pl.wj.lotto.domain.common.numberstemplate.model;
 
+import pl.wj.lotto.domain.common.drawingtype.DrawingTime;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersValidatable;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Quick600Numbers implements NumbersValidatable, NumbersTemplate {
     private static final int MAIN_NUMBERS_AMOUNT = 6;
     private static final int MAIN_NUMBERS_MIN_VALUE = 1;
     private static final int MAIN_NUMBERS_MAX_VALUE = 32;
+    private static final DrawingTime DRAWING_TIME;
 
     private List<Integer> mainNumbers = new ArrayList<>();
+
+    static {
+        List<DayOfWeek> daysOfWeek = Arrays.stream(DayOfWeek.values()).toList();
+        DRAWING_TIME = DrawingTime.builder()
+                .timeInterval(4)
+                .timeIntervalUnit(TimeUnit.MINUTES)
+                .fromTime(LocalTime.of(6,2))
+                .toTime(LocalTime.of(23,52))
+                .daysOfWeek(daysOfWeek)
+                .build();
+    }
 
     @Override
     public boolean validate() {
@@ -39,5 +56,10 @@ public class Quick600Numbers implements NumbersValidatable, NumbersTemplate {
     @Override
     public List<Integer> getMainNumbers() {
         return mainNumbers;
+    }
+
+    @Override
+    public DrawingTime getDrawingTime() {
+        return DRAWING_TIME;
     }
 }
