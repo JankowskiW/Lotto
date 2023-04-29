@@ -3,6 +3,7 @@ package pl.wj.lotto.domain.drawing.service;
 import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.common.drawingtype.DrawingTypeExtractor;
+import pl.wj.lotto.domain.common.numberstemplate.DrawingTimeCheckable;
 import pl.wj.lotto.domain.drawing.mapper.DrawingMapper;
 import pl.wj.lotto.domain.drawing.model.Drawing;
 import pl.wj.lotto.domain.drawing.model.dto.DrawingRequestDto;
@@ -34,13 +35,7 @@ public class DrawingService {
         return DrawingMapper.toDrawingResponseDto(drawing);
     }
 
-    public LocalDateTime getNextDrawingTime(DrawingType type) {
-        switch(type) {
-            case LOTTO -> LocalDateTime.now();
-            case Q600 -> LocalDateTime.now();
-            case EJP -> LocalDateTime.now();
-            case KENO -> LocalDateTime.now();
-        }
-        return null;
+    public LocalDateTime getNextDrawingTime(DrawingTimeCheckable drawingTimeCheckable) {
+        return drawingTimeCheckable.getNextDrawingTime();
     }
 }
