@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.drawingtype.DrawingType;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
+import pl.wj.lotto.domain.common.numberstemplate.DrawingTimeCheckable;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.model.LottoNumbers;
 import pl.wj.lotto.domain.drawing.port.in.DrawingServicePort;
@@ -71,7 +72,7 @@ class TicketServiceTest {
                     t.setGenerationTime(generationTime);
                     return t;
                 });
-        given(drawingServicePort.getNextDrawingTime(any(DrawingType.class))).willReturn(nextDrawingTime);
+        given(drawingServicePort.getNextDrawingTime(any(DrawingTimeCheckable.class))).willReturn(nextDrawingTime);
 
         // when
         TicketResponseDto result = ticketService.addTicket(ticketRequestDto);
@@ -81,6 +82,5 @@ class TicketServiceTest {
                 .usingRecursiveComparison()
                 .isEqualTo(expectedResult);
     }
-
 
 }

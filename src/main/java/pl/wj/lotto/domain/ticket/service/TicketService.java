@@ -13,6 +13,7 @@ import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,7 +34,8 @@ public class TicketService {
             ticket.setUserId("");
         }
         TicketResponseDto ticketResponseDto = TicketMapper.toTicketResponseDto(ticket);
-        return ticketResponseDto.withNextDrawingTime(drawingServicePort.getNextDrawingTime(ticket.getDrawingType()));
+        LocalDateTime nextDrawingTime = drawingServicePort.getNextDrawingTime(ticket.getNumbers());
+        return ticketResponseDto.withNextDrawingTime(nextDrawingTime);
     }
 
     public List<TicketResponseDto> getTicketsByUserId(String userId) {
