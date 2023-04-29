@@ -13,10 +13,10 @@ import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
-import pl.wj.lotto.infrastructure.notification.inmemory.email.EmailNotificationInMemoryAdapter;
-import pl.wj.lotto.infrastructure.numbergenerator.inmemory.NumbersGeneratorInMemoryAdapter;
-import pl.wj.lotto.infrastructure.persistence.inmemory.draw.DrawInMemoryAdapter;
-import pl.wj.lotto.infrastructure.persistence.inmemory.ticket.TicketInMemoryAdapter;
+import pl.wj.lotto.infrastructure.notification.fake.email.EmailNotificationFakeAdapter;
+import pl.wj.lotto.infrastructure.numbergenerator.fake.NumbersGeneratorFakeAdapter;
+import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
+import pl.wj.lotto.infrastructure.persistence.fake.ticket.TicketFakeAdapter;
 
 import java.util.List;
 
@@ -32,10 +32,10 @@ class TicketServiceAdapterComponentTest {
 
     @BeforeEach
     void setUp() {
-        notificationPort = new EmailNotificationInMemoryAdapter();
-        ticketRepositoryPort = new TicketInMemoryAdapter();
-        numbersGeneratorPort = new NumbersGeneratorInMemoryAdapter();
-        DrawService drawService = new DrawService(new DrawInMemoryAdapter());
+        notificationPort = new EmailNotificationFakeAdapter();
+        ticketRepositoryPort = new TicketFakeAdapter();
+        numbersGeneratorPort = new NumbersGeneratorFakeAdapter();
+        DrawService drawService = new DrawService(new DrawFakeAdapter());
         drawServicePort = new DrawServiceAdapter(drawService);
         TicketService ticketService = new TicketService(
                 ticketRepositoryPort, notificationPort, numbersGeneratorPort, drawServicePort);

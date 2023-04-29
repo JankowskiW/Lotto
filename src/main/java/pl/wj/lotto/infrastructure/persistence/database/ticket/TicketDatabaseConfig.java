@@ -7,7 +7,7 @@ import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.infrastructure.persistence.database.ticket.repository.TicketRepository;
 
 @Configuration
-@Profile("!in-memory")
+@Profile("!fake")
 public class TicketDatabaseConfig {
     @Bean
     public TicketRepositoryPort ticketRepositoryPort(TicketRepository ticketRepository) {

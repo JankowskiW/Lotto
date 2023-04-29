@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.notification.inmemory.email;
+package pl.wj.lotto.infrastructure.notification.fake.sms;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Profile;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
 
 @Configuration
-@Profile("in-memory")
-public class EmailNotificationConfig {
+@Profile("fake")
+public class SMSNotificationFakeConfig {
     @Bean
-    public NotificationPort emailNotificationPort() {
-        return new EmailNotificationInMemoryAdapter();
+    public NotificationPort smsNotificationPort() {
+        return new SMSNotificationFakeAdapter();
     }
 }

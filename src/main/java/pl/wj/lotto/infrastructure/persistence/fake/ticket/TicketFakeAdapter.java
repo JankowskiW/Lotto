@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.persistence.inmemory.ticket;
+package pl.wj.lotto.infrastructure.persistence.fake.ticket;
 
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TicketInMemoryAdapter implements TicketRepositoryPort {
+public class TicketFakeAdapter implements TicketRepositoryPort {
     private final Map<String, Ticket> ticketsTable = new ConcurrentHashMap<>();
     @Override
     public Ticket save(Ticket ticket) {

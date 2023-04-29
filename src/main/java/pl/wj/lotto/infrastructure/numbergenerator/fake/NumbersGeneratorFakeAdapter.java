@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.numbergenerator.inmemory;
+package pl.wj.lotto.infrastructure.numbergenerator.fake;
 
 import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class NumbersGeneratorInMemoryAdapter implements NumbersGeneratorPort {
+public class NumbersGeneratorFakeAdapter implements NumbersGeneratorPort {
     @Override
     public List<Integer> generate(int lowerBound, int upperBound, int amount) {
         List<Integer> numbers = new ArrayList<>();

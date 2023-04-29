@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.persistence.inmemory.ticket;
+package pl.wj.lotto.infrastructure.persistence.fake.ticket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Profile;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 
 @Configuration
-@Profile("in-memory")
-public class TicketInMemoryConfig {
+@Profile("fake")
+public class TicketFakeConfig {
     @Bean
     public TicketRepositoryPort ticketRepositoryPort() {
-        return new TicketInMemoryAdapter();
+        return new TicketFakeAdapter();
     }
 }

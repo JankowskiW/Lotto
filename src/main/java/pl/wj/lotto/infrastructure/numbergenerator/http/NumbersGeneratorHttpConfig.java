@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
 
 @Configuration
-@Profile("!in-memory")
+@Profile("!fake")
 public class NumbersGeneratorHttpConfig {
     @Bean
     public NumbersGeneratorPort numberGeneratorPort() {

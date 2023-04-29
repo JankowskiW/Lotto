@@ -7,7 +7,7 @@ import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.infrastructure.persistence.database.draw.repository.DrawRepository;
 
 @Configuration
-@Profile("!in-memory")
+@Profile("!fake")
 public class DrawDatabaseConfig {
     @Bean
     public DrawRepositoryPort drawRepositoryPort(DrawRepository drawRepository) {

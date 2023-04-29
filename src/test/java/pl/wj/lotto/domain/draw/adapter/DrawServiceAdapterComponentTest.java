@@ -10,7 +10,7 @@ import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.draw.service.DrawService;
-import pl.wj.lotto.infrastructure.persistence.inmemory.draw.DrawInMemoryAdapter;
+import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -25,7 +25,7 @@ class DrawServiceAdapterComponentTest {
 
     @BeforeEach
     void setUp() {
-        drawRepositoryPort = new DrawInMemoryAdapter();
+        drawRepositoryPort = new DrawFakeAdapter();
         drawServiceAdapter = new DrawServiceAdapter(new DrawService(drawRepositoryPort));
     }
 

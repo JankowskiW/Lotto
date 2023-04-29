@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.persistence.inmemory.draw;
+package pl.wj.lotto.infrastructure.persistence.fake.draw;
 
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.model.Draw;
@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class DrawInMemoryAdapter implements DrawRepositoryPort {
+public class DrawFakeAdapter implements DrawRepositoryPort {
     private final Map<String, Draw> drawsTable = new ConcurrentHashMap<>();
     public List<Draw> findAllByType(GameType type) {
         return drawsTable.values().stream().filter(d -> d.getType().equals(type)).collect(Collectors.toList());
