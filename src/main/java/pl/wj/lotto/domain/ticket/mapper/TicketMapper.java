@@ -1,7 +1,7 @@
 package pl.wj.lotto.domain.ticket.mapper;
 
-import pl.wj.lotto.domain.common.drawingtype.DrawingType;
-import pl.wj.lotto.domain.common.drawingtype.DrawingTypeExtractor;
+import pl.wj.lotto.domain.common.gametype.GameType;
+import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
 import pl.wj.lotto.domain.common.numberstemplate.NumberTemplateCreator;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.ticket.model.Ticket;
@@ -13,16 +13,16 @@ import java.util.List;
 
 public class TicketMapper {
     public static Ticket toTicket(TicketRequestDto ticketRequestDto) {
-        DrawingType drawingType = DrawingTypeExtractor.getDrawingTypeById(ticketRequestDto.drawingTypeId());
-        NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByDrawingType(drawingType);
+        GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
+        NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByGameType(gameType);
         if (ticketRequestDto.mainNumbers() != null)
             numbers.setNumbers(ticketRequestDto.mainNumbers(), ticketRequestDto.extraNumbers());
 
         return Ticket.builder()
                 .id(ticketRequestDto.id())
                 .userId(ticketRequestDto.userId())
-                .drawingType(drawingType)
-                .numberOfDrawings(ticketRequestDto.numberOfDrawings())
+                .gameType(gameType)
+                .numberOfDraws(ticketRequestDto.numberOfDraws())
                 .numbers(numbers)
                 .generationTime(null)
                 .build();
@@ -36,26 +36,26 @@ public class TicketMapper {
         return TicketResponseDto.builder()
                 .id(ticket.getId())
                 .userId(ticket.getUserId())
-                .drawingTypeName(ticket.getDrawingType().getName())
-                .numberOfDrawings(ticket.getNumberOfDrawings())
+                .gameTypeName(ticket.getGameType().getName())
+                .numberOfDraws(ticket.getNumberOfDraws())
                 .numbers(ticket.getNumbers())
                 .generationTime(ticket.getGenerationTime())
-                .nextDrawingTime(null)
+                .nextDrawTime(null)
                 .build();
     }
 
     public static TicketResponseDto toTicketResponseDto(TicketRequestDto ticketRequestDto) {
-        DrawingType drawingType = DrawingTypeExtractor.getDrawingTypeById(ticketRequestDto.drawingTypeId());
-        NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByDrawingType(drawingType);
+        GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
+        NumbersTemplate numbers = NumberTemplateCreator.createNumbersTemplateByGameType(gameType);
         numbers.setNumbers(ticketRequestDto.mainNumbers(), ticketRequestDto.extraNumbers());
         return TicketResponseDto.builder()
                 .id(null)
                 .userId(ticketRequestDto.userId())
-                .drawingTypeName(drawingType.getName())
-                .numberOfDrawings(ticketRequestDto.numberOfDrawings())
+                .gameTypeName(gameType.getName())
+                .numberOfDraws(ticketRequestDto.numberOfDraws())
                 .numbers(numbers)
                 .generationTime(null)
-                .nextDrawingTime(null)
+                .nextDrawTime(null)
                 .build();
     }
 
@@ -63,8 +63,8 @@ public class TicketMapper {
         return TicketEntity.builder()
                 .id(ticket.getId())
                 .userId(ticket.getUserId())
-                .drawingType(ticket.getDrawingType())
-                .numberOfDrawings(ticket.getNumberOfDrawings())
+                .gameType(ticket.getGameType())
+                .numberOfDraws(ticket.getNumberOfDraws())
                 .numbers(ticket.getNumbers())
                 .generationTime(ticket.getGenerationTime())
                 .build();
@@ -78,8 +78,8 @@ public class TicketMapper {
         return Ticket.builder()
                 .id(ticketEntity.getId())
                 .userId(ticketEntity.getUserId())
-                .drawingType(ticketEntity.getDrawingType())
-                .numberOfDrawings(ticketEntity.getNumberOfDrawings())
+                .gameType(ticketEntity.getGameType())
+                .numberOfDraws(ticketEntity.getNumberOfDraws())
                 .numbers(ticketEntity.getNumbers())
                 .generationTime(ticketEntity.getGenerationTime())
                 .build();

@@ -1,6 +1,6 @@
 package pl.wj.lotto.domain.common.numberstemplate.model;
 
-import pl.wj.lotto.domain.common.drawingtype.DrawingTime;
+import pl.wj.lotto.domain.common.drawtime.model.DrawTime;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersValidatable;
 
@@ -17,13 +17,13 @@ public class KenoNumbers implements NumbersValidatable, NumbersTemplate {
     private static final int MAIN_MAX_NUMBERS_AMOUNT = 10;
     private static final int MAIN_NUMBERS_MIN_VALUE = 1;
     private static final int MAIN_NUMBERS_MAX_VALUE = 70;
-    private static final DrawingTime DRAWING_TIME;
+    private static final DrawTime DRAW_TIME;
 
     private List<Integer> mainNumbers = new ArrayList<>();
 
     static {
         List<DayOfWeek> daysOfWeek = Arrays.stream(DayOfWeek.values()).toList();
-        DRAWING_TIME = DrawingTime.builder()
+        DRAW_TIME = DrawTime.builder()
                 .timeInterval(4)
                 .timeIntervalUnit(TimeUnit.MINUTES)
                 .fromTime(LocalTime.of(6, 30))
@@ -61,7 +61,7 @@ public class KenoNumbers implements NumbersValidatable, NumbersTemplate {
     }
 
     @Override
-    public LocalDateTime getNextDrawingTime() {
-        return getNextDrawingTime(DRAWING_TIME);
+    public LocalDateTime getNextDrawTime() {
+        return getNextDrawTime(DRAW_TIME);
     }
 }

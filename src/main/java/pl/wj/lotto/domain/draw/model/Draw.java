@@ -1,5 +1,6 @@
-package pl.wj.lotto.domain.ticket.model;
+package pl.wj.lotto.domain.draw.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,14 +9,13 @@ import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
+@Setter
 @Builder
-public class Ticket {
+@AllArgsConstructor
+public class Draw {
     String id;
-    String userId;
-    GameType gameType;
-    int numberOfDraws;
+    GameType type;
     NumbersTemplate numbers;
-    LocalDateTime generationTime;
+    LocalDateTime drawTime;
 }

@@ -1,6 +1,6 @@
 package pl.wj.lotto.domain.common.numberstemplate.model;
 
-import pl.wj.lotto.domain.common.drawingtype.DrawingTime;
+import pl.wj.lotto.domain.common.drawtime.model.DrawTime;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersValidatable;
 
@@ -18,14 +18,14 @@ public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate {
     private static final int EXTRA_NUMBERS_AMOUNT = 2;
     private static final int EXTRA_NUMBERS_MIN_VALUE = 1;
     private static final int EXTRA_NUMBERS_MAX_VALUE = 12;
-    private static final DrawingTime DRAWING_TIME;
+    private static final DrawTime DRAW_TIME;
 
     private List<Integer> mainNumbers = new ArrayList<>();
     private List<Integer> extraNumbers = new ArrayList<>();
 
     static {
         LocalTime time = LocalTime.of(21, 0);
-        DRAWING_TIME = DrawingTime.builder()
+        DRAW_TIME = DrawTime.builder()
                 .timeInterval(0)
                 .timeIntervalUnit(TimeUnit.DAYS)
                 .fromTime(time)
@@ -83,7 +83,7 @@ public class EuroJackpotNumbers implements NumbersValidatable, NumbersTemplate {
 
 
     @Override
-    public LocalDateTime getNextDrawingTime() {
-        return getNextDrawingTime(DRAWING_TIME);
+    public LocalDateTime getNextDrawTime() {
+        return getNextDrawTime(DRAW_TIME);
     }
 }

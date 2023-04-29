@@ -1,6 +1,6 @@
 package pl.wj.lotto.domain.common.numberstemplate.model;
 
-import pl.wj.lotto.domain.common.drawingtype.DrawingTime;
+import pl.wj.lotto.domain.common.drawtime.model.DrawTime;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersTemplate;
 import pl.wj.lotto.domain.common.numberstemplate.NumbersValidatable;
 
@@ -15,13 +15,13 @@ public class LottoNumbers implements NumbersValidatable, NumbersTemplate {
     private static final int MAIN_NUMBERS_AMOUNT = 6;
     private static final int MAIN_NUMBERS_MIN_VALUE = 1;
     private static final int MAIN_NUMBERS_MAX_VALUE = 49;
-    private static final DrawingTime DRAWING_TIME;
+    private static final DrawTime DRAW_TIME;
 
     private List<Integer> mainNumbers = new ArrayList<>();
 
     static {
         LocalTime time = LocalTime.of(22, 0);
-        DRAWING_TIME = DrawingTime.builder()
+        DRAW_TIME = DrawTime.builder()
                 .timeInterval(0)
                 .timeIntervalUnit(TimeUnit.DAYS)
                 .fromTime(time)
@@ -59,7 +59,7 @@ public class LottoNumbers implements NumbersValidatable, NumbersTemplate {
     }
 
     @Override
-    public LocalDateTime getNextDrawingTime() {
-        return getNextDrawingTime(DRAWING_TIME);
+    public LocalDateTime getNextDrawTime() {
+        return getNextDrawTime(DRAW_TIME);
     }
 }

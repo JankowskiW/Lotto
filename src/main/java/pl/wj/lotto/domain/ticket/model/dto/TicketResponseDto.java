@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 public record TicketResponseDto(
         String id,
         String userId,
-        String drawingTypeName,
-        int numberOfDrawings,
+        String gameTypeName,
+        int numberOfDraws,
         NumbersTemplate numbers,
-        LocalDateTime nextDrawingTime,
+        LocalDateTime nextDrawTime,
         LocalDateTime generationTime
         ) {
 }
