@@ -2,18 +2,16 @@ package pl.wj.lotto.domain.draw.adapter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.wj.lotto.domain.common.drawdatetime.DrawDateTimeChecker;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
+import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.draw.service.DrawService;
-import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 
-import java.time.Clock;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,18 +19,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class DrawServiceAdapterComponentTest {
-    private Clock clock;
-    private DrawDateTimeChecker drawDateTimeChecker;
     private DrawRepositoryPort drawRepositoryPort;
-    private DrawServiceAdapter drawServiceAdapter;
+    private DrawServicePort drawServicePort;
 
 
     @BeforeEach
     void setUp() {
-        clock = new ClockFakeConfig().clock();
-        drawDateTimeChecker = new DrawDateTimeChecker(clock);
         drawRepositoryPort = new DrawFakeAdapter();
-        drawServiceAdapter = new DrawServiceAdapter(new DrawService(drawRepositoryPort, drawDateTimeChecker));
+        drawServicePort = new DrawServiceAdapter(new DrawService(drawRepositoryPort));
     }
 
     @Test
@@ -67,7 +61,7 @@ class DrawServiceAdapterComponentTest {
                         .toList();
 
         // when
-        List<DrawResponseDto> result = drawServiceAdapter.getDrawsByTypeId(gameType.getId());
+        List<DrawResponseDto> result = drawServicePort.getDrawsByTypeId(gameType.getId());
 
         // then
         assertAll(

@@ -2,13 +2,13 @@ package pl.wj.lotto.domain.common.drawdatetime;
 
 import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTime;
+import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 
 import java.time.*;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
-public class DrawDateTimeChecker {
-
+public class DrawDateTimeChecker implements DrawDateTimeCheckerPort {
     private final Clock clock;
 
     public LocalDateTime getNextDrawDateTime(DrawDateTime drawDateTime) {

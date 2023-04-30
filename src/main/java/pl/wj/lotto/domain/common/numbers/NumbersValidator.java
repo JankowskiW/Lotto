@@ -3,17 +3,18 @@ package pl.wj.lotto.domain.common.numbers;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettings;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
+import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
 
 import java.util.List;
 
-public class NumbersValidator {
+public class NumbersValidator implements NumbersValidatorPort {
 
-    public boolean validate(GameType gameType, List<Integer> mainNumbers, List<Integer> extraNumbers) {
-        return switch(gameType) {
-            case LOTTO -> validateLotto(mainNumbers);
-            case Q600 -> validateQuick600(mainNumbers);
-            case EJP -> validateEurojackpot(mainNumbers, extraNumbers);
-            case KENO -> validateKeno(mainNumbers);
+    public boolean validate(Numbers numbers) {
+        return switch(numbers.gameType()) {
+            case LOTTO -> validateLotto(numbers.mainNumbers());
+            case Q600 -> validateQuick600(numbers.mainNumbers());
+            case EJP -> validateEurojackpot(numbers.mainNumbers(), numbers.extraNumbers());
+            case KENO -> validateKeno(numbers.mainNumbers());
         };
     }
 

@@ -1,14 +1,14 @@
-package pl.wj.lotto.infrastructure.numbergenerator.fake;
+package pl.wj.lotto.infrastructure.numbersreceiver.fake;
 
-import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
+import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class NumbersGeneratorFakeAdapter implements NumbersGeneratorPort {
+public class NumbersReceiverFakeAdapter implements NumbersReceiverPort {
     @Override
-    public List<Integer> generate(int lowerBound, int upperBound, int amount) {
+    public List<Integer> receive(int lowerBound, int upperBound, int amount) {
         List<Integer> numbers = new ArrayList<>();
         for (int i = 1; i <= amount; i++) {
             numbers.add(next(lowerBound, upperBound));

@@ -2,6 +2,7 @@ package pl.wj.lotto.domain.common.drawdatetime;
 
 import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTime;
+import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 
 import java.time.*;
@@ -13,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DrawDateTimeCheckerTest {
     private final Clock clock = new ClockFakeConfig().clock();
+    private final DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
 
 
     @Test
@@ -30,11 +32,10 @@ class DrawDateTimeCheckerTest {
                 .toTime(currentTime.plusHours(1))
                 .daysOfWeek(daysOfWeek)
                 .build();
-        DrawDateTimeChecker drawDateTimeChecker = new DrawDateTimeChecker(clock);
         LocalDateTime expectedResult = LocalDateTime.of(currentDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeChecker.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
 
         // then
         assertThat(result)
@@ -57,11 +58,10 @@ class DrawDateTimeCheckerTest {
                 .toTime(currentTime)
                 .daysOfWeek(List.of(dayOfWeek))
                 .build();
-        DrawDateTimeChecker drawDateTimeChecker = new DrawDateTimeChecker(clock);
         LocalDateTime expectedResult = LocalDateTime.of(nextDrawDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeChecker.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
 
         // then
         assertThat(result)
@@ -84,11 +84,10 @@ class DrawDateTimeCheckerTest {
                 .toTime(currentTime.minusHours(1))
                 .daysOfWeek(List.of(dayOfWeek))
                 .build();
-        DrawDateTimeChecker drawDateTimeChecker = new DrawDateTimeChecker(clock);
         LocalDateTime expectedResult = LocalDateTime.of(nextDrawDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeChecker.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
 
         // then
         assertThat(result)
@@ -111,11 +110,10 @@ class DrawDateTimeCheckerTest {
                 .toTime(currentTime)
                 .daysOfWeek(List.of(dayOfWeek, dayOfWeek.plus(1)))
                 .build();
-        DrawDateTimeChecker drawDateTimeChecker = new DrawDateTimeChecker(clock);
         LocalDateTime expectedResult = LocalDateTime.of(nextDrawDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeChecker.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
 
         // then
         assertThat(result)
@@ -132,17 +130,16 @@ class DrawDateTimeCheckerTest {
         LocalTime nextDrawTime = currentTime.minusHours(1);
         LocalDate nextDrawDate = currentDate.plusDays(6);
         DrawDateTime drawDateTime = DrawDateTime.builder()
-                .timeInterval(10)
-                .timeIntervalUnit(TimeUnit.MINUTES)
+                .timeInterval(1)
+                .timeIntervalUnit(TimeUnit.HOURS)
                 .fromTime(currentTime.minusHours(1))
                 .toTime(currentTime)
                 .daysOfWeek(List.of(dayOfWeek.minus(1), dayOfWeek))
                 .build();
-        DrawDateTimeChecker drawDateTimeChecker = new DrawDateTimeChecker(clock);
         LocalDateTime expectedResult = LocalDateTime.of(nextDrawDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeChecker.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
 
         // then
         assertThat(result)
