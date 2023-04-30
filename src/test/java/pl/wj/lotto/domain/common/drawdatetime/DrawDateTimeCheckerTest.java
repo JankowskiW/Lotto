@@ -1,5 +1,6 @@
 package pl.wj.lotto.domain.common.drawdatetime;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTime;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
@@ -13,8 +14,14 @@ import java.util.concurrent.TimeUnit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DrawDateTimeCheckerTest {
-    private final Clock clock = new ClockFakeConfig().clock();
-    private final DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
+    private Clock clock;
+    private DrawDateTimeCheckerPort drawDateTimeCheckerPort;
+
+    @BeforeEach
+    void setUp() {
+        clock = new ClockFakeConfig().clock();
+        drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
+    }
 
 
     @Test
