@@ -31,7 +31,7 @@ public class TicketService {
 
         NumbersValidator numbersValidator = new NumbersValidator();
         if (!numbersValidator.validate(ticket.getGameType(), ticket.getNumbers().mainNumbers(), ticket.getNumbers().extraNumbers())) {
-            throw new RuntimeException("Generated numbers are invalid");
+            throw new RuntimeException("Given numbers are invalid");
         }
 
         ticket = ticketRepositoryPort.save(ticket);
