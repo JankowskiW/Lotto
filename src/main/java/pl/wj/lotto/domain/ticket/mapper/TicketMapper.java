@@ -16,7 +16,7 @@ public class TicketMapper {
         GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
                 .mainNumbers(ticketRequestDto.mainNumbers())
                 .extraNumbers(ticketRequestDto.extraNumbers())
                 .build();
@@ -43,7 +43,7 @@ public class TicketMapper {
                 .numberOfDraws(ticket.getNumberOfDraws())
                 .numbers(ticket.getNumbers())
                 .generationTime(ticket.getGenerationTime())
-                .nextDrawTime(null)
+                .nextDrawDateTime(null)
                 .build();
     }
 
@@ -51,7 +51,7 @@ public class TicketMapper {
         GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
                 .mainNumbers(ticketRequestDto.mainNumbers())
                 .extraNumbers(ticketRequestDto.extraNumbers())
                 .build();
@@ -62,7 +62,7 @@ public class TicketMapper {
                 .numberOfDraws(ticketRequestDto.numberOfDraws())
                 .numbers(numbers)
                 .generationTime(null)
-                .nextDrawTime(null)
+                .nextDrawDateTime(null)
                 .build();
     }
 

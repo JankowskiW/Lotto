@@ -17,5 +17,5 @@ public class Draw {
     String id;
     GameType type;
     Numbers numbers;
-    LocalDateTime drawTime;
+    LocalDateTime drawDateTime;
 }

@@ -17,5 +17,5 @@ public class DrawEntity {
     String id;
     GameType type;
     Numbers numbers;
-    LocalDateTime drawTime;
+    LocalDateTime drawDateTime;
 }

@@ -14,7 +14,7 @@ public record TicketResponseDto(
         String gameTypeName,
         int numberOfDraws,
         Numbers numbers,
-        LocalDateTime nextDrawTime,
+        LocalDateTime nextDrawDateTime,
         LocalDateTime generationTime
         ) {
 }

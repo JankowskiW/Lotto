@@ -69,7 +69,7 @@ class DrawServiceTest {
     void shouldAddDraw() {
         // given
         String id = UUID.randomUUID().toString();
-        LocalDateTime drawTime = LocalDateTime.now();
+        LocalDateTime drawDateTime = LocalDateTime.now();
         GameType gameType = GameType.EJP;
         DrawRequestDto drawRequestDto = DrawRequestDto.builder()
                 .typeId(gameType.getId())
@@ -78,14 +78,14 @@ class DrawServiceTest {
                 .build();
         Draw draw = DrawMapper.toDraw(drawRequestDto);
         draw.setId(id);
-        draw.setDrawTime(drawTime);
+        draw.setDrawDateTime(drawDateTime);
         DrawResponseDto expectedResult = DrawMapper.toDrawResponseDto(draw);
         given(drawRepositoryPort.save(any(Draw.class)))
                 .willAnswer(
                         i -> {
                             Draw d = i.getArgument(0, Draw.class);
                             d.setId(id);
-                            d.setDrawTime(drawTime);
+                            d.setDrawDateTime(drawDateTime);
                             return d;
                         }
                 );
@@ -103,18 +103,18 @@ class DrawServiceTest {
     void shouldReturnDrawByIdWhenExistsInDatabase() {
         // given
         String id = UUID.randomUUID().toString();
-        LocalDateTime drawTime = LocalDateTime.now();
+        LocalDateTime drawDateTime = LocalDateTime.now();
         GameType gameType = GameType.LOTTO;
         Numbers numbers = Numbers.builder()
                 .gameType(GameType.LOTTO)
-                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
         Draw draw = Draw.builder()
                 .id(id)
                 .type(GameType.LOTTO)
                 .numbers(numbers)
-                .drawTime(drawTime)
+                .drawDateTime(drawDateTime)
                 .build();
         DrawResponseDto expectedResult = DrawMapper.toDrawResponseDto(draw);
         given(drawRepositoryPort.findById(anyString())).willReturn(Optional.of(draw));

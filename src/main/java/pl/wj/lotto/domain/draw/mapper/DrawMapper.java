@@ -22,7 +22,7 @@ public class DrawMapper {
                 .id(draw.getId())
                 .typeName(draw.getType().getName())
                 .numbers(draw.getNumbers())
-                .drawTime(draw.getDrawTime())
+                .drawDateTime(draw.getDrawDateTime())
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class DrawMapper {
         GameType gameType = GameTypeExtractor.getGameTypeById(drawRequestDto.typeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
                 .mainNumbers(drawRequestDto.mainNumbers())
                 .extraNumbers(drawRequestDto.extraNumbers())
                 .build();
@@ -49,7 +49,7 @@ public class DrawMapper {
                 .id(drawEntity.getId())
                 .type(drawEntity.getType())
                 .numbers(drawEntity.getNumbers())
-                .drawTime(drawEntity.getDrawTime())
+                .drawDateTime(drawEntity.getDrawDateTime())
                 .build();
     }
 
@@ -58,7 +58,7 @@ public class DrawMapper {
                 .id(draw.getId())
                 .type(draw.getType())
                 .numbers(draw.getNumbers())
-                .drawTime(draw.getDrawTime())
+                .drawDateTime(draw.getDrawDateTime())
                 .build();
     }
 }

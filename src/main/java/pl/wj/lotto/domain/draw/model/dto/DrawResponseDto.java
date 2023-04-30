@@ -10,5 +10,5 @@ public record DrawResponseDto(
     String id,
     String typeName,
     Numbers numbers,
-    LocalDateTime drawTime) {
+    LocalDateTime drawDateTime) {
 }

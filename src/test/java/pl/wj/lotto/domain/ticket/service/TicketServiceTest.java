@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.wj.lotto.domain.common.drawtime.model.DrawTime;
+import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTime;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
@@ -43,7 +43,7 @@ class TicketServiceTest {
         // given
         GameType gameType = GameType.LOTTO;
         LocalDateTime generationTime = LocalDateTime.now();
-        LocalDateTime nextDrawTime = LocalDateTime.now().plusDays(1);
+        LocalDateTime nextDrawDateTime = LocalDateTime.now().plusDays(1);
         String userId = "some-user-id";
         String id = "some-id";
         TicketRequestDto ticketRequestDto = TicketRequestDto.builder()
@@ -55,7 +55,7 @@ class TicketServiceTest {
         List<Integer> mainNumbers = List.of(1,2,3,4,5,6);
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
                 .mainNumbers(mainNumbers)
                 .build();
         TicketResponseDto expectedResult = TicketResponseDto.builder()
@@ -65,7 +65,7 @@ class TicketServiceTest {
                 .numberOfDraws(1)
                 .numbers(numbers)
                 .generationTime(generationTime)
-                .nextDrawTime(nextDrawTime)
+                .nextDrawDateTime(nextDrawDateTime)
                 .build();
         given(numbersGeneratorPort.generate(anyInt(), anyInt(), anyInt())).willReturn(mainNumbers);
         given(ticketRepositoryPort.save(any(Ticket.class))).willAnswer(
@@ -75,7 +75,7 @@ class TicketServiceTest {
                     t.setGenerationTime(generationTime);
                     return t;
                 });
-        given(drawServicePort.getNextDrawTime(any(DrawTime.class))).willReturn(nextDrawTime);
+        given(drawServicePort.getNextDrawDateTime(any(DrawDateTime.class))).willReturn(nextDrawDateTime);
 
         // when
         TicketResponseDto result = ticketService.addTicket(ticketRequestDto);

@@ -1,8 +1,8 @@
 package pl.wj.lotto.domain.draw.service;
 
 import lombok.RequiredArgsConstructor;
-import pl.wj.lotto.domain.common.drawtime.DrawTimeChecker;
-import pl.wj.lotto.domain.common.drawtime.model.DrawTime;
+import pl.wj.lotto.domain.common.drawdatetime.DrawDateTimeChecker;
+import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTime;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DrawService {
     private final DrawRepositoryPort drawRepositoryPort;
-    private final DrawTimeChecker drawTimeChecker;
+    private final DrawDateTimeChecker drawDateTimeChecker;
 
 
     public List<DrawResponseDto> getDrawsByTypeId(int gameTypeId) {
@@ -37,7 +37,7 @@ public class DrawService {
         return DrawMapper.toDrawResponseDto(draw);
     }
 
-    public LocalDateTime getNextDrawTime(DrawTime drawTime) {
-        return drawTimeChecker.getNextDrawTime(drawTime);
+    public LocalDateTime getNextDrawDateTime(DrawDateTime drawDateTime) {
+        return drawDateTimeChecker.getNextDrawDateTime(drawDateTime);
     }
 }

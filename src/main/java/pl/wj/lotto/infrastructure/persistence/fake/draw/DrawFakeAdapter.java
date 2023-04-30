@@ -22,7 +22,7 @@ public class DrawFakeAdapter implements DrawRepositoryPort {
     public Draw save(Draw draw) {
         String id = draw.getId() == null ? UUID.randomUUID().toString() : draw.getId();
         draw.setId(id);
-        draw.setDrawTime(LocalDateTime.now());
+        draw.setDrawDateTime(LocalDateTime.now());
         drawsTable.put(id, draw);
         return draw;
     }

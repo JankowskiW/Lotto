@@ -2,7 +2,7 @@ package pl.wj.lotto.domain.draw.adapter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.wj.lotto.domain.common.drawtime.DrawTimeChecker;
+import pl.wj.lotto.domain.common.drawdatetime.DrawDateTimeChecker;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.Numbers;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class DrawServiceAdapterComponentTest {
     private Clock clock;
-    private DrawTimeChecker drawTimeChecker;
+    private DrawDateTimeChecker drawDateTimeChecker;
     private DrawRepositoryPort drawRepositoryPort;
     private DrawServiceAdapter drawServiceAdapter;
 
@@ -30,9 +30,9 @@ class DrawServiceAdapterComponentTest {
     @BeforeEach
     void setUp() {
         clock = new ClockFakeConfig().clock();
-        drawTimeChecker = new DrawTimeChecker(clock);
+        drawDateTimeChecker = new DrawDateTimeChecker(clock);
         drawRepositoryPort = new DrawFakeAdapter();
-        drawServiceAdapter = new DrawServiceAdapter(new DrawService(drawRepositoryPort, drawTimeChecker));
+        drawServiceAdapter = new DrawServiceAdapter(new DrawService(drawRepositoryPort, drawDateTimeChecker));
     }
 
     @Test
@@ -42,21 +42,21 @@ class DrawServiceAdapterComponentTest {
         GameType gameType = GameType.EJP;
         Numbers numbersEJP = Numbers.builder()
                 .gameType(gameType)
-                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1,2))
                 .build();
         drawRepositoryPort.save(Draw.builder().type(gameType).numbers(numbersEJP).build());
         numbersEJP = Numbers.builder()
                 .gameType(gameType)
-                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1,3))
                 .build();
         drawRepositoryPort.save(Draw.builder().type(gameType).numbers(numbersEJP).build());
         Numbers numbersLotto = Numbers.builder()
                 .gameType(GameType.LOTTO)
-                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(GameType.LOTTO).drawTime())
+                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(GameType.LOTTO).drawDateTime())
                 .mainNumbers(List.of(1,2,3,4,5,8))
                 .build();
         drawRepositoryPort.save(Draw.builder().type(GameType.LOTTO).numbers(numbersLotto).build());

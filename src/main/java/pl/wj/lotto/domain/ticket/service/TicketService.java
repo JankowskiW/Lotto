@@ -35,8 +35,8 @@ public class TicketService {
             ticket.setUserId("");
         }
         TicketResponseDto ticketResponseDto = TicketMapper.toTicketResponseDto(ticket);
-        LocalDateTime nextDrawTime = drawServicePort.getNextDrawTime(ticket.getNumbers().drawTime());
-        return ticketResponseDto.withNextDrawTime(nextDrawTime);
+        LocalDateTime nextDrawDateTime = drawServicePort.getNextDrawDateTime(ticket.getNumbers().drawDateTime());
+        return ticketResponseDto.withNextDrawDateTime(nextDrawDateTime);
     }
 
     public List<TicketResponseDto> getTicketsByUserId(String userId) {
@@ -58,7 +58,7 @@ public class TicketService {
 
         return Numbers.builder()
                 .gameType(gameType)
-                .drawTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawTime())
+                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
                 .mainNumbers(mainNumbers)
                 .extraNumbers(extraNumbers)
                 .build();

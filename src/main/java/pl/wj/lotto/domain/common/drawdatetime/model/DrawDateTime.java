@@ -1,4 +1,4 @@
-package pl.wj.lotto.domain.common.drawtime.model;
+package pl.wj.lotto.domain.common.drawdatetime.model;
 
 import lombok.Builder;
 
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Builder
-public record DrawTime(
-    // timeInterval 0 means just once
+public record DrawDateTime(
+    // timeInterval 0 means just once per every day in daysOfWeek list
     int timeInterval,
     TimeUnit timeIntervalUnit,
     // If fromTime equals toTime then draw is exactly at that time (only if timeInterval is equal to 0)
@@ -19,13 +19,13 @@ public record DrawTime(
     LocalTime toTime,
     List<DayOfWeek> daysOfWeek
 ) {
-    public static DrawTimeBuilder builder() {
+    public static DrawDateTimeBuilder builder() {
         return new ValidationBuilder();
     }
 
-    private static class ValidationBuilder extends DrawTimeBuilder {
+    private static class ValidationBuilder extends DrawDateTimeBuilder {
         @Override
-        public DrawTime build() {
+        public DrawDateTime build() {
             if (super.timeInterval < 0)
                 throw new RuntimeException("Attribute timeInterval must be greater than or equals 0");
             if (super.timeIntervalUnit == null)

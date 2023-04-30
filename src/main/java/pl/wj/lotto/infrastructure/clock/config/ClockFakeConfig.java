@@ -14,7 +14,7 @@ import java.time.ZoneId;
 public class ClockFakeConfig {
     @Bean
     public AdjustableClock clock() {
-        LocalDate date = LocalDate.of(2023, 1, 1);
+        LocalDate date = LocalDate.of(2023, 1, 5);
         LocalTime time = LocalTime.of(12,0,0);
         return AdjustableClock.ofLocalDateAndLocalTime(date, time, ZoneId.systemDefault());
     }

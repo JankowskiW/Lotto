@@ -23,7 +23,7 @@ public class DrawDatabaseAdapter implements DrawRepositoryPort {
 
     @Override
     public Draw save(Draw draw) {
-        draw.setDrawTime(LocalDateTime.now());
+        draw.setDrawDateTime(LocalDateTime.now());
         DrawEntity drawEntity = DrawMapper.toDrawEntity(draw);
         drawEntity = drawRepository.save(drawEntity);
         return DrawMapper.toDraw(drawEntity);

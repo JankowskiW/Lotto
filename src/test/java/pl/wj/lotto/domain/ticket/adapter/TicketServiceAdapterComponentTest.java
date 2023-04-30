@@ -2,7 +2,7 @@ package pl.wj.lotto.domain.ticket.adapter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.wj.lotto.domain.common.drawtime.DrawTimeChecker;
+import pl.wj.lotto.domain.common.drawdatetime.DrawDateTimeChecker;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbersgenerator.NumbersGeneratorPort;
@@ -39,7 +39,7 @@ class TicketServiceAdapterComponentTest {
         notificationPort = new EmailNotificationFakeAdapter();
         ticketRepositoryPort = new TicketFakeAdapter();
         numbersGeneratorPort = new NumbersGeneratorFakeAdapter();
-        DrawService drawService = new DrawService(new DrawFakeAdapter(), new DrawTimeChecker(clock));
+        DrawService drawService = new DrawService(new DrawFakeAdapter(), new DrawDateTimeChecker(clock));
         drawServicePort = new DrawServiceAdapter(drawService);
         TicketService ticketService = new TicketService(
                 ticketRepositoryPort, notificationPort, numbersGeneratorPort, drawServicePort);
