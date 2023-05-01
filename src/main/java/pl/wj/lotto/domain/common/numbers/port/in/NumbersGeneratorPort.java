@@ -4,5 +4,5 @@ import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.numbers.Numbers;
 
 public interface NumbersGeneratorPort {
-    Numbers generate(GameType gameType);
+    Numbers generate(GameType gameType, boolean sorted);
 }

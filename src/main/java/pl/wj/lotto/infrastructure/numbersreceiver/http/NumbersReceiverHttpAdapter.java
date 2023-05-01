@@ -42,29 +42,33 @@ public class NumbersReceiverHttpAdapter implements NumbersReceiverPort {
                 }
                 response = executeGetRequest(lowerBound, upperBound, amount);
                 numbers.addAll(getGeneratedNumbers(response));
-            } while(numbers.size() < amount);
+            } while((long) numbers.size() < amount);
         } catch (ResourceAccessException e) {
             String message = String.format("Error while numbers generating through http client: %s", e.getMessage());
             log.error(message);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message);
         }
-        return List.of();
+        return numbers.stream().toList();
     }
 
     private ResponseEntity<Set<Integer>> executeGetRequest(int lowerBound, int upperBound, int amount) throws ResourceAccessException {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.setContentType(MediaType.APPLICATION_JSON);
         final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(headers);
         final String url = UriComponentsBuilder.fromHttpUrl(createServiceURL())
                 .queryParam(SERVICE_LOWER_BOUND_PARAM, lowerBound)
                 .queryParam(SERVICE_UPPER_BOUND_PARAM, upperBound)
                 .queryParam(SERVICE_AMOUNT_PARAM, amount)
                 .toUriString();
-        return restTemplate.exchange(
+        log.info(url);
+        ResponseEntity<Set<Integer>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {});
+
+        log.info(response.getBody());
+        return response;
     }
 
     private String createServiceURL() {

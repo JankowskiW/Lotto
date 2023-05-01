@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NumbersGenerator implements NumbersGeneratorPort {
     private final NumbersReceiverPort numbersReceiverPort;
-    public Numbers generate(GameType gameType) {
+    public Numbers generate(GameType gameType, boolean sorted) {
         GameTypeSettings settings = GameTypeSettingsContainer.getGameTypeSettings(gameType);
         List<Integer> mainNumbers = numbersReceiverPort.receive(
                 settings.minValueOfMainNumbers(), settings.maxValueOfMainNumbers(), settings.minAmountOfMainNumbers());
@@ -21,7 +21,10 @@ public class NumbersGenerator implements NumbersGeneratorPort {
             extraNumbers = numbersReceiverPort.receive(
                     settings.minValueOfExtraNumbers(), settings.maxValueOfExtraNumbers(), settings.minAmountOfExtraNumbers());
         }
-
+        if (sorted) {
+            mainNumbers = mainNumbers.stream().sorted().toList();
+            extraNumbers = extraNumbers != null ? extraNumbers.stream().sorted().toList() : null;
+        }
         return Numbers.builder()
                 .gameType(gameType)
                 .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())

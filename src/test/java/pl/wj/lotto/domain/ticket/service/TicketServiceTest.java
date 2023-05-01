@@ -24,6 +24,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,7 +73,7 @@ class TicketServiceTest {
                 .generationDateTime(generationDateTime)
                 .nextDrawDateTime(nextDrawDateTime)
                 .build();
-        given(numbersGeneratorPort.generate(any(GameType.class))).willReturn(numbers);
+        given(numbersGeneratorPort.generate(any(GameType.class), anyBoolean())).willReturn(numbers);
         given(numbersValidatorPort.validate(any(Numbers.class))).willReturn(true);
         given(ticketRepositoryPort.save(any(Ticket.class))).willAnswer(
                 i -> {
