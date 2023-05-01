@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DrawDateTimeCheckerTest {
     private Clock clock;
@@ -31,10 +32,10 @@ class DrawDateTimeCheckerTest {
         LocalDateTime currentDateTime = LocalDateTime.now(clock);
         LocalDate currentDate = currentDateTime.toLocalDate();
         LocalTime currentTime = currentDateTime.toLocalTime();
-        LocalTime nextDrawTime = currentTime.plusMinutes(10);
+        LocalTime nextDrawTime = currentTime.plusHours(1);
         DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
-                .timeInterval(10)
-                .timeIntervalUnit(TimeUnit.MINUTES)
+                .timeInterval(1)
+                .timeIntervalUnit(TimeUnit.HOURS)
                 .fromTime(currentTime.minusHours(1))
                 .toTime(currentTime.plusHours(1))
                 .daysOfWeek(daysOfWeek)
@@ -151,5 +152,23 @@ class DrawDateTimeCheckerTest {
         // then
         assertThat(result)
                 .isEqualTo(expectedResult);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenGivenTimeUnitIsNeitherMinutesNorHours() {
+        // given
+        LocalDateTime currentDateTime = LocalDateTime.now(clock);
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
+                .timeInterval(1)
+                .timeIntervalUnit(TimeUnit.DAYS)
+                .fromTime(currentDateTime.toLocalTime().minusHours(1))
+                .toTime(currentDateTime.toLocalTime().plusHours(1))
+                .daysOfWeek(List.of(DayOfWeek.THURSDAY))
+                .build();
+
+        // when && then
+        assertThatThrownBy(() -> drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTimeSettings))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Parameter timeUnit must be MINUTES or HOURS");
     }
 }
