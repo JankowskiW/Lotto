@@ -10,6 +10,6 @@ import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
 public class NumbersReceiverHttpConfig {
     @Bean
     public NumbersReceiverPort numberGeneratorPort() {
-        return new NumbersReceiverHttpAdapter();
+        return new NumbersReceiverHttpAdapter(null, "", 0);
     }
 }

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.drawdatetime.DrawDateTimeChecker;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbers.NumbersGenerator;
 import pl.wj.lotto.domain.common.numbers.NumbersValidator;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
@@ -17,7 +16,6 @@ import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
-import pl.wj.lotto.infrastructure.notification.fake.email.EmailNotificationFakeAdapter;
 import pl.wj.lotto.infrastructure.numbersreceiver.fake.NumbersReceiverFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.ticket.TicketFakeAdapter;
 
@@ -34,14 +32,13 @@ class TicketServiceAdapterComponentTest {
     @BeforeEach
     void setUp() {
         Clock clock = new ClockFakeConfig().clock();
-        NotificationPort notificationPort = new EmailNotificationFakeAdapter();
         NumbersReceiverPort numbersReceiverPort = new NumbersReceiverFakeAdapter();
         NumbersGeneratorPort numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort);
         NumbersValidatorPort numbersValidatorPort = new NumbersValidator();
         DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
         ticketRepositoryPort = new TicketFakeAdapter();
         TicketService ticketService = new TicketService(
-                ticketRepositoryPort, notificationPort, drawDateTimeCheckerPort, numbersGeneratorPort, numbersValidatorPort);
+                ticketRepositoryPort, drawDateTimeCheckerPort, numbersGeneratorPort, numbersValidatorPort);
         ticketServiceAdapter = new TicketServiceAdapter(ticketService);
     }
 
