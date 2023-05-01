@@ -17,10 +17,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TicketService {
     private final TicketRepositoryPort ticketRepositoryPort;
-    private final NotificationPort notificationPort;
     private final DrawDateTimeCheckerPort drawDateTimeCheckerPort;
     private final NumbersGeneratorPort numbersGeneratorPort;
     private final NumbersValidatorPort numbersValidatorPort;
+    private NotificationPort notificationPort;
 
     public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
         Ticket ticket = TicketMapper.toTicket(ticketRequestDto);
@@ -32,7 +32,16 @@ public class TicketService {
 
         ticket = ticketRepositoryPort.save(ticket);
         if (ticket.getUserId() != null && !ticket.getUserId().isBlank()) {
-            notificationPort.send("email@email.com", "Message");
+            // TODO: get user email address and user notification settings by user id and send messages
+//            NotificationSettings notificationSettings = userServicePort.getNotificationSettings();
+//            if (notificationSettings.contains("SMS")) {
+//                notificationPort = new SmsNotificationAdapter();
+//                notificationPort.send("700700700", "Message");
+//            }
+//            if (notificationSettings.contains("EMAIL")) {
+//                notificationPort = new SmsNotificationAdapter();
+//                notificationPort.send("email@email.com", "Message");
+//            }
         } else {
             ticket.setUserId("");
         }
