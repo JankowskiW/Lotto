@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Builder
-public record DrawDateTime(
+public record DrawDateTimeSettings(
     // timeInterval 0 means just once per every day in daysOfWeek list
     int timeInterval,
     TimeUnit timeIntervalUnit,
@@ -19,13 +19,13 @@ public record DrawDateTime(
     LocalTime toTime,
     List<DayOfWeek> daysOfWeek
 ) {
-    public static DrawDateTimeBuilder builder() {
+    public static DrawDateTimeSettingsBuilder builder() {
         return new ValidationBuilder();
     }
 
-    private static class ValidationBuilder extends DrawDateTimeBuilder {
+    private static class ValidationBuilder extends DrawDateTimeSettingsBuilder {
         @Override
-        public DrawDateTime build() {
+        public DrawDateTimeSettings build() {
             if (super.timeInterval < 0)
                 throw new RuntimeException("Attribute timeInterval must be greater than or equals 0");
             if (super.timeIntervalUnit == null)

@@ -2,7 +2,7 @@ package pl.wj.lotto.domain.common.drawdatetime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTime;
+import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTimeSettings;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 
@@ -32,7 +32,7 @@ class DrawDateTimeCheckerTest {
         LocalDate currentDate = currentDateTime.toLocalDate();
         LocalTime currentTime = currentDateTime.toLocalTime();
         LocalTime nextDrawTime = currentTime.plusMinutes(10);
-        DrawDateTime drawDateTime = DrawDateTime.builder()
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
                 .timeInterval(10)
                 .timeIntervalUnit(TimeUnit.MINUTES)
                 .fromTime(currentTime.minusHours(1))
@@ -42,7 +42,7 @@ class DrawDateTimeCheckerTest {
         LocalDateTime expectedResult = LocalDateTime.of(currentDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTimeSettings);
 
         // then
         assertThat(result)
@@ -58,7 +58,7 @@ class DrawDateTimeCheckerTest {
         DayOfWeek dayOfWeek = currentDateTime.getDayOfWeek();
         LocalTime nextDrawTime = currentTime.minusHours(1);
         LocalDate nextDrawDate = currentDate.plusDays(7);
-        DrawDateTime drawDateTime = DrawDateTime.builder()
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
                 .timeInterval(1)
                 .timeIntervalUnit(TimeUnit.HOURS)
                 .fromTime(currentTime.minusHours(1))
@@ -68,7 +68,7 @@ class DrawDateTimeCheckerTest {
         LocalDateTime expectedResult = LocalDateTime.of(nextDrawDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTimeSettings);
 
         // then
         assertThat(result)
@@ -84,7 +84,7 @@ class DrawDateTimeCheckerTest {
         DayOfWeek dayOfWeek = currentDateTime.getDayOfWeek();
         LocalTime nextDrawTime = currentTime.minusHours(1);
         LocalDate nextDrawDate = currentDate.plusDays(7);
-        DrawDateTime drawDateTime = DrawDateTime.builder()
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
                 .timeInterval(0)
                 .timeIntervalUnit(TimeUnit.DAYS)
                 .fromTime(currentTime.minusHours(1))
@@ -94,7 +94,7 @@ class DrawDateTimeCheckerTest {
         LocalDateTime expectedResult = LocalDateTime.of(nextDrawDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTimeSettings);
 
         // then
         assertThat(result)
@@ -110,7 +110,7 @@ class DrawDateTimeCheckerTest {
         DayOfWeek dayOfWeek = currentDateTime.getDayOfWeek();
         LocalTime nextDrawTime = currentTime.minusHours(1);
         LocalDate nextDrawDate = currentDate.plusDays(1);
-        DrawDateTime drawDateTime = DrawDateTime.builder()
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
                 .timeInterval(10)
                 .timeIntervalUnit(TimeUnit.MINUTES)
                 .fromTime(currentTime.minusHours(1))
@@ -120,7 +120,7 @@ class DrawDateTimeCheckerTest {
         LocalDateTime expectedResult = LocalDateTime.of(nextDrawDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTimeSettings);
 
         // then
         assertThat(result)
@@ -136,7 +136,7 @@ class DrawDateTimeCheckerTest {
         DayOfWeek dayOfWeek = currentDateTime.getDayOfWeek();
         LocalTime nextDrawTime = currentTime.minusHours(1);
         LocalDate nextDrawDate = currentDate.plusDays(6);
-        DrawDateTime drawDateTime = DrawDateTime.builder()
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
                 .timeInterval(1)
                 .timeIntervalUnit(TimeUnit.HOURS)
                 .fromTime(currentTime.minusHours(1))
@@ -146,7 +146,7 @@ class DrawDateTimeCheckerTest {
         LocalDateTime expectedResult = LocalDateTime.of(nextDrawDate, nextDrawTime);
 
         // when
-        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTime);
+        LocalDateTime result = drawDateTimeCheckerPort.getNextDrawDateTime(drawDateTimeSettings);
 
         // then
         assertThat(result)

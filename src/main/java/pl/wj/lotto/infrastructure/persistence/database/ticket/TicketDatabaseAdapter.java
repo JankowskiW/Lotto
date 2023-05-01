@@ -15,9 +15,9 @@ public class TicketDatabaseAdapter implements TicketRepositoryPort {
     private final TicketRepository ticketRepository;
     @Override
     public Ticket save(Ticket ticket) {
-        ticket.setGenerationTime(LocalDateTime.now());
+        ticket.setGenerationDateTime(LocalDateTime.now());
         TicketEntity ticketEntity = TicketMapper.toTicketEntity(ticket);
-        ticketEntity.setGenerationTime(LocalDateTime.now());
+        ticketEntity.setGenerationDateTime(LocalDateTime.now());
         ticketEntity = ticketRepository.save(ticketEntity);
         return TicketMapper.toTicket(ticketEntity);
     }

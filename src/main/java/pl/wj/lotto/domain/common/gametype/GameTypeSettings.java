@@ -1,12 +1,12 @@
 package pl.wj.lotto.domain.common.gametype;
 
 import lombok.Builder;
-import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTime;
+import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTimeSettings;
 
 @Builder
 public record GameTypeSettings(
         GameType gameType,
-        DrawDateTime drawDateTime,
+        DrawDateTimeSettings drawDateTimeSettings,
         int minAmountOfMainNumbers,
         int maxAmountOfMainNumbers,
         int minValueOfMainNumbers,

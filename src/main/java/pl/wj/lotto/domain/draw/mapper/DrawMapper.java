@@ -30,7 +30,7 @@ public class DrawMapper {
         GameType gameType = GameTypeExtractor.getGameTypeById(drawRequestDto.typeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(drawRequestDto.mainNumbers())
                 .extraNumbers(drawRequestDto.extraNumbers())
                 .build();

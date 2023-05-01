@@ -36,21 +36,21 @@ class DrawServiceAdapterComponentTest {
         GameType gameType = GameType.EJP;
         Numbers numbersEJP = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1,2))
                 .build();
         drawRepositoryPort.save(Draw.builder().type(gameType).numbers(numbersEJP).build());
         numbersEJP = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1,3))
                 .build();
         drawRepositoryPort.save(Draw.builder().type(gameType).numbers(numbersEJP).build());
         Numbers numbersLotto = Numbers.builder()
                 .gameType(GameType.LOTTO)
-                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(GameType.LOTTO).drawDateTime())
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(GameType.LOTTO).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,8))
                 .build();
         drawRepositoryPort.save(Draw.builder().type(GameType.LOTTO).numbers(numbersLotto).build());

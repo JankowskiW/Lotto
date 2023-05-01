@@ -1,6 +1,6 @@
 package pl.wj.lotto.domain.common.gametype;
 
-import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTime;
+import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTimeSettings;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -30,7 +30,7 @@ public class GameTypeSettingsContainer {
     }
 
     private static GameTypeSettings createLottoSettings() {
-        DrawDateTime drawDateTime = DrawDateTime.builder()
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
                 .timeInterval(0)
                 .timeIntervalUnit(TimeUnit.DAYS)
                 .fromTime(LocalTime.of(22,0,0))
@@ -39,7 +39,7 @@ public class GameTypeSettingsContainer {
                 .build();
         return GameTypeSettings.builder()
                 .gameType(GameType.LOTTO)
-                .drawDateTime(drawDateTime)
+                .drawDateTimeSettings(drawDateTimeSettings)
                 .minAmountOfMainNumbers(6)
                 .maxAmountOfMainNumbers(6)
                 .minValueOfMainNumbers(1)
@@ -53,7 +53,7 @@ public class GameTypeSettingsContainer {
 
     private static GameTypeSettings createQuick600Settings() {
         List<DayOfWeek> daysOfWeek = Arrays.stream(DayOfWeek.values()).toList();
-        DrawDateTime drawDateTime = DrawDateTime.builder()
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
                 .timeInterval(4)
                 .timeIntervalUnit(TimeUnit.MINUTES)
                 .fromTime(LocalTime.of(6,0,0))
@@ -62,7 +62,7 @@ public class GameTypeSettingsContainer {
                 .build();
         return GameTypeSettings.builder()
                 .gameType(GameType.Q600)
-                .drawDateTime(drawDateTime)
+                .drawDateTimeSettings(drawDateTimeSettings)
                 .minAmountOfMainNumbers(6)
                 .maxAmountOfMainNumbers(6)
                 .minValueOfMainNumbers(1)
@@ -75,7 +75,7 @@ public class GameTypeSettingsContainer {
     }
 
     private static GameTypeSettings createEurojackpotSettings() {
-        DrawDateTime drawDateTime = DrawDateTime.builder()
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
                 .timeInterval(0)
                 .timeIntervalUnit(TimeUnit.DAYS)
                 .fromTime(LocalTime.of(21,0,0))
@@ -84,7 +84,7 @@ public class GameTypeSettingsContainer {
                 .build();
         return GameTypeSettings.builder()
                 .gameType(GameType.EJP)
-                .drawDateTime(drawDateTime)
+                .drawDateTimeSettings(drawDateTimeSettings)
                 .minAmountOfMainNumbers(5)
                 .maxAmountOfMainNumbers(5)
                 .minValueOfMainNumbers(1)
@@ -98,7 +98,7 @@ public class GameTypeSettingsContainer {
 
     private static GameTypeSettings createKenoSettings() {
         List<DayOfWeek> daysOfWeek = Arrays.stream(DayOfWeek.values()).toList();
-        DrawDateTime drawDateTime = DrawDateTime.builder()
+        DrawDateTimeSettings drawDateTimeSettings = DrawDateTimeSettings.builder()
                 .timeInterval(4)
                 .timeIntervalUnit(TimeUnit.MINUTES)
                 .fromTime(LocalTime.of(6,2,0))
@@ -107,7 +107,7 @@ public class GameTypeSettingsContainer {
                 .build();
         return GameTypeSettings.builder()
                 .gameType(GameType.KENO)
-                .drawDateTime(drawDateTime)
+                .drawDateTimeSettings(drawDateTimeSettings)
                 .minAmountOfMainNumbers(1)
                 .maxAmountOfMainNumbers(10)
                 .minValueOfMainNumbers(1)

@@ -107,7 +107,7 @@ class DrawServiceTest {
         GameType gameType = GameType.LOTTO;
         Numbers numbers = Numbers.builder()
                 .gameType(GameType.LOTTO)
-                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
         Draw draw = Draw.builder()

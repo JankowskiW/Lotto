@@ -15,6 +15,6 @@ public record TicketResponseDto(
         int numberOfDraws,
         Numbers numbers,
         LocalDateTime nextDrawDateTime,
-        LocalDateTime generationTime
+        LocalDateTime generationDateTime
         ) {
 }

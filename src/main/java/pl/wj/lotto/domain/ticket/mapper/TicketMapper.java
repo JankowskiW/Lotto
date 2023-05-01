@@ -16,7 +16,7 @@ public class TicketMapper {
         GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(ticketRequestDto.mainNumbers())
                 .extraNumbers(ticketRequestDto.extraNumbers())
                 .build();
@@ -27,7 +27,7 @@ public class TicketMapper {
                 .gameType(gameType)
                 .numberOfDraws(ticketRequestDto.numberOfDraws())
                 .numbers(numbers)
-                .generationTime(null)
+                .generationDateTime(null)
                 .build();
     }
 
@@ -42,7 +42,7 @@ public class TicketMapper {
                 .gameTypeName(ticket.getGameType().getName())
                 .numberOfDraws(ticket.getNumberOfDraws())
                 .numbers(ticket.getNumbers())
-                .generationTime(ticket.getGenerationTime())
+                .generationDateTime(ticket.getGenerationDateTime())
                 .nextDrawDateTime(null)
                 .build();
     }
@@ -51,7 +51,7 @@ public class TicketMapper {
         GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(ticketRequestDto.mainNumbers())
                 .extraNumbers(ticketRequestDto.extraNumbers())
                 .build();
@@ -61,7 +61,7 @@ public class TicketMapper {
                 .gameTypeName(gameType.getName())
                 .numberOfDraws(ticketRequestDto.numberOfDraws())
                 .numbers(numbers)
-                .generationTime(null)
+                .generationDateTime(null)
                 .nextDrawDateTime(null)
                 .build();
     }
@@ -73,7 +73,7 @@ public class TicketMapper {
                 .gameType(ticket.getGameType())
                 .numberOfDraws(ticket.getNumberOfDraws())
                 .numbers(ticket.getNumbers())
-                .generationTime(ticket.getGenerationTime())
+                .generationDateTime(ticket.getGenerationDateTime())
                 .build();
     }
 
@@ -88,7 +88,7 @@ public class TicketMapper {
                 .gameType(ticketEntity.getGameType())
                 .numberOfDraws(ticketEntity.getNumberOfDraws())
                 .numbers(ticketEntity.getNumbers())
-                .generationTime(ticketEntity.getGenerationTime())
+                .generationDateTime(ticketEntity.getGenerationDateTime())
                 .build();
     }
 }

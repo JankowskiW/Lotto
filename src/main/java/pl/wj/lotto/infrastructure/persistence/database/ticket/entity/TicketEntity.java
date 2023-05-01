@@ -21,5 +21,5 @@ public class TicketEntity {
     GameType gameType;
     int numberOfDraws;
     Numbers numbers;
-    LocalDateTime generationTime;
+    LocalDateTime generationDateTime;
 }

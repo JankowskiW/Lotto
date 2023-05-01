@@ -15,7 +15,7 @@ public class TicketFakeAdapter implements TicketRepositoryPort {
     public Ticket save(Ticket ticket) {
         String id = ticket.getId() == null ? UUID.randomUUID().toString() : ticket.getId();
         ticket.setId(id);
-        ticket.setGenerationTime(LocalDateTime.now());
+        ticket.setGenerationDateTime(LocalDateTime.now());
         ticketsTable.put(id, ticket);
         return ticket;
     }

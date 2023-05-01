@@ -37,13 +37,16 @@ public class TicketService {
             ticket.setUserId("");
         }
         TicketResponseDto ticketResponseDto = TicketMapper.toTicketResponseDto(ticket);
-        LocalDateTime nextDrawDateTime = drawDateTimeCheckerPort.getNextDrawDateTime(ticket.getNumbers().drawDateTime());
+        LocalDateTime nextDrawDateTime = drawDateTimeCheckerPort.getNextDrawDateTime(ticket.getNumbers().drawDateTimeSettings());
         return ticketResponseDto.withNextDrawDateTime(nextDrawDateTime);
     }
 
     public List<TicketResponseDto> getTicketsByUserId(String userId) {
         List<Ticket> tickets = ticketRepositoryPort.getByUserId(userId);
-        // TODO: Create method which gets next draw time for specific draw type somewhere and call it here
-        return TicketMapper.toTicketResponseDtos(tickets);
+        List<TicketResponseDto> ticketResponseDtos = TicketMapper.toTicketResponseDtos(tickets);
+        return ticketResponseDtos.stream().map(tr -> tr.withNextDrawDateTime(
+                drawDateTimeCheckerPort.getNextDrawDateTimeForTicket(
+                        tr.numbers().drawDateTimeSettings(), tr.generationDateTime())))
+                .toList();
     }
 }

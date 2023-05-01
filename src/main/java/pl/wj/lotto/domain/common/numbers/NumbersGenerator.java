@@ -24,7 +24,7 @@ public class NumbersGenerator implements NumbersGeneratorPort {
 
         return Numbers.builder()
                 .gameType(gameType)
-                .drawDateTime(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTime())
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(mainNumbers)
                 .extraNumbers(extraNumbers)
                 .build();
