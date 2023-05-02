@@ -40,7 +40,7 @@ class DrawServiceTest {
         given(drawRepositoryPort.findAllByType(any(GameType.class))).willReturn(new ArrayList<>());
 
         // when
-        List<DrawResponseDto> result = drawService.getDrawsByTypeId(gameType.getId());
+        List<DrawResponseDto> result = drawService.getGameTypeDraws(gameType.getId());
 
         // then
         assertThat(result)
@@ -57,7 +57,7 @@ class DrawServiceTest {
         given(drawRepositoryPort.findAllByType(any(GameType.class))).willReturn(draws);
 
         // when
-        List<DrawResponseDto> result = drawService.getDrawsByTypeId(gameType.getId());
+        List<DrawResponseDto> result = drawService.getGameTypeDraws(gameType.getId());
 
         // then
         assertThat(result)
@@ -120,7 +120,7 @@ class DrawServiceTest {
         given(drawRepositoryPort.findById(anyString())).willReturn(Optional.of(draw));
 
         // when
-        DrawResponseDto result = drawService.getDrawById(id);
+        DrawResponseDto result = drawService.getDraw(id);
 
         // then
         assertThat(result)
@@ -135,7 +135,7 @@ class DrawServiceTest {
         given(drawRepositoryPort.findById(anyString())).willReturn(Optional.empty());
 
         // when && then
-        assertThatThrownBy(() -> drawService.getDrawById(id))
+        assertThatThrownBy(() -> drawService.getDraw(id))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Draw not found");
     }

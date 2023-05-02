@@ -13,8 +13,8 @@ public class DrawServiceAdapter implements DrawServicePort {
     private final DrawService drawService;
 
     @Override
-    public List<DrawResponseDto> getDrawsByTypeId(int gameTypeId) {
-        return drawService.getDrawsByTypeId(gameTypeId);
+    public List<DrawResponseDto> getGameTypeDraws(int gameTypeId) {
+        return drawService.getGameTypeDraws(gameTypeId);
     }
 
     @Override
@@ -24,8 +24,8 @@ public class DrawServiceAdapter implements DrawServicePort {
     }
 
     @Override
-    public DrawResponseDto getDrawById(String id) {
-        return drawService.getDrawById(id);
+    public DrawResponseDto getDraw(String id) {
+        return drawService.getDraw(id);
     }
 
 }

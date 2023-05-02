@@ -8,6 +8,7 @@ import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
+import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
@@ -53,12 +54,16 @@ public class TicketService {
         return ticketResponseDto.withNextDrawDateTime(nextDrawDateTime);
     }
 
-    public List<TicketResponseDto> getTicketsByUserId(String userId) {
+    public List<TicketResponseDto> getUserTickets(String userId) {
         List<Ticket> tickets = ticketRepositoryPort.getByUserId(userId);
         List<TicketResponseDto> ticketResponseDtos = TicketMapper.toTicketResponseDtos(tickets);
         return ticketResponseDtos.stream().map(tr -> tr.withNextDrawDateTime(
                 drawDateTimeCheckerPort.getNextDrawDateTimeForTicket(
                         tr.numbers().drawDateTimeSettings(), tr.generationDateTime())))
                 .toList();
+    }
+
+    public List<PlayerNumbersDto> getPlayersNumbersForDraw(String drawId) {
+        return List.of();
     }
 }

@@ -16,7 +16,7 @@ public class DrawService {
     private final DrawRepositoryPort drawRepositoryPort;
 
 
-    public List<DrawResponseDto> getDrawsByTypeId(int gameTypeId) {
+    public List<DrawResponseDto> getGameTypeDraws(int gameTypeId) {
         GameType type = GameTypeExtractor.getGameTypeById(gameTypeId);
         List<Draw> draws = drawRepositoryPort.findAllByType(type);
         return DrawMapper.toDrawResponseDtos(draws);
@@ -28,7 +28,7 @@ public class DrawService {
         return DrawMapper.toDrawResponseDto(draw);
     }
 
-    public DrawResponseDto getDrawById(String id) {
+    public DrawResponseDto getDraw(String id) {
         Draw draw = drawRepositoryPort.findById(id).orElseThrow(() -> new RuntimeException("Draw not found"));
         return DrawMapper.toDrawResponseDto(draw);
     }

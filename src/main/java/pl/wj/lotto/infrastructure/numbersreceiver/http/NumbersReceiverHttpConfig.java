@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.numbers.numbersreceiver.http;
+package pl.wj.lotto.infrastructure.numbersreceiver.http;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;

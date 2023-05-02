@@ -15,13 +15,13 @@ public class DrawController {
     private final DrawServicePort drawServicePort;
 
     @GetMapping
-    public List<DrawResponseDto> getDrawsByType(@RequestParam(name = "gameType") int gameTypeId) {
-        return drawServicePort.getDrawsByTypeId(gameTypeId);
+    public List<DrawResponseDto> getGameTypeDraws(@RequestParam(name = "gameType") int gameTypeId) {
+        return drawServicePort.getGameTypeDraws(gameTypeId);
     }
 
     @GetMapping("/{id}")
-    public DrawResponseDto getDrawById(@PathVariable String id) {
-        return drawServicePort.getDrawById(id);
+    public DrawResponseDto getDraw(@PathVariable String id) {
+        return drawServicePort.getDraw(id);
     }
 
 

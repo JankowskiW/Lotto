@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.numbers.numbersreceiver.fake;
+package pl.wj.lotto.infrastructure.numbersreceiver.fake;
 
 import lombok.extern.log4j.Log4j2;
 import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
