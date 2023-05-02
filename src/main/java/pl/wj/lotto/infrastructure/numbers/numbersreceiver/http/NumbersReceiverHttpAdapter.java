@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.numbersreceiver.http;
+package pl.wj.lotto.infrastructure.numbers.numbersreceiver.http;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

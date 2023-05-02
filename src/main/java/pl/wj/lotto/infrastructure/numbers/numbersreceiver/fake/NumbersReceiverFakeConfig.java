@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.numbersreceiver.fake;
+package pl.wj.lotto.infrastructure.numbers.numbersreceiver.fake;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
