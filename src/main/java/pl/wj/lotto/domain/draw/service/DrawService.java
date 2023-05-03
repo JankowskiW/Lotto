@@ -7,6 +7,7 @@ import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
+import pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 
 import java.util.List;
@@ -31,5 +32,10 @@ public class DrawService {
     public DrawResponseDto getDraw(String id) {
         Draw draw = drawRepositoryPort.findById(id).orElseThrow(() -> new RuntimeException("Draw not found"));
         return DrawMapper.toDrawResponseDto(draw);
+    }
+
+    public DrawGameTypeAndDateTimeVo getDrawGameTypeAndDateTime(String drawId) {
+        DrawGameTypeAndDateTimeVo drawGameTypeAndDateTimeVo = drawRepositoryPort.findDrawGameTypeAndDateTimeById(drawId).orElseThrow(() -> new RuntimeException("Draw not found"));
+        return drawGameTypeAndDateTimeVo;
     }
 }

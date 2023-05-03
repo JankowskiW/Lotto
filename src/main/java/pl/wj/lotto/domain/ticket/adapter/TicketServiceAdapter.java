@@ -1,6 +1,7 @@
 package pl.wj.lotto.domain.ticket.adapter;
 
 import lombok.RequiredArgsConstructor;
+import pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
@@ -24,7 +25,7 @@ public class TicketServiceAdapter implements TicketServicePort {
     }
 
     @Override
-    public List<PlayerNumbersDto> getPlayersNumbersForDraw(String drawId) {
-        return ticketService.getPlayersNumbersForDraw(drawId);
+    public List<PlayerNumbersDto> getPlayersDrawNumbers(DrawGameTypeAndDateTimeVo drawGameTypeAndDateTimeVo) {
+        return ticketService.getPlayersDrawNumbers(drawGameTypeAndDateTimeVo);
     }
 }

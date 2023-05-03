@@ -3,6 +3,7 @@ package pl.wj.lotto.domain.draw.adapter;
 import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
+import pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.draw.service.DrawService;
 
@@ -26,6 +27,11 @@ public class DrawServiceAdapter implements DrawServicePort {
     @Override
     public DrawResponseDto getDraw(String id) {
         return drawService.getDraw(id);
+    }
+
+    @Override
+    public DrawGameTypeAndDateTimeVo getDrawGameTypeAndDateTime(String drawId) {
+        return drawService.getDrawGameTypeAndDateTime(drawId);
     }
 
 }

@@ -1,6 +1,7 @@
 package pl.wj.lotto.domain.result.service;
 
 import lombok.RequiredArgsConstructor;
+import pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.result.helper.resultchecker.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.result.helper.resultchecker.port.in.ResultCheckerPort;
@@ -24,8 +25,8 @@ public class ResultService {
 
     public List<SummarizedResultsResponseDto> getDrawSummarizedResults(String drawId) {
         DrawResultDto drawResultDto = resultCheckerPort.getResultByDrawId(drawId);
-//        LocalDateTime drawDateTime = drawServicePort.getDrawDateTimeByDrawId(drawId);
-        List<PlayerNumbersDto> playersNumbers = ticketServicePort.getPlayersNumbersForDraw(drawId);
+        DrawGameTypeAndDateTimeVo drawGameTypeAndDateTimeVo = drawServicePort.getDrawGameTypeAndDateTime(drawId);
+        List<PlayerNumbersDto> playersNumbers = ticketServicePort.getPlayersDrawNumbers(drawGameTypeAndDateTimeVo);
         return List.of();
     }
 }

@@ -6,6 +6,7 @@ import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbers.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
+import pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
@@ -63,7 +64,7 @@ public class TicketService {
                 .toList();
     }
 
-    public List<PlayerNumbersDto> getPlayersNumbersForDraw(String drawId) {
+    public List<PlayerNumbersDto> getPlayersDrawNumbers(DrawGameTypeAndDateTimeVo drawGameTypeAndDateTimeVo) {
         return List.of();
     }
 }
