@@ -16,7 +16,6 @@ public interface DrawRepository extends MongoRepository<DrawEntity, String> {
 
 
     // TODO: check how to put data to dto/vo object using MongoRepository
-    @Query("SELECT new pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo(d.gameType, d.drawDateTime) " +
-            "FROM draws d WHERE d.id = :id")
+    @Query("fields = {'type' :  1, 'drawDateTime' :  1}")
     Optional<DrawGameTypeAndDateTimeVo> findDrawGameTypeAndDateTimeById(String id);
 }
