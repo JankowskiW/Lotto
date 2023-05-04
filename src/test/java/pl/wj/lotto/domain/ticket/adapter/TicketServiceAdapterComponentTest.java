@@ -38,7 +38,7 @@ class TicketServiceAdapterComponentTest {
         DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
         ticketRepositoryPort = new TicketFakeAdapter();
         TicketService ticketService = new TicketService(
-                ticketRepositoryPort, drawDateTimeCheckerPort, numbersGeneratorPort, numbersValidatorPort);
+                clock, ticketRepositoryPort, drawDateTimeCheckerPort, numbersGeneratorPort, numbersValidatorPort);
         ticketServiceAdapter = new TicketServiceAdapter(ticketService);
     }
 

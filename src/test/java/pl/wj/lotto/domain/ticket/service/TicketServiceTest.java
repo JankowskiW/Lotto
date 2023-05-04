@@ -18,6 +18,7 @@ import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,6 +42,12 @@ class TicketServiceTest {
     private NumbersValidatorPort numbersValidatorPort;
     @InjectMocks
     private TicketService ticketService;
+
+    @Test
+    void test() {
+        Clock clock = Clock.systemDefaultZone();
+        System.out.println(clock.getZone().getId());
+    }
 
     @Test
     void shouldAddNewTicketWhenThereIsUserId() {
