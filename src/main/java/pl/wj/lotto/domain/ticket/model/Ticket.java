@@ -18,4 +18,5 @@ public class Ticket {
     int numberOfDraws;
     Numbers numbers;
     LocalDateTime generationDateTime;
+    LocalDateTime lastDrawDateTime;
 }

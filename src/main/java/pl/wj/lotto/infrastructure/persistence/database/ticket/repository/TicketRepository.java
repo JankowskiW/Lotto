@@ -7,6 +7,6 @@ import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntit
 import java.util.List;
 
 @Repository
-public interface TicketRepository extends MongoRepository<TicketEntity, String> {
+public interface TicketRepository extends MongoRepository<TicketEntity, String>, TicketCustomRepository {
     List<TicketEntity> getByUserId(String userId);
 }

@@ -10,8 +10,10 @@ import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.draw.service.DrawService;
+import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 
+import java.time.Clock;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -25,8 +27,9 @@ class DrawServiceAdapterComponentTest {
 
     @BeforeEach
     void setUp() {
+        Clock clock = new ClockFakeConfig().clock();
         drawRepositoryPort = new DrawFakeAdapter();
-        drawServicePort = new DrawServiceAdapter(new DrawService(drawRepositoryPort));
+        drawServicePort = new DrawServiceAdapter(new DrawService(clock, drawRepositoryPort));
     }
 
     @Test

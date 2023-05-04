@@ -5,6 +5,7 @@ import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.Numbers;
 import pl.wj.lotto.domain.ticket.model.Ticket;
+import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
@@ -74,6 +75,7 @@ public class TicketMapper {
                 .numberOfDraws(ticket.getNumberOfDraws())
                 .numbers(ticket.getNumbers())
                 .generationDateTime(ticket.getGenerationDateTime())
+                .lastDrawDateTime(ticket.getLastDrawDateTime())
                 .build();
     }
 
@@ -89,6 +91,20 @@ public class TicketMapper {
                 .numberOfDraws(ticketEntity.getNumberOfDraws())
                 .numbers(ticketEntity.getNumbers())
                 .generationDateTime(ticketEntity.getGenerationDateTime())
+                .lastDrawDateTime(ticketEntity.getLastDrawDateTime())
+                .build();
+    }
+
+    public static List<PlayerNumbersDto> toPlayerNumbersDtos(List<TicketEntity> ticketEntities) {
+        return ticketEntities.stream().map(TicketMapper::toPlayerNumbersDto).toList();
+    }
+
+    public static PlayerNumbersDto toPlayerNumbersDto(TicketEntity ticketEntity) {
+        return PlayerNumbersDto.builder()
+                .userId(ticketEntity.getUserId())
+                .gameType(ticketEntity.getGameType())
+                .mainNumbers(ticketEntity.getNumbers().mainNumbers())
+                .extraNumbers(ticketEntity.getNumbers().extraNumbers())
                 .build();
     }
 }

@@ -22,4 +22,5 @@ public class TicketEntity {
     int numberOfDraws;
     Numbers numbers;
     LocalDateTime generationDateTime;
+    LocalDateTime lastDrawDateTime;
 }

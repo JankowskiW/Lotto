@@ -8,4 +8,6 @@ public interface DrawDateTimeCheckerPort {
     LocalDateTime getNextDrawDateTime(DrawDateTimeSettings drawDateTimeSettings);
     LocalDateTime getNextDrawDateTimeForTicket(
             DrawDateTimeSettings drawDateTimeSettings, LocalDateTime generationDateTime);
+
+    LocalDateTime getLastDrawDateTimeForTicket(DrawDateTimeSettings drawDateTimeSettings, int numberOfDraws, LocalDateTime generationDateTime);
 }

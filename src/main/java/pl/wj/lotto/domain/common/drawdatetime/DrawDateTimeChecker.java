@@ -27,6 +27,14 @@ public class DrawDateTimeChecker implements DrawDateTimeCheckerPort {
         return LocalDateTime.of(nextDrawDate, nextDrawTime);
     }
 
+    @Override
+    public LocalDateTime getLastDrawDateTimeForTicket(
+            DrawDateTimeSettings drawDateTimeSettings, int numberOfDraws, LocalDateTime generationDateTime) {
+        if (numberOfDraws == 0) return generationDateTime;
+        LocalDateTime lastDrawDateTime = getNextDrawDateTimeForTicket(drawDateTimeSettings, generationDateTime);
+        return getLastDrawDateTimeForTicket(drawDateTimeSettings, numberOfDraws - 1, lastDrawDateTime);
+    }
+
     private LocalDate findNextDrawDate(DrawDateTimeSettings drawDateTimeSettings, LocalDateTime now) {
         LocalTime nowTime = now.toLocalTime();
         LocalDate nowDate = now.toLocalDate();

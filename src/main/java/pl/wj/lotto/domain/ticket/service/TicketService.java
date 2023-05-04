@@ -6,19 +6,22 @@ import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbers.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
-import pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo;
+import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
+import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 public class TicketService {
+    private final Clock clock;
     private final TicketRepositoryPort ticketRepositoryPort;
     private final DrawDateTimeCheckerPort drawDateTimeCheckerPort;
     private final NumbersGeneratorPort numbersGeneratorPort;
@@ -34,7 +37,11 @@ public class TicketService {
         if (!numbersValidatorPort.validate(ticket.getNumbers())) {
             throw new RuntimeException("Given numbers are invalid");
         }
-
+        ticket.setGenerationDateTime(LocalDateTime.now(clock));
+        LocalDateTime lastDrawDateTime = drawDateTimeCheckerPort.getLastDrawDateTimeForTicket(
+                ticket.getNumbers().drawDateTimeSettings(), ticket.getNumberOfDraws(), ticket.getGenerationDateTime());
+        ticket.setLastDrawDateTime(lastDrawDateTime);
+        ticket.setGenerationDateTime(LocalDateTime.now(clock));
         ticket = ticketRepositoryPort.save(ticket);
         if (ticket.getUserId() != null && !ticket.getUserId().isBlank()) {
             // TODO: get user email address and user notification settings by user id and send messages
@@ -64,7 +71,9 @@ public class TicketService {
                 .toList();
     }
 
-    public List<PlayerNumbersDto> getPlayersDrawNumbers(DrawGameTypeAndDateTimeVo drawGameTypeAndDateTimeVo) {
-        return List.of();
+    public List<PlayerNumbersDto> getPlayersDrawNumbers(DrawResultDto drawResultDto) {
+        List<TicketEntity> ticketEntities = ticketRepositoryPort.getPlayersDrawNumbersByGameTypeAndLastDrawDateTime(
+                drawResultDto.type(), drawResultDto.drawDateTime());
+        return TicketMapper.toPlayerNumbersDtos(ticketEntities);
     }
 }

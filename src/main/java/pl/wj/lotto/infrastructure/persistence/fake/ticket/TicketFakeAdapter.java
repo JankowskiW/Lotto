@@ -1,7 +1,9 @@
 package pl.wj.lotto.infrastructure.persistence.fake.ticket;
 
+import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
+import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +17,6 @@ public class TicketFakeAdapter implements TicketRepositoryPort {
     public Ticket save(Ticket ticket) {
         String id = ticket.getId() == null ? UUID.randomUUID().toString() : ticket.getId();
         ticket.setId(id);
-        ticket.setGenerationDateTime(LocalDateTime.now());
         ticketsTable.put(id, ticket);
         return ticket;
     }
@@ -23,5 +24,10 @@ public class TicketFakeAdapter implements TicketRepositoryPort {
     @Override
     public List<Ticket> getByUserId(String userId) {
         return ticketsTable.values().stream().filter(t -> t.getUserId().equals(userId)).toList();
+    }
+
+    @Override
+    public List<TicketEntity> getPlayersDrawNumbersByGameTypeAndLastDrawDateTime(GameType type, LocalDateTime drawDateTime) {
+        return null;
     }
 }

@@ -48,7 +48,7 @@ public class NumbersReceiverHttpAdapter implements NumbersReceiverPort {
             log.error(message);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message);
         }
-        return numbers.stream().toList();
+        return numbers.stream().limit(amount).toList();
     }
 
     private ResponseEntity<Set<Integer>> executeGetRequest(int lowerBound, int upperBound, int amount) throws ResourceAccessException {
