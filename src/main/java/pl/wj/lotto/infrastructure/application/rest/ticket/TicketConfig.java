@@ -10,14 +10,17 @@ import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
 
+import java.time.Clock;
+
 @Configuration
 public class TicketConfig {
     @Bean
-    public TicketServicePort ticketServicePort(TicketRepositoryPort ticketRepositoryPort,
+    public TicketServicePort ticketServicePort(Clock clock,
+                                               TicketRepositoryPort ticketRepositoryPort,
                                                DrawDateTimeCheckerPort drawDateTimeCheckerPort,
                                                NumbersGeneratorPort numbersGeneratorPort,
                                                NumbersValidatorPort numbersValidatorPort) {
-        TicketService ticketService = new TicketService(ticketRepositoryPort, drawDateTimeCheckerPort,
+        TicketService ticketService = new TicketService(clock, ticketRepositoryPort, drawDateTimeCheckerPort,
                 numbersGeneratorPort, numbersValidatorPort);
         return new TicketServiceAdapter(ticketService);
     }
