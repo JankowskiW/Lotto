@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo;
+import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.infrastructure.persistence.database.draw.entity.DrawEntity;
 import pl.wj.lotto.infrastructure.persistence.database.draw.repository.DrawRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +23,6 @@ public class DrawDatabaseAdapter implements DrawRepositoryPort {
 
     @Override
     public Draw save(Draw draw) {
-        draw.setDrawDateTime(LocalDateTime.now());
         DrawEntity drawEntity = DrawMapper.toDrawEntity(draw);
         drawEntity = drawRepository.save(drawEntity);
         return DrawMapper.toDraw(drawEntity);
@@ -36,7 +34,7 @@ public class DrawDatabaseAdapter implements DrawRepositoryPort {
     }
 
     @Override
-    public Optional<DrawGameTypeAndDateTimeVo> findDrawGameTypeAndDateTimeById(String id) {
-        return drawRepository.findDrawGameTypeAndDateTimeById(id);
+    public Optional<DrawResultDto> findDrawResultById(String drawId) {
+        return drawRepository.findDrawResultById(drawId);
     }
 }

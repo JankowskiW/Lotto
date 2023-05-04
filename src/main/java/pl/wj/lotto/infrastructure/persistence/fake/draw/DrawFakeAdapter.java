@@ -2,7 +2,7 @@ package pl.wj.lotto.infrastructure.persistence.fake.draw;
 
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo;
+import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 
 import java.time.LocalDateTime;
@@ -34,7 +34,7 @@ public class DrawFakeAdapter implements DrawRepositoryPort {
     }
 
     @Override
-    public Optional<DrawGameTypeAndDateTimeVo> findDrawGameTypeAndDateTimeById(String id) {
+    public Optional<DrawResultDto> findDrawResultById(String drawId) {
         return Optional.empty();
     }
 }

@@ -1,7 +1,7 @@
 package pl.wj.lotto.domain.result.adapter;
 
 import lombok.RequiredArgsConstructor;
-import pl.wj.lotto.domain.result.model.dto.SummarizedResultsResponseDto;
+import pl.wj.lotto.domain.result.model.dto.DrawResultDetailsResponseDto;
 import pl.wj.lotto.domain.result.model.dto.TicketResultsResponseDto;
 import pl.wj.lotto.domain.result.port.in.ResultServicePort;
 import pl.wj.lotto.domain.result.service.ResultService;
@@ -18,7 +18,7 @@ public class ResultServiceAdapter implements ResultServicePort {
     }
 
     @Override
-    public List<SummarizedResultsResponseDto> getDrawSummarizedResults(String drawId) {
-        return resultService.getDrawSummarizedResults(drawId);
+    public List<DrawResultDetailsResponseDto> getDrawResultDetails(String drawId) {
+        return resultService.getDrawResultDetails(drawId);
     }
 }

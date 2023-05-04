@@ -7,13 +7,16 @@ import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
-import pl.wj.lotto.domain.draw.model.vo.DrawGameTypeAndDateTimeVo;
+import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
 public class DrawService {
+    private final Clock clock;
     private final DrawRepositoryPort drawRepositoryPort;
 
 
@@ -25,6 +28,7 @@ public class DrawService {
 
     public DrawResponseDto addDraw(DrawRequestDto drawRequestDto) {
         Draw draw = DrawMapper.toDraw(drawRequestDto);
+        draw.setDrawDateTime(LocalDateTime.now(clock));
         draw = drawRepositoryPort.save(draw);
         return DrawMapper.toDrawResponseDto(draw);
     }
@@ -34,8 +38,7 @@ public class DrawService {
         return DrawMapper.toDrawResponseDto(draw);
     }
 
-    public DrawGameTypeAndDateTimeVo getDrawGameTypeAndDateTime(String drawId) {
-        DrawGameTypeAndDateTimeVo drawGameTypeAndDateTimeVo = drawRepositoryPort.findDrawGameTypeAndDateTimeById(drawId).orElseThrow(() -> new RuntimeException("Draw not found"));
-        return drawGameTypeAndDateTimeVo;
+    public DrawResultDto getDrawResult(String drawId) {
+        return drawRepositoryPort.findDrawResultById(drawId).orElseThrow(() -> new RuntimeException("Draw not found"));
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.wj.lotto.domain.result.model.dto.SummarizedResultsResponseDto;
+import pl.wj.lotto.domain.result.model.dto.DrawResultDetailsResponseDto;
 import pl.wj.lotto.domain.result.model.dto.TicketResultsResponseDto;
 import pl.wj.lotto.domain.result.port.in.ResultServicePort;
 
@@ -24,7 +24,7 @@ public class ResultController {
     }
 
     @GetMapping("/draws/{id}")
-    public List<SummarizedResultsResponseDto> getDrawSummarizedResults(@PathVariable String id) {
-        return resultServicePort.getDrawSummarizedResults(id);
+    public List<DrawResultDetailsResponseDto> getDrawResultDetails(@PathVariable String id) {
+        return resultServicePort.getDrawResultDetails(id);
     }
 }
