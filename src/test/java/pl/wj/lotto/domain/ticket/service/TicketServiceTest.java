@@ -17,6 +17,7 @@ import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
+import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -31,6 +32,8 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class TicketServiceTest {
     @Mock
+    private Clock clock;
+    @Mock
     private TicketRepositoryPort ticketRepositoryPort;
     @Mock
     private NotificationPort notificationPort;
@@ -43,11 +46,7 @@ class TicketServiceTest {
     @InjectMocks
     private TicketService ticketService;
 
-    @Test
-    void test() {
-        Clock clock = Clock.systemDefaultZone();
-        System.out.println(clock.getZone().getId());
-    }
+    private final Clock fixedClock = clock = new ClockFakeConfig().clock();
 
     @Test
     void shouldAddNewTicketWhenThereIsUserId() {
@@ -80,6 +79,8 @@ class TicketServiceTest {
                 .generationDateTime(generationDateTime)
                 .nextDrawDateTime(nextDrawDateTime)
                 .build();
+        given(clock.instant()).willReturn(fixedClock.instant());
+        given(clock.getZone()).willReturn(fixedClock.getZone());
         given(numbersGeneratorPort.generate(any(GameType.class), anyBoolean())).willReturn(numbers);
         given(numbersValidatorPort.validate(any(Numbers.class))).willReturn(true);
         given(ticketRepositoryPort.save(any(Ticket.class))).willAnswer(
