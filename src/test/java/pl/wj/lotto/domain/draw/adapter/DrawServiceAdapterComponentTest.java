@@ -18,7 +18,6 @@ import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -87,7 +86,7 @@ class DrawServiceAdapterComponentTest {
         List<Integer> mainNumbers = List.of(1,2,3,4,5,6);
         DrawRequestDto drawRequestDto = DrawRequestDto.builder()
                 .typeId(gameType.getId())
-                .mainNumbers(new ArrayList<>(mainNumbers))
+                .mainNumbers(mainNumbers)
                 .build();
         DrawResponseDto expectedResult = DrawResponseDto.builder()
                 .id(null)
@@ -96,7 +95,7 @@ class DrawServiceAdapterComponentTest {
                 .numbers(Numbers.builder()
                         .gameType(gameType)
                         .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
-                        .mainNumbers(new ArrayList<>(mainNumbers))
+                        .mainNumbers(mainNumbers)
                         .build())
                 .build();
 
@@ -118,7 +117,7 @@ class DrawServiceAdapterComponentTest {
         Numbers numbersLotto = Numbers.builder()
                 .gameType(gameType)
                 .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
-                .mainNumbers(new ArrayList<>(mainNumbers))
+                .mainNumbers(mainNumbers)
                 .build();
         Draw draw = Draw.builder()
                 .type(gameType)
@@ -133,7 +132,7 @@ class DrawServiceAdapterComponentTest {
                 .numbers(Numbers.builder()
                         .gameType(gameType)
                         .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
-                        .mainNumbers(new ArrayList<>(mainNumbers))
+                        .mainNumbers(mainNumbers)
                         .build())
                 .build();
 
@@ -154,7 +153,7 @@ class DrawServiceAdapterComponentTest {
         Numbers numbersLotto = Numbers.builder()
                 .gameType(gameType)
                 .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
-                .mainNumbers(new ArrayList<>(mainNumbers))
+                .mainNumbers(mainNumbers)
                 .build();
         Draw draw = Draw.builder()
                 .type(gameType)

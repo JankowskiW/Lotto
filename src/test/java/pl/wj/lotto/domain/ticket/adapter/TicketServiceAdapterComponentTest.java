@@ -5,23 +5,32 @@ import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.drawdatetime.DrawDateTimeChecker;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.domain.common.gametype.GameType;
+import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.NumbersGenerator;
 import pl.wj.lotto.domain.common.numbers.NumbersValidator;
+import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
 import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
+import pl.wj.lotto.domain.draw.model.Draw;
+import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
+import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
+import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.numbersreceiver.fake.NumbersReceiverFakeAdapter;
+import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.ticket.TicketFakeAdapter;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +38,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class TicketServiceAdapterComponentTest {
     private TicketRepositoryPort ticketRepositoryPort;
-    private TicketServiceAdapter ticketServiceAdapter;
+    private TicketServicePort ticketServicePort;
+    private DrawRepositoryPort drawRepositoryPort;
 
     private Clock clock;
 
@@ -40,10 +50,11 @@ class TicketServiceAdapterComponentTest {
         NumbersGeneratorPort numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort);
         NumbersValidatorPort numbersValidatorPort = new NumbersValidator();
         DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
+        drawRepositoryPort = new DrawFakeAdapter();
         ticketRepositoryPort = new TicketFakeAdapter();
         TicketService ticketService = new TicketService(
                 clock, ticketRepositoryPort, drawDateTimeCheckerPort, numbersGeneratorPort, numbersValidatorPort);
-        ticketServiceAdapter = new TicketServiceAdapter(ticketService);
+        ticketServicePort = new TicketServiceAdapter(ticketService);
     }
 
     @Test
@@ -62,7 +73,7 @@ class TicketServiceAdapterComponentTest {
         TicketResponseDto expectedResult = TicketMapper.toTicketResponseDto(ticketRequestDto);
 
         // when
-        TicketResponseDto result = ticketServiceAdapter.addTicket(ticketRequestDto);
+        TicketResponseDto result = ticketServicePort.addTicket(ticketRequestDto);
 
         // then
         assertAll(
@@ -121,7 +132,7 @@ class TicketServiceAdapterComponentTest {
         ticketRepositoryPort.save(ticket);
 
         // when
-        List<TicketResponseDto> result = ticketServiceAdapter.getUserTickets(userId);
+        List<TicketResponseDto> result = ticketServicePort.getUserTickets(userId);
 
         // then
         assertAll(
@@ -130,4 +141,77 @@ class TicketServiceAdapterComponentTest {
         );
     }
 
+    @Test
+    void shouldReturnPlayersDrawNumbersForGivenDrawResult() {
+        // given
+        LocalDateTime now = LocalDateTime.now(clock);
+        GameType gameType = GameType.LOTTO;
+        List<Integer> winningNumbers = List.of(1,2,3,4,5,6);
+        List<PlayerNumbersDto> expectedResult = new ArrayList<>();
+        DrawResultDto drawResultDto = DrawResultDto.builder()
+                .type(gameType)
+                .drawDateTime(now)
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                        .mainNumbers(winningNumbers)
+                        .build())
+                .build();
+        drawRepositoryPort.save(
+                Draw.builder()
+                        .type(gameType)
+                        .drawDateTime(now)
+                        .numbers(Numbers.builder()
+                                .gameType(gameType)
+                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                                .mainNumbers(winningNumbers)
+                                .build())
+                        .build());
+        Ticket ticket = ticketRepositoryPort.save(
+                Ticket.builder()
+                        .userId("some-user-id")
+                        .gameType(gameType)
+                        .numberOfDraws(1)
+                        .numbers(Numbers.builder()
+                                .gameType(gameType)
+                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                                .mainNumbers(winningNumbers)
+                                .build())
+                        .generationDateTime(now.minusHours(2))
+                        .lastDrawDateTime(now.plusHours(2))
+                        .build());
+        expectedResult.add(
+                PlayerNumbersDto.builder()
+                        .userId(ticket.getUserId())
+                        .gameType(gameType)
+                        .mainNumbers(ticket.getNumbers().mainNumbers())
+                .build());
+        ticket = ticketRepositoryPort.save(
+                Ticket.builder()
+                        .userId("some-user-id")
+                        .gameType(gameType)
+                        .numberOfDraws(1)
+                        .numbers(Numbers.builder()
+                                .gameType(gameType)
+                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                                .mainNumbers(List.of(1,2,3,4,5,7))
+                                .build())
+                        .generationDateTime(now.minusHours(1))
+                        .lastDrawDateTime(now.plusHours(2))
+                        .build());
+        expectedResult.add(
+                PlayerNumbersDto.builder()
+                        .userId(ticket.getUserId())
+                        .gameType(gameType)
+                        .mainNumbers(ticket.getNumbers().mainNumbers())
+               .build());
+
+        // when
+        List<PlayerNumbersDto> result = ticketServicePort.getPlayersDrawNumbers(drawResultDto);
+
+        // then
+        assertThat(result)
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactlyInAnyOrderElementsOf(expectedResult);
+    }
 }

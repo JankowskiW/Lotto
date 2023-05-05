@@ -67,6 +67,10 @@ public class TicketMapper {
                 .build();
     }
 
+    public static List<TicketEntity> toTicketEntities(List<Ticket> tickets) {
+        return tickets.stream().map(TicketMapper::toTicketEntity).toList();
+    }
+
     public static TicketEntity toTicketEntity(Ticket ticket) {
         return TicketEntity.builder()
                 .id(ticket.getId())

@@ -1,6 +1,7 @@
 package pl.wj.lotto.infrastructure.persistence.fake.ticket;
 
 import pl.wj.lotto.domain.common.gametype.GameType;
+import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
@@ -28,6 +29,9 @@ public class TicketFakeAdapter implements TicketRepositoryPort {
 
     @Override
     public List<TicketEntity> getPlayersDrawNumbersByGameTypeAndLastDrawDateTime(GameType type, LocalDateTime drawDateTime) {
-        return null;
+        return TicketMapper.toTicketEntities(ticketsTable.values()
+                .stream()
+                .filter(t -> t.getGameType().equals(type) && !t.getLastDrawDateTime().isBefore(drawDateTime))
+                .toList());
     }
 }
