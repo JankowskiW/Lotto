@@ -11,6 +11,9 @@ import java.util.List;
 public class NumbersValidator implements NumbersValidatorPort {
 
     public boolean validate(Numbers numbers) {
+        if (numbers.mainNumbers().stream().distinct().count() != (long) numbers.mainNumbers().size() ||
+                (numbers.extraNumbers() != null && numbers.extraNumbers().stream().distinct().count() != (long) numbers.extraNumbers().size()))
+            return false;
         return switch(numbers.gameType()) {
             case LOTTO -> validateLotto(numbers.mainNumbers());
             case Q600 -> validateQuick600(numbers.mainNumbers());
