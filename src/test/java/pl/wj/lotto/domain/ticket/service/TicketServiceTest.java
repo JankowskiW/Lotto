@@ -13,20 +13,24 @@ import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
+import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
+import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -120,5 +124,63 @@ class TicketServiceTest {
         assertThatThrownBy(() -> ticketService.addTicket(ticketRequestDto))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Given numbers are invalid");
+    }
+
+    @Test
+    void shouldReturnUserTickets() {
+        // given
+        String userId = "some-user-id";
+        GameType gameType = GameType.LOTTO;
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(Ticket.builder()
+                        .id("some-ticket-id")
+                        .userId(userId)
+                        .gameType(gameType)
+                        .numberOfDraws(1)
+                        .numbers(Numbers.builder().build())
+                        .generationDateTime(LocalDateTime.now(fixedClock))
+                        .lastDrawDateTime(LocalDateTime.now(fixedClock))
+                .build());
+        List<TicketResponseDto> expectedResult = TicketMapper.toTicketResponseDtos(tickets);
+        given(ticketRepositoryPort.getByUserId(anyString())).willReturn(tickets);
+
+        // when
+        List<TicketResponseDto> result = ticketService.getUserTickets(userId);
+
+        // then
+        assertThat(result)
+                .containsExactlyInAnyOrderElementsOf(expectedResult);
+    }
+
+    @Test
+    void shouldReturnPlayersDrawNumbers() {
+        // given
+        LocalDateTime now = LocalDateTime.now(fixedClock);
+        GameType gameType = GameType.LOTTO;
+        DrawResultDto drawResultDto = DrawResultDto.builder()
+                .type(gameType)
+                .numbers(Numbers.builder().build())
+                .drawDateTime(now)
+                .build();
+        List<TicketEntity> ticketEntities = new ArrayList<>();
+        ticketEntities.add(TicketEntity.builder()
+                        .id("some-ticket-id")
+                        .userId("some-user-id")
+                        .gameType(gameType)
+                        .numberOfDraws(1)
+                        .numbers(Numbers.builder().build())
+                        .generationDateTime(now.minusHours(2))
+                        .lastDrawDateTime(now.plusHours(2))
+                .build());
+        List<PlayerNumbersDto> expectedResult = TicketMapper.toPlayerNumbersDtos(ticketEntities);
+        given(ticketRepositoryPort.getPlayersDrawNumbersByGameTypeAndLastDrawDateTime(
+                any(GameType.class), any(LocalDateTime.class))).willReturn(ticketEntities);
+
+        // when
+        List<PlayerNumbersDto> result = ticketService.getPlayersDrawNumbers(drawResultDto);
+
+        // then
+        assertThat(result)
+                .containsExactlyInAnyOrderElementsOf(expectedResult);
     }
 }
