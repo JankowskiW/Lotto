@@ -9,11 +9,4 @@ public class GameTypeExtractor {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Not found"));
     }
-
-    public static GameType getGameTypeByName(String name) {
-        return Stream.of(GameType.values())
-                .filter(dt -> dt.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Not found"));
-    }
 }
