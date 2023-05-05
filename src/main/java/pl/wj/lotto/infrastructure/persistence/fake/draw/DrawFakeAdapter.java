@@ -1,11 +1,11 @@
 package pl.wj.lotto.infrastructure.persistence.fake.draw;
 
 import pl.wj.lotto.domain.common.gametype.GameType;
+import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,7 +23,6 @@ public class DrawFakeAdapter implements DrawRepositoryPort {
     public Draw save(Draw draw) {
         String id = draw.getId() == null ? UUID.randomUUID().toString() : draw.getId();
         draw.setId(id);
-        draw.setDrawDateTime(LocalDateTime.now());
         drawsTable.put(id, draw);
         return draw;
     }
@@ -35,6 +34,6 @@ public class DrawFakeAdapter implements DrawRepositoryPort {
 
     @Override
     public Optional<DrawResultDto> findDrawResultById(String drawId) {
-        return Optional.empty();
+        return Optional.of(DrawMapper.toDrawResultDto(drawsTable.get(drawId)));
     }
 }

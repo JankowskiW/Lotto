@@ -5,8 +5,11 @@ import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
+import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
+import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.draw.service.DrawService;
@@ -14,6 +17,8 @@ import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 
 import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -23,17 +28,18 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class DrawServiceAdapterComponentTest {
     private DrawRepositoryPort drawRepositoryPort;
     private DrawServicePort drawServicePort;
+    private Clock clock;
 
 
     @BeforeEach
     void setUp() {
-        Clock clock = new ClockFakeConfig().clock();
+        clock = new ClockFakeConfig().clock();
         drawRepositoryPort = new DrawFakeAdapter();
         drawServicePort = new DrawServiceAdapter(new DrawService(clock, drawRepositoryPort));
     }
 
     @Test
-    void shouldReturnDrawResponseDtosListOfSpecificDrawType() {
+    void shouldReturnDrawResponseDtosOfSpecificDrawType() {
         // given
         int expectedSize = 2;
         GameType gameType = GameType.EJP;
@@ -74,5 +80,97 @@ class DrawServiceAdapterComponentTest {
         );
     }
 
+    @Test
+    void shouldSaveNewDrawAndReturnDrawResponseDto() {
+        // given
+        GameType gameType = GameType.LOTTO;
+        List<Integer> mainNumbers = List.of(1,2,3,4,5,6);
+        DrawRequestDto drawRequestDto = DrawRequestDto.builder()
+                .typeId(gameType.getId())
+                .mainNumbers(new ArrayList<>(mainNumbers))
+                .build();
+        DrawResponseDto expectedResult = DrawResponseDto.builder()
+                .id(null)
+                .typeName(gameType.getName())
+                .drawDateTime(LocalDateTime.now(clock))
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                        .mainNumbers(new ArrayList<>(mainNumbers))
+                        .build())
+                .build();
+
+        // when
+        DrawResponseDto result = drawServicePort.addDraw(drawRequestDto);
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(expectedResult);
+    }
+
+    @Test
+    void shouldReturnDrawResponseDtoByDrawId() {
+        // given
+        GameType gameType = GameType.LOTTO;
+        List<Integer> mainNumbers = List.of(1,2,3,4,5,6);
+        Numbers numbersLotto = Numbers.builder()
+                .gameType(gameType)
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                .mainNumbers(new ArrayList<>(mainNumbers))
+                .build();
+        Draw draw = Draw.builder()
+                .type(gameType)
+                .drawDateTime(LocalDateTime.now(clock))
+                .numbers(numbersLotto)
+                .build();
+        draw = drawRepositoryPort.save(draw);
+        DrawResponseDto expectedResult = DrawResponseDto.builder()
+                .id(draw.getId())
+                .typeName(gameType.getName())
+                .drawDateTime(LocalDateTime.now(clock))
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                        .mainNumbers(new ArrayList<>(mainNumbers))
+                        .build())
+                .build();
+
+        // when
+        DrawResponseDto result = drawServicePort.getDraw(draw.getId());
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
+    }
+
+    @Test
+    void shouldReturnDrawResultByDrawId() {
+        // given
+        GameType gameType = GameType.LOTTO;
+        List<Integer> mainNumbers = List.of(1,2,3,4,5,6);
+        Numbers numbersLotto = Numbers.builder()
+                .gameType(gameType)
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                .mainNumbers(new ArrayList<>(mainNumbers))
+                .build();
+        Draw draw = Draw.builder()
+                .type(gameType)
+                .drawDateTime(LocalDateTime.now(clock))
+                .numbers(numbersLotto)
+                .build();
+        draw = drawRepositoryPort.save(draw);
+        DrawResultDto expectedResult = DrawMapper.toDrawResultDto(draw);
+
+        // when
+        DrawResultDto result = drawServicePort.getDrawResult(draw.getId());
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
+    }
 
 }

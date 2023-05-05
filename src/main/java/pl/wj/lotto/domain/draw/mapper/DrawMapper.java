@@ -7,6 +7,7 @@ import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.infrastructure.persistence.database.draw.entity.DrawEntity;
 
 import java.util.List;
@@ -59,6 +60,14 @@ public class DrawMapper {
                 .type(draw.getType())
                 .numbers(draw.getNumbers())
                 .drawDateTime(draw.getDrawDateTime())
+                .build();
+    }
+
+    public static DrawResultDto toDrawResultDto(Draw draw) {
+        return DrawResultDto.builder()
+                .type(draw.getType())
+                .drawDateTime(draw.getDrawDateTime())
+                .numbers(draw.getNumbers())
                 .build();
     }
 }
