@@ -13,7 +13,9 @@ import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
+import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,13 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class DrawServiceTest {
     @Mock
+    private Clock clock;
+    @Mock
     private DrawRepositoryPort drawRepositoryPort;
     @InjectMocks
     private DrawService drawService;
+
+    private final Clock fixedClock = clock = new ClockFakeConfig().clock();
 
     @Test
     void shouldReturnEmptyListWhenThereIsNoDrawWithGivenType() {
@@ -80,6 +86,8 @@ class DrawServiceTest {
         draw.setId(id);
         draw.setDrawDateTime(drawDateTime);
         DrawResponseDto expectedResult = DrawMapper.toDrawResponseDto(draw);
+        given(clock.instant()).willReturn(fixedClock.instant());
+        given(clock.getZone()).willReturn(fixedClock.getZone());
         given(drawRepositoryPort.save(any(Draw.class)))
                 .willAnswer(
                         i -> {
