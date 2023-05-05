@@ -13,10 +13,11 @@ public class ResultChecker implements ResultCheckerPort {
     private static final int LOTTO_LEVELS_AMOUNT = 4;
     private static final int Q600_LEVELS_AMOUNT = 5;
     private static final int EJP_LEVELS_AMOUNT = 12;
+    private static final int KENO_MAX_NUMBERS_AMOUNT = 12;
 
     @Override
-    public Map<Integer, Integer> getResultsForDraw(DrawResultDto drawResultDto, List<PlayerNumbersDto> ticketNumbers) {
-        Map<Integer, Integer> levelsWinnersAmount = new HashMap<>();
+    public Map<String, Integer> getResultsForDraw(DrawResultDto drawResultDto, List<PlayerNumbersDto> ticketNumbers) {
+        Map<String, Integer> levelsWinnersAmount = new HashMap<>();
         List<Integer> mainWinningNumbers = drawResultDto.numbers().mainNumbers();
         switch(drawResultDto.type()) {
             case LOTTO -> {
@@ -33,43 +34,43 @@ public class ResultChecker implements ResultCheckerPort {
             }
             case KENO -> {
                 List<List<Integer>> mainNumbers = ticketNumbers.stream().map(PlayerNumbersDto::mainNumbers).toList();
-                levelsWinnersAmount = getResultForKenoDraw();
+                levelsWinnersAmount = getResultForKenoDraw(mainWinningNumbers, mainNumbers);
             }
         }
         return levelsWinnersAmount;
     }
 
-    private Map<Integer, Integer> getResultForLottoDraw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {
+    private Map<String, Integer> getResultForLottoDraw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {
         return getResultForGamesWithSimpleRules(winningNumbers, mainNumbers, LOTTO_LEVELS_AMOUNT);
     }
 
-    private Map<Integer, Integer> getResultForQuick600Draw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {
+    private Map<String, Integer> getResultForQuick600Draw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {
         return getResultForGamesWithSimpleRules(winningNumbers, mainNumbers, Q600_LEVELS_AMOUNT);
     }
 
-    private Map<Integer, Integer> getResultForGamesWithSimpleRules(
+    private Map<String, Integer> getResultForGamesWithSimpleRules(
             List<Integer> winningNumbers, List<List<Integer>> mainNumbers, Integer levelsAmount) {
-        Map<Integer, Integer> levelsWinnersAmount = new HashMap<>();
+        Map<String, Integer> results = new HashMap<>();
         for (int i = 1; i <= levelsAmount; i++)
-            levelsWinnersAmount.put(i, 0);
+            results.put(String.valueOf(i), 0);
 
         for(List<Integer> numbers : mainNumbers) {
             int correctNumbersAmount = (int) numbers.stream().filter(winningNumbers::contains).count();
             if (correctNumbersAmount <= winningNumbers.size() - levelsAmount) continue;
-            int level = winningNumbers.size() - correctNumbersAmount + 1;
-            int newWinnersAmount = levelsWinnersAmount.get(level) + 1;
-            levelsWinnersAmount.put(level, newWinnersAmount);
+            String level = String.valueOf(winningNumbers.size() - correctNumbersAmount + 1);
+            int newWinnersAmount = results.get(level) + 1;
+            results.put(level, newWinnersAmount);
         }
-        return levelsWinnersAmount;
+        return results;
     }
 
-    private Map<Integer, Integer> getResultForEurojackpotDraw(
+    private Map<String, Integer> getResultForEurojackpotDraw(
             List<Integer> mainWinningNumbers, List<Integer> extraWinningNumbers, List<PlayerNumbersDto> ticketNumbers) {
-        Map<Integer, Integer> levelsWinnersAmount = new HashMap<>();
+        Map<String, Integer> results = new HashMap<>();
         List<Integer> mainNumbersPossibleLevels;
         List<Integer> extraNumbersPossibleLevels;
         for (int i = 1; i <= EJP_LEVELS_AMOUNT; i++)
-            levelsWinnersAmount.put(i, 0);
+            results.put(String.valueOf(i), 0);
 
         for(PlayerNumbersDto numbers : ticketNumbers) {
             int correctMainNumbersAmount = (int) numbers.mainNumbers().stream().filter(mainWinningNumbers::contains).count();
@@ -91,14 +92,27 @@ public class ResultChecker implements ResultCheckerPort {
             mainNumbersPossibleLevels.retainAll(extraNumbersPossibleLevels);
             if (mainNumbersPossibleLevels.size() == 0) continue;
             if (mainNumbersPossibleLevels.size() > 1) throw new RuntimeException("Unexpected value during calculating Eurojackpot draw results");
-            int level = mainNumbersPossibleLevels.get(0);
-            int newWinnersAmount = levelsWinnersAmount.get(level) + 1;
-            levelsWinnersAmount.put(level, newWinnersAmount);
+            String level = String.valueOf(mainNumbersPossibleLevels.get(0));
+            int newWinnersAmount = results.get(level) + 1;
+            results.put(level, newWinnersAmount);
         }
-        return levelsWinnersAmount;
+        return results;
     }
 
-    private Map<Integer, Integer> getResultForKenoDraw() {
-        return Map.of();
+    private Map<String, Integer> getResultForKenoDraw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {
+        Map<String, Integer> results = new HashMap<>();
+        for (int i = 1; i <= KENO_MAX_NUMBERS_AMOUNT; i++)
+            for (int j = 0; j <= i; j++)
+                results.put(i + ";" + j, 0);
+
+        for(List<Integer> numbers : mainNumbers) {
+            int selectedNumbersAmount = numbers.size();
+            int correctNumbersAmount = (int) numbers.stream().filter(winningNumbers::contains).count();
+            String level = selectedNumbersAmount + ";" + correctNumbersAmount;
+            int newWinnersAmount = results.get(level) + 1;
+            results.put(level, newWinnersAmount);
+        }
+
+        return results;
     }
 }

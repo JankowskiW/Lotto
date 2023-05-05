@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface ResultCheckerPort {
-    Map<Integer, Integer> getResultsForDraw(DrawResultDto drawResultDto, List<PlayerNumbersDto> playerNumbersDtos);
+    Map<String, Integer> getResultsForDraw(DrawResultDto drawResultDto, List<PlayerNumbersDto> playerNumbersDtos);
 }

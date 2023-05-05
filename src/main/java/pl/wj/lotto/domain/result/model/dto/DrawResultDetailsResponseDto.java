@@ -9,4 +9,4 @@ import java.util.Map;
 public record DrawResultDetailsResponseDto (
     String drawId,
     LocalDateTime drawDateTime,
-    Map<Integer, Integer> results) {}
+    Map<String, Integer> results) {}

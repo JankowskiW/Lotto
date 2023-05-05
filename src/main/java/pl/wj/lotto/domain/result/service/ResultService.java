@@ -26,7 +26,7 @@ public class ResultService {
     public DrawResultDetailsResponseDto getDrawResultDetails(String drawId) {
         DrawResultDto drawResultDto = drawServicePort.getDrawResult(drawId);
         List<PlayerNumbersDto> playerNumbersDtos = ticketServicePort.getPlayersDrawNumbers(drawResultDto);
-        Map<Integer, Integer> results = resultCheckerPort.getResultsForDraw(drawResultDto, playerNumbersDtos);
+        Map<String, Integer> results = resultCheckerPort.getResultsForDraw(drawResultDto, playerNumbersDtos);
         return DrawResultDetailsResponseDto.builder()
                 .drawId(drawId)
                 .drawDateTime(drawResultDto.drawDateTime())
