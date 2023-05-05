@@ -8,5 +8,5 @@ import java.util.List;
 public interface ResultServicePort {
     List<TicketResultsResponseDto> getTicketResults(String ticketId);
 
-    List<DrawResultDetailsResponseDto> getDrawResultDetails(String drawId);
+    DrawResultDetailsResponseDto getDrawResultDetails(String drawId);
 }

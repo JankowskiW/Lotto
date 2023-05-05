@@ -26,8 +26,7 @@ public class TicketCustomRepositoryImpl implements TicketCustomRepository {
         query.fields()
                 .include("userId")
                 .include("gameType")
-                .include("mainNumbers")
-                .include("extraNumbers");
+                .include("numbers");
 
         return mongoTemplate.find(query, TicketEntity.class);
     }

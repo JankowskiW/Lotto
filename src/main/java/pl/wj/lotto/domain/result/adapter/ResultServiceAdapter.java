@@ -18,7 +18,7 @@ public class ResultServiceAdapter implements ResultServicePort {
     }
 
     @Override
-    public List<DrawResultDetailsResponseDto> getDrawResultDetails(String drawId) {
+    public DrawResultDetailsResponseDto getDrawResultDetails(String drawId) {
         return resultService.getDrawResultDetails(drawId);
     }
 }

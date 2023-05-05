@@ -24,7 +24,7 @@ public class ResultController {
     }
 
     @GetMapping("/draws/{id}")
-    public List<DrawResultDetailsResponseDto> getDrawResultDetails(@PathVariable String id) {
+    public DrawResultDetailsResponseDto getDrawResultDetails(@PathVariable String id) {
         return resultServicePort.getDrawResultDetails(id);
     }
 }

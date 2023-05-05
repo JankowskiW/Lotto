@@ -19,7 +19,7 @@ public class TicketEntity {
     String id;
     String userId;
     GameType gameType;
-    int numberOfDraws;
+    Integer numberOfDraws;
     Numbers numbers;
     LocalDateTime generationDateTime;
     LocalDateTime lastDrawDateTime;
