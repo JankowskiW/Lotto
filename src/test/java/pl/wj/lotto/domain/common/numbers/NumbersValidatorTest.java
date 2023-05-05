@@ -19,6 +19,23 @@ class NumbersValidatorTest {
         numbersValidatorPort = new NumbersValidator();
     }
 
+    @Test
+    void shouldReturnFalseWhenEvenOneOfGivenNumbersOccursMoreThanOnce() {
+        // given
+        GameType gameType = GameType.LOTTO;
+        Numbers numbers = Numbers.builder()
+                .gameType(gameType)
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                .mainNumbers(List.of(1,2,3,4,6,6))
+                .build();
+
+        // when
+        boolean result = numbersValidatorPort.validate(numbers);
+
+        // then
+        assertThat(result).isFalse();
+    }
+
     // LOTTO
     @Test
     void shouldReturnTrueWhenGivenLottoNumbersAreValid() {
