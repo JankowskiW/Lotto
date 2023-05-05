@@ -2,7 +2,7 @@ package pl.wj.lotto.domain.ticket.model.dto;
 
 import lombok.Builder;
 import lombok.With;
-import pl.wj.lotto.domain.common.numbers.Numbers;
+import pl.wj.lotto.domain.common.numbers.model.Numbers;
 
 import java.time.LocalDateTime;
 

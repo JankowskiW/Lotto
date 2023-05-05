@@ -2,7 +2,7 @@ package pl.wj.lotto.domain.draw.model.dto;
 
 import lombok.Builder;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.numbers.Numbers;
+import pl.wj.lotto.domain.common.numbers.model.Numbers;
 
 import java.time.LocalDateTime;
 

@@ -3,7 +3,7 @@ package pl.wj.lotto.domain.draw.mapper;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
-import pl.wj.lotto.domain.common.numbers.Numbers;
+import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;

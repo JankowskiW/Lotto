@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettings;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
+import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
 

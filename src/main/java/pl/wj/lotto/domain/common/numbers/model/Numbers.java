@@ -1,4 +1,4 @@
-package pl.wj.lotto.domain.common.numbers;
+package pl.wj.lotto.domain.common.numbers.model;
 
 import lombok.Builder;
 import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTimeSettings;

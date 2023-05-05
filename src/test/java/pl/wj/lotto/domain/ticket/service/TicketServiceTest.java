@@ -10,7 +10,7 @@ import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
-import pl.wj.lotto.domain.common.numbers.Numbers;
+import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
 import pl.wj.lotto.domain.ticket.model.Ticket;

@@ -7,11 +7,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
-import pl.wj.lotto.domain.common.numbers.Numbers;
+import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 
@@ -108,7 +109,7 @@ class DrawServiceTest {
     }
 
     @Test
-    void shouldReturnDrawByIdWhenExistsInDatabase() {
+    void shouldReturnDrawByIdWhenAnyExistsInDatabase() {
         // given
         String id = UUID.randomUUID().toString();
         LocalDateTime drawDateTime = LocalDateTime.now();
@@ -144,6 +145,52 @@ class DrawServiceTest {
 
         // when && then
         assertThatThrownBy(() -> drawService.getDraw(id))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Draw not found");
+    }
+
+    @Test
+    void shouldReturnDrawResultByDrawIdWhenAnyExists() {
+        // given
+        GameType gameType = GameType.LOTTO;
+        String drawId = "some-draw-id";
+        DrawResultDto drawResultDto = DrawResultDto.builder()
+                .type(gameType)
+                .drawDateTime(LocalDateTime.now(fixedClock))
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                        .mainNumbers(List.of(1,2,3,4,5,6))
+                        .build())
+                .build();
+        DrawResultDto expectedResult = DrawResultDto.builder()
+                .type(gameType)
+                .drawDateTime(LocalDateTime.now(fixedClock))
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                        .mainNumbers(List.of(1,2,3,4,5,6))
+                        .build())
+                .build();
+        given(drawRepositoryPort.findDrawResultById(anyString())).willReturn(Optional.of(drawResultDto));
+
+        // when
+        DrawResultDto result = drawService.getDrawResult(drawId);
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDrawNotExistsInDatabse() {
+        // given
+        String drawId = "some-draw-id";
+        given(drawRepositoryPort.findDrawResultById(anyString())).willReturn(Optional.empty());
+
+        // when && then
+        assertThatThrownBy(() -> drawService.getDrawResult(drawId))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Draw not found");
     }
