@@ -4,6 +4,7 @@ import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.result.helper.resultchecker.port.in.ResultCheckerPort;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,12 +75,12 @@ public class ResultChecker implements ResultCheckerPort {
             int correctMainNumbersAmount = (int) numbers.mainNumbers().stream().filter(mainWinningNumbers::contains).count();
             int correctExtraNumbersAmount = (int) numbers.extraNumbers().stream().filter(extraWinningNumbers::contains).count();
             switch(correctMainNumbersAmount) {
-                case 5 -> mainNumbersPossibleLevels = List.of(1, 2, 3);
-                case 4 -> mainNumbersPossibleLevels = List.of(4, 5, 7);
-                case 3 -> mainNumbersPossibleLevels = List.of(6, 9, 10);
-                case 2 -> mainNumbersPossibleLevels = List.of(8, 12);
-                case 1 -> mainNumbersPossibleLevels = List.of(11);
-                default -> mainNumbersPossibleLevels = List.of();
+                case 5 -> mainNumbersPossibleLevels = new ArrayList<>(List.of(1, 2, 3));
+                case 4 -> mainNumbersPossibleLevels = new ArrayList<>(List.of(4, 5, 7));
+                case 3 -> mainNumbersPossibleLevels = new ArrayList<>(List.of(6, 9, 10));
+                case 2 -> mainNumbersPossibleLevels = new ArrayList<>(List.of(8, 12));
+                case 1 -> mainNumbersPossibleLevels = new ArrayList<>(List.of(11));
+                default -> mainNumbersPossibleLevels = new ArrayList<>(List.of());
             }
             switch(correctExtraNumbersAmount) {
                 case 2 -> extraNumbersPossibleLevels = List.of(1, 4, 6, 8, 11);
