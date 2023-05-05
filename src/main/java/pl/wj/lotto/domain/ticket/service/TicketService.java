@@ -65,10 +65,9 @@ public class TicketService {
     public List<TicketResponseDto> getUserTickets(String userId) {
         List<Ticket> tickets = ticketRepositoryPort.getByUserId(userId);
         List<TicketResponseDto> ticketResponseDtos = TicketMapper.toTicketResponseDtos(tickets);
-        return ticketResponseDtos.stream().map(tr -> tr.withNextDrawDateTime(
-                drawDateTimeCheckerPort.getNextDrawDateTimeForTicket(
-                        tr.numbers().drawDateTimeSettings(), tr.generationDateTime())))
-                .toList();
+        return ticketResponseDtos.stream()
+                .map(tr -> tr.withNextDrawDateTime(drawDateTimeCheckerPort.getNextDrawDateTimeForTicket(
+                        tr.numbers().drawDateTimeSettings(), tr.generationDateTime()))).toList();
     }
 
     public List<PlayerNumbersDto> getPlayersDrawNumbers(DrawResultDto drawResultDto) {
