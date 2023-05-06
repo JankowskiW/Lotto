@@ -13,7 +13,7 @@ public class ResultChecker implements ResultCheckerPort {
     private static final int LOTTO_LEVELS_AMOUNT = 4;
     private static final int Q600_LEVELS_AMOUNT = 5;
     private static final int EJP_LEVELS_AMOUNT = 12;
-    private static final int KENO_MAX_NUMBERS_AMOUNT = 12;
+    private static final int KENO_MAX_NUMBERS_AMOUNT = 10;
 
     @Override
     public Map<String, Integer> getResultsForDraw(DrawResultDto drawResultDto, List<PlayerNumbersDto> ticketNumbers) {
