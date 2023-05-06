@@ -5,7 +5,7 @@ import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.result.helper.resultchecker.port.in.ResultCheckerPort;
 import pl.wj.lotto.domain.result.model.dto.DrawResultDetailsResponseDto;
-import pl.wj.lotto.domain.result.model.dto.TicketResultsResponseDto;
+import pl.wj.lotto.domain.result.model.dto.TicketResultsDetailsDto;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 
@@ -19,8 +19,12 @@ public class ResultService {
     private final DrawServicePort drawServicePort;
 
 
-    public List<TicketResultsResponseDto> getTicketResults(String ticketId) {
-        return List.of();
+    public TicketResultsDetailsDto getTicketResults(String ticketId) {
+//        // TODO: Make sure that draws for ticket should be retrieved in drawServicePort
+//        TicketResponseDto ticket = ticketServicePort.getTicket(ticketId);
+//        List<DrawResponseDto> ticketDraws = drawServicePort.getDrawsForTicket(ticketId);
+//        return resultCheckerPort.getResultsForTicket(ticket, ticketDraws);
+        return TicketResultsDetailsDto.builder().build();
     }
 
     public DrawResultDetailsResponseDto getDrawResultDetails(String drawId) {
