@@ -75,4 +75,9 @@ public class TicketService {
                 drawResultDto.type(), drawResultDto.drawDateTime());
         return TicketMapper.toPlayerNumbersDtos(ticketEntities);
     }
+
+    public Ticket getTicket(String ticketId) {
+        TicketEntity ticketEntity = ticketRepositoryPort.findById(ticketId).orElseThrow(() -> new RuntimeException("Ticket not exists"));
+        return TicketMapper.toTicket(ticketEntity);
+    }
 }

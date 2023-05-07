@@ -10,6 +10,7 @@ import pl.wj.lotto.infrastructure.persistence.database.ticket.repository.TicketR
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class TicketDatabaseAdapter implements TicketRepositoryPort {
@@ -30,5 +31,10 @@ public class TicketDatabaseAdapter implements TicketRepositoryPort {
     @Override
     public List<TicketEntity> getPlayersDrawNumbersByGameTypeAndLastDrawDateTime(GameType type, LocalDateTime drawDateTime) {
         return ticketRepository.getPlayersDrawNumbersByGameTypeAndLastDrawDateTime(type, drawDateTime);
+    }
+
+    @Override
+    public Optional<TicketEntity> findById(String ticketId) {
+        return ticketRepository.findById(ticketId);
     }
 }

@@ -1,6 +1,7 @@
 package pl.wj.lotto.domain.ticket.port.in;
 
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
@@ -14,4 +15,5 @@ public interface TicketServicePort {
 
     List<PlayerNumbersDto> getPlayersDrawNumbers(DrawResultDto drawResultDto);
 
+    Ticket getTicket(String ticketId);
 }

@@ -6,6 +6,7 @@ import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,5 +36,10 @@ public class DrawFakeAdapter implements DrawRepositoryPort {
     @Override
     public Optional<DrawResultDto> findDrawResultById(String drawId) {
         return Optional.of(DrawMapper.toDrawResultDto(drawsTable.get(drawId)));
+    }
+
+    @Override
+    public List<Draw> findAllByTypeAndDrawDateTime(GameType gameType, LocalDateTime generationDateTime, LocalDateTime lastDrawDateTime) {
+        return null;
     }
 }

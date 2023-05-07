@@ -9,6 +9,7 @@ import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntit
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,5 +34,10 @@ public class TicketFakeAdapter implements TicketRepositoryPort {
                 .stream()
                 .filter(t -> t.getGameType().equals(type) && !t.getLastDrawDateTime().isBefore(drawDateTime))
                 .toList());
+    }
+
+    @Override
+    public Optional<TicketEntity> findById(String ticketId) {
+        return Optional.of(TicketMapper.toTicketEntity(ticketsTable.get(ticketId)));
     }
 }

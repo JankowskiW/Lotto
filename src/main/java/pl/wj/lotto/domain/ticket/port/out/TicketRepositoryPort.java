@@ -6,6 +6,7 @@ import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntit
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface TicketRepositoryPort {
     Ticket save(Ticket ticket);
@@ -14,4 +15,5 @@ public interface TicketRepositoryPort {
 
     List<TicketEntity> getPlayersDrawNumbersByGameTypeAndLastDrawDateTime(GameType type, LocalDateTime drawDateTime);
 
+    Optional<TicketEntity> findById(String ticketId);
 }

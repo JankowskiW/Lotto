@@ -48,6 +48,18 @@ public class TicketMapper {
                 .build();
     }
 
+    public static TicketResponseDto toTicketResponseDto(TicketEntity ticketEntity) {
+        return TicketResponseDto.builder()
+                .id(ticketEntity.getId())
+                .userId(ticketEntity.getUserId())
+                .gameTypeName(ticketEntity.getGameType().getName())
+                .numberOfDraws(ticketEntity.getNumberOfDraws())
+                .numbers(ticketEntity.getNumbers())
+                .generationDateTime(ticketEntity.getGenerationDateTime())
+                .nextDrawDateTime(null)
+                .build();
+    }
+
     public static TicketResponseDto toTicketResponseDto(TicketRequestDto ticketRequestDto) {
         GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
         Numbers numbers = Numbers.builder()

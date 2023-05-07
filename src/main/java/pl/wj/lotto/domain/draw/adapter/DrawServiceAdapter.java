@@ -1,11 +1,13 @@
 package pl.wj.lotto.domain.draw.adapter;
 
 import lombok.RequiredArgsConstructor;
+import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.draw.service.DrawService;
+import pl.wj.lotto.domain.ticket.model.Ticket;
 
 import java.util.List;
 
@@ -31,6 +33,11 @@ public class DrawServiceAdapter implements DrawServicePort {
     @Override
     public DrawResultDto getDrawResult(String drawId) {
         return drawService.getDrawResult(drawId);
+    }
+
+    @Override
+    public List<Draw> getDrawsForTicket(Ticket ticket) {
+        return drawService.getDrawsForTicket(ticket);
     }
 
 }

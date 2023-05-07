@@ -1,7 +1,10 @@
 package pl.wj.lotto.domain.result.helper.resultchecker;
 
+import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.result.helper.resultchecker.port.in.ResultCheckerPort;
+import pl.wj.lotto.domain.result.model.dto.TicketResultsDetailsDto;
+import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 
 import java.util.ArrayList;
@@ -38,6 +41,12 @@ public class ResultChecker implements ResultCheckerPort {
             }
         }
         return levelsWinnersAmount;
+    }
+
+    @Override
+    public TicketResultsDetailsDto getResultsForTicket(Ticket ticket, List<Draw> ticketDraws) {
+        // TODO: implement that method
+        return null;
     }
 
     private Map<String, Integer> getResultForLottoDraw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {

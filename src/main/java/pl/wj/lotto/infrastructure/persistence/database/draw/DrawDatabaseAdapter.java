@@ -9,6 +9,7 @@ import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.infrastructure.persistence.database.draw.entity.DrawEntity;
 import pl.wj.lotto.infrastructure.persistence.database.draw.repository.DrawRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +37,10 @@ public class DrawDatabaseAdapter implements DrawRepositoryPort {
     @Override
     public Optional<DrawResultDto> findDrawResultById(String drawId) {
         return drawRepository.findDrawResultById(drawId);
+    }
+
+    @Override
+    public List<Draw> findAllByTypeAndDrawDateTime(GameType gameType, LocalDateTime generationDateTime, LocalDateTime lastDrawDateTime) {
+        return null;
     }
 }
