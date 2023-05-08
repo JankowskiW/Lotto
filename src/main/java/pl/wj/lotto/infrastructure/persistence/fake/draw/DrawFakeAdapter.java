@@ -40,6 +40,11 @@ public class DrawFakeAdapter implements DrawRepositoryPort {
 
     @Override
     public List<Draw> findAllByTypeAndDrawDateTime(GameType gameType, LocalDateTime generationDateTime, LocalDateTime lastDrawDateTime) {
-        return null;
+        return drawsTable.values()
+                .stream()
+                .filter(d -> d.getType().equals(gameType) &&
+                        d.getDrawDateTime().isAfter(generationDateTime) &&
+                        !d.getDrawDateTime().isAfter(lastDrawDateTime))
+                .toList();
     }
 }

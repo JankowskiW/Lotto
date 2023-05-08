@@ -13,6 +13,7 @@ import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.draw.service.DrawService;
+import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 
@@ -170,6 +171,46 @@ class DrawServiceAdapterComponentTest {
         assertThat(result)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedResult);
+    }
+
+    @Test
+    void shouldReturnDrawListForGivenTicket() {
+        // given
+        LocalDateTime now = LocalDateTime.now(clock);
+        GameType gameType = GameType.LOTTO;
+        Ticket ticket = Ticket.builder()
+                .id("some-ticket-id")
+                .userId("some-user-id")
+                .gameType(gameType)
+                .numberOfDraws(2)
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                        .mainNumbers(List.of(1,2,3,4,5,6))
+                        .build())
+                .generationDateTime(now.minusDays(6))
+                .lastDrawDateTime(now.minusDays(1))
+                .build();
+        Draw firstDraw = Draw.builder()
+                .type(gameType)
+                .drawDateTime(now.minusDays(5))
+                .numbers(Numbers.builder().build())
+                .build();
+        firstDraw = drawRepositoryPort.save(firstDraw);
+        Draw secondDraw = Draw.builder()
+                .type(gameType)
+                .drawDateTime(now.minusDays(1))
+                .numbers(Numbers.builder().build())
+                .build();
+        secondDraw = drawRepositoryPort.save(secondDraw);
+        List<Draw> expectedResult = List.of(firstDraw, secondDraw);
+
+        // when
+        List<Draw> result = drawServicePort.getDrawsForTicket(ticket);
+
+        // then
+        assertThat(result)
+                .containsExactlyInAnyOrderElementsOf(expectedResult);
     }
 
 }

@@ -44,6 +44,7 @@ public class DrawService {
     }
 
     public List<Draw> getDrawsForTicket(Ticket ticket) {
-        return drawRepositoryPort.findAllByTypeAndDrawDateTime(ticket.getGameType(), ticket.getGenerationDateTime(), ticket.getLastDrawDateTime());
+        return drawRepositoryPort.findAllByTypeAndDrawDateTime(
+                ticket.getGameType(), ticket.getGenerationDateTime(), ticket.getLastDrawDateTime());
     }
 }
