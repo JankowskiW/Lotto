@@ -1,9 +1,12 @@
 package pl.wj.lotto.domain.result.helper.resultchecker;
 
+import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.result.helper.resultchecker.port.in.ResultCheckerPort;
+import pl.wj.lotto.domain.result.model.dto.TicketResultDto;
 import pl.wj.lotto.domain.result.model.dto.TicketResultsDetailsDto;
+import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 
@@ -45,8 +48,43 @@ public class ResultChecker implements ResultCheckerPort {
 
     @Override
     public TicketResultsDetailsDto getResultsForTicket(Ticket ticket, List<Draw> ticketDraws) {
-        // TODO: implement that method
-        return null;
+        List<TicketResultDto> ticketResultDtos = new ArrayList<>();
+        for(Draw draw : ticketDraws) {
+            Map<String, Integer> levelsWinnersAmount = new HashMap<>();
+            Numbers winningNumbers = draw.getNumbers();
+            switch(ticket.getGameType()) {
+                case LOTTO -> {
+                    List<Integer> mainNumbers = ticket.getNumbers().mainNumbers();
+                    levelsWinnersAmount = getResultForLottoDraw(winningNumbers.mainNumbers(), List.of(mainNumbers));
+                }
+                case Q600 -> {
+                    List<Integer> mainNumbers = ticket.getNumbers().mainNumbers();
+                    levelsWinnersAmount = getResultForQuick600Draw(winningNumbers.mainNumbers(), List.of(mainNumbers));
+                }
+                case EJP -> {
+                    levelsWinnersAmount = getResultForEurojackpotDraw(
+                            winningNumbers.mainNumbers(), winningNumbers.extraNumbers(),
+                            List.of(TicketMapper.toPlayerNumbersDto(ticket)));
+                }
+                case KENO -> {
+                    List<Integer> mainNumbers = ticket.getNumbers().mainNumbers();
+                    levelsWinnersAmount = getResultForKenoDraw(winningNumbers.mainNumbers(), List.of(mainNumbers));
+                }
+            }
+            TicketResultDto ticketResultDto = TicketResultDto.builder()
+                    .drawId(draw.getId())
+                    .level(levelsWinnersAmount.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findFirst().orElse("0"))
+                    .winningNumbers(winningNumbers)
+                    .ticketNumbers(ticket.getNumbers())
+                    .prize(0.0) // TODO: think how to calculate prize
+                    .build();
+            ticketResultDtos.add(ticketResultDto);
+        }
+        return TicketResultsDetailsDto.builder()
+                .ticketId(ticket.getId())
+                .results(ticketResultDtos)
+                .totalPrize(ticketResultDtos.stream().mapToDouble(TicketResultDto::prize).sum())
+                .build();
     }
 
     private Map<String, Integer> getResultForLottoDraw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {

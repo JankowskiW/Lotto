@@ -123,4 +123,13 @@ public class TicketMapper {
                 .extraNumbers(ticketEntity.getNumbers().extraNumbers())
                 .build();
     }
+
+    public static PlayerNumbersDto toPlayerNumbersDto(Ticket ticket) {
+        return PlayerNumbersDto.builder()
+                .userId(ticket.getUserId())
+                .gameType(ticket.getGameType())
+                .mainNumbers(ticket.getNumbers().mainNumbers())
+                .extraNumbers(ticket.getNumbers().extraNumbers())
+                .build();
+    }
 }
