@@ -14,6 +14,7 @@ import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
+import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 
 import java.time.Clock;
@@ -193,6 +194,49 @@ class DrawServiceTest {
         assertThatThrownBy(() -> drawService.getDrawResult(drawId))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Draw not found");
+    }
+
+    @Test
+    void shouldReturnDrawListForGivenTicket() {
+        // given
+        LocalDateTime now = LocalDateTime.now(fixedClock);
+        GameType gameType = GameType.LOTTO;
+        Ticket ticket = Ticket.builder()
+                .id("some-ticket-id")
+                .userId("some-user-id")
+                .gameType(gameType)
+                .numberOfDraws(2)
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                        .mainNumbers(List.of(1,2,3,4,5,6))
+                        .build())
+                .generationDateTime(now.minusDays(6))
+                .lastDrawDateTime(now.minusDays(1))
+                .build();
+        Draw firstDraw = Draw.builder()
+                .id("some-draw-id-1")
+                .type(gameType)
+                .drawDateTime(now.minusDays(5))
+                .numbers(Numbers.builder().build())
+                .build();
+        Draw secondDraw = Draw.builder()
+                .id("some-draw-id-2")
+                .type(gameType)
+                .drawDateTime(now.minusDays(1))
+                .numbers(Numbers.builder().build())
+                .build();
+        List<Draw> expectedResult = List.of(firstDraw, secondDraw);
+        given(drawRepositoryPort.findAllByTypeAndDrawDateTime(any(GameType.class), any(LocalDateTime.class), any(LocalDateTime.class)))
+                .willReturn(List.of(firstDraw, secondDraw));
+
+        // when
+        List<Draw> result = drawService.getDrawsForTicket(ticket);
+
+        // then
+        assertThat(result)
+                .usingRecursiveFieldByFieldElementComparator()
+                .isEqualTo(expectedResult);
     }
 
 }
