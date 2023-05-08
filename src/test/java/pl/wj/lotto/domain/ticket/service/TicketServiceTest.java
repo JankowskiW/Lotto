@@ -27,6 +27,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -182,5 +183,48 @@ class TicketServiceTest {
         // then
         assertThat(result)
                 .containsExactlyInAnyOrderElementsOf(expectedResult);
+    }
+
+    @Test
+    void shouldReturnTicketByIdWhenExistsInDatabase() {
+        // given
+        LocalDateTime now = LocalDateTime.now(fixedClock);
+        GameType gameType = GameType.LOTTO;
+        String ticketId = "some-ticket-id";
+        TicketEntity ticketEntity = TicketEntity.builder()
+                .id(ticketId)
+                .userId("some-user-id")
+                .gameType(gameType)
+                .numberOfDraws(1)
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                        .mainNumbers(List.of(1,2,3,4,5,6))
+                        .build())
+                .generationDateTime(now)
+                .lastDrawDateTime(now.plusDays(1))
+                .build();
+        Ticket expectedResult = TicketMapper.toTicket(ticketEntity);
+        given(ticketRepositoryPort.findById(anyString())).willReturn(Optional.of(ticketEntity));
+
+        // when
+        Ticket result = ticketService.getTicket(ticketId);
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenTicketWithGivenIdNotExistsInDatabase() {
+        // given
+        String ticketId = "some-ticket-id";
+        given(ticketRepositoryPort.findById(anyString())).willReturn(Optional.empty());
+
+        // when && then
+        assertThatThrownBy(() -> ticketService.getTicket(ticketId))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Ticket not exists");
     }
 }
