@@ -214,4 +214,33 @@ class TicketServiceAdapterComponentTest {
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrderElementsOf(expectedResult);
     }
+
+    @Test
+    void shouldReturnTicketByGivenId() {
+        // given
+        GameType gameType = GameType.LOTTO;
+        LocalDateTime now = LocalDateTime.now(clock);
+        Ticket expectedResult = ticketRepositoryPort.save(
+                Ticket.builder()
+                        .userId("some-user-id")
+                        .gameType(gameType)
+                        .numberOfDraws(1)
+                        .numbers(Numbers.builder()
+                                .gameType(gameType)
+                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                                .mainNumbers(List.of(1,2,3,4,5,6))
+                                .build())
+                        .generationDateTime(now.minusHours(2))
+                        .lastDrawDateTime(now.plusHours(2))
+                        .build());
+        String ticketId = expectedResult.getId();
+
+        // when
+        Ticket result = ticketServicePort.getTicket(ticketId);
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
+    }
 }
