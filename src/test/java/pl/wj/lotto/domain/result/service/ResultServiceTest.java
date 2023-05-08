@@ -8,17 +8,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
+import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.result.helper.resultchecker.port.in.ResultCheckerPort;
 import pl.wj.lotto.domain.result.model.dto.DrawResultDetailsResponseDto;
 import pl.wj.lotto.domain.result.model.dto.TicketResultDto;
 import pl.wj.lotto.domain.result.model.dto.TicketResultsDetailsDto;
+import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,50 +49,72 @@ class ResultServiceTest {
         // given
         GameType gameType = GameType.LOTTO;
         String ticketId = "some-ticket-id";
-        String drawId = "some-draw-id";
-        TicketResultDto ticketResultDto1 = TicketResultDto.builder()
-                .drawId(drawId)
-                .level("1")
-                .ticketNumbers(Numbers.builder()
-                        .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
-                        .mainNumbers(List.of(1,2,3,4,5,6))
-                        .build())
-                .winningNumbers(Numbers.builder()
-                        .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
-                        .mainNumbers(List.of(1,2,3,4,5,6))
-                        .build())
-                .prize(40000000.0)
+        String userId = "some-user-id";
+        double prize1 = 1000000;
+        double prize2 = 2000;
+        Numbers ticketNumbers = Numbers.builder()
+                .gameType(gameType)
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
-        TicketResultDto ticketResultDto2 = TicketResultDto.builder()
-                .drawId(drawId)
-                .level("4")
-                .ticketNumbers(Numbers.builder()
+        Ticket ticket = Ticket.builder()
+                .id(ticketId)
+                .userId(userId)
+                .gameType(gameType)
+                .numberOfDraws(2)
+                .numbers(ticketNumbers)
+                .generationDateTime(LocalDateTime.now(clock).minusDays(7))
+                .lastDrawDateTime(LocalDateTime.now(clock).minusHours(1))
+                .build();
+        List<Draw> ticketDraws = new ArrayList<>();
+        ticketDraws.add(Draw.builder()
+                        .id("some-draw-id-1")
+                        .type(gameType)
+                        .numbers(Numbers.builder()
+                                .gameType(gameType)
+                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                                .mainNumbers(List.of(1,2,3,4,5,6))
+                                .build())
+                        .drawDateTime(LocalDateTime.now(clock).minusDays(6))
+                .build());
+        ticketDraws.add(Draw.builder()
+                .id("some-draw-id-2")
+                .type(gameType)
+                .numbers(Numbers.builder()
                         .gameType(gameType)
                         .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(List.of(1,2,3,7,8,9))
                         .build())
-                .winningNumbers(Numbers.builder()
-                        .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
-                        .mainNumbers(List.of(1,2,3,4,5,6))
-                        .build())
-                .prize(225.5)
-                .build();
+                .drawDateTime(LocalDateTime.now(clock).minusDays(2))
+                .build());
+        List<TicketResultDto> ticketResults = new ArrayList<>();
+        ticketResults.add(TicketResultDto.builder()
+                .drawId(ticketDraws.get(0).getId())
+                .level("1")
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(ticketDraws.get(0).getNumbers())
+                .prize(prize1)
+                .build());
+        ticketResults.add(TicketResultDto.builder()
+                .drawId(ticketDraws.get(1).getId())
+                .level("4")
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(ticketDraws .get(1).getNumbers())
+                .prize(prize2)
+                .build());
         TicketResultsDetailsDto ticketResultsDetailsDto = TicketResultsDetailsDto.builder()
                 .ticketId(ticketId)
-                .results(List.of(ticketResultDto1, ticketResultDto2))
-                .totalPrize(ticketResultDto1.prize() + ticketResultDto2.prize())
+                .results(ticketResults)
+                .totalPrize(ticketResults.get(0).prize() + ticketResults.get(1).prize())
                 .build();
         TicketResultsDetailsDto expectedResult = TicketResultsDetailsDto.builder()
                 .ticketId(ticketId)
-                .results(List.of(ticketResultDto1, ticketResultDto2))
-                .totalPrize(ticketResultDto1.prize() + ticketResultDto2.prize())
+                .results(ticketResults)
+                .totalPrize(prize1 + prize2)
                 .build();
-//        given(ticketServicePort.getTicket(anyString())).willReturn(TicketResponseDto.builder().build());
-//        given(drawServicePort.getDrawsForTicket(anyString())).willReturn(List.of());
-//        given(resultCheckerPort.getResultsForTicket(any(TicketResponseDto.class), anyList())).willReturn(ticketResultsDetailsDto);
+        given(ticketServicePort.getTicket(anyString())).willReturn(ticket);
+        given(drawServicePort.getDrawsForTicket(any(Ticket.class))).willReturn(ticketDraws);
+        given(resultCheckerPort.getResultsForTicket(any(Ticket.class), anyList())).willReturn(ticketResultsDetailsDto);
 
         // when
         TicketResultsDetailsDto result = resultService.getTicketResults(ticketId);

@@ -61,11 +61,9 @@ public class ResultChecker implements ResultCheckerPort {
                     List<Integer> mainNumbers = ticket.getNumbers().mainNumbers();
                     levelsWinnersAmount = getResultForQuick600Draw(winningNumbers.mainNumbers(), List.of(mainNumbers));
                 }
-                case EJP -> {
-                    levelsWinnersAmount = getResultForEurojackpotDraw(
-                            winningNumbers.mainNumbers(), winningNumbers.extraNumbers(),
-                            List.of(TicketMapper.toPlayerNumbersDto(ticket)));
-                }
+                case EJP -> levelsWinnersAmount = getResultForEurojackpotDraw(
+                        winningNumbers.mainNumbers(), winningNumbers.extraNumbers(),
+                        List.of(TicketMapper.toPlayerNumbersDto(ticket)));
                 case KENO -> {
                     List<Integer> mainNumbers = ticket.getNumbers().mainNumbers();
                     levelsWinnersAmount = getResultForKenoDraw(winningNumbers.mainNumbers(), List.of(mainNumbers));

@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DrawService {
     private final Clock clock;
-    private final DrawRepositoryPort drawRepositoryPort;    // TODO:
+    private final DrawRepositoryPort drawRepositoryPort;
 
 
     public List<DrawResponseDto> getGameTypeDraws(int gameTypeId) {
