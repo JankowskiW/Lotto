@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
+import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
@@ -26,8 +27,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +36,8 @@ class DrawServiceTest {
     private Clock clock;
     @Mock
     private DrawRepositoryPort drawRepositoryPort;
+    @Mock
+    private NumbersGeneratorPort numbersGeneratorPort;
     @InjectMocks
     private DrawService drawService;
 
@@ -79,15 +81,24 @@ class DrawServiceTest {
         String id = UUID.randomUUID().toString();
         LocalDateTime drawDateTime = LocalDateTime.now();
         GameType gameType = GameType.EJP;
+        List<Integer> mainNumbers = List.of(1,2,3,4,5);
+        List<Integer> extraNumbers = List.of(1,2);
+        Numbers numbers = Numbers.builder()
+                .gameType(gameType)
+                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                .mainNumbers(mainNumbers)
+                .extraNumbers(extraNumbers)
+                .build();
         DrawRequestDto drawRequestDto = DrawRequestDto.builder()
                 .typeId(gameType.getId())
-                .mainNumbers(List.of(1,2,3,4,5))
-                .extraNumbers(List.of(1,2))
+                .mainNumbers(mainNumbers)
+                .extraNumbers(extraNumbers)
                 .build();
         Draw draw = DrawMapper.toDraw(drawRequestDto);
         draw.setId(id);
         draw.setDrawDateTime(drawDateTime);
         DrawResponseDto expectedResult = DrawMapper.toDrawResponseDto(draw);
+        given(numbersGeneratorPort.generate(any(GameType.class), anyBoolean())).willReturn(numbers);
         given(clock.instant()).willReturn(fixedClock.instant());
         given(clock.getZone()).willReturn(fixedClock.getZone());
         given(drawRepositoryPort.save(any(Draw.class)))
@@ -101,7 +112,7 @@ class DrawServiceTest {
                 );
 
         // when
-        DrawResponseDto result = drawService.addDraw(drawRequestDto);
+        DrawResponseDto result = drawService.addDraw(gameType);
 
         // then
         assertThat(result)

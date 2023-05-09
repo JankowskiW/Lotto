@@ -64,7 +64,7 @@ class ResultServiceAdapterTest {
                 drawDateTimeCheckerPort, numbersGeneratorPort, numbersValidatorPort);
         TicketServicePort ticketServicePort = new TicketServiceAdapter(ticketService);
         drawRepositoryPort = new DrawFakeAdapter();
-        DrawService drawService = new DrawService(clock, drawRepositoryPort);
+        DrawService drawService = new DrawService(clock, drawRepositoryPort, numbersGeneratorPort);
         DrawServicePort drawServicePort = new DrawServiceAdapter(drawService);
         ResultService resultService = new ResultService(resultCheckerPort, ticketServicePort, drawServicePort);
         resultServicePort = new ResultServiceAdapter(resultService);
