@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTimeSettings;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
+import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.gametype.config.GameTypeSettingsConfig;
 
 import java.time.*;
 import java.util.Arrays;
@@ -21,6 +23,7 @@ class DrawDateTimeCheckerTest {
     @BeforeEach
     void setUp() {
         clock = new ClockFakeConfig().clock();
+        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeSettingsConfig().gameTypeSettingsContainer();
         drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
     }
 

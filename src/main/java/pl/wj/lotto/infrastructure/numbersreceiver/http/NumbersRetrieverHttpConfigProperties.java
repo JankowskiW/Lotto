@@ -9,5 +9,5 @@ public record NumbersRetrieverHttpConfigProperties (
         int connectionTimeout,
         int readTimeout,
         String uri,
-        int port) {
-}
+        int port
+) {}

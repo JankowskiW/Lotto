@@ -65,6 +65,7 @@ public class TicketService {
     public List<TicketResponseDto> getUserTickets(String userId) {
         List<Ticket> tickets = ticketRepositoryPort.getByUserId(userId);
         List<TicketResponseDto> ticketResponseDtos = TicketMapper.toTicketResponseDtos(tickets);
+        // TODO: calculate nextDrawDateTime only if ticket is not outdated
         return ticketResponseDtos.stream()
                 .map(tr -> tr.withNextDrawDateTime(drawDateTimeCheckerPort.getNextDrawDateTimeForTicket(
                         tr.numbers().drawDateTimeSettings(), tr.generationDateTime()))).toList();

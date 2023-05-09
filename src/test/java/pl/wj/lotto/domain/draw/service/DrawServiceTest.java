@@ -5,6 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.scheduling.TriggerContext;
+import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
@@ -42,6 +45,14 @@ class DrawServiceTest {
     private DrawService drawService;
 
     private final Clock fixedClock = clock = new ClockFakeConfig().clock();
+
+
+//    @Test
+//    void test() {
+//        CronTrigger trigger = new CronTrigger(properties.lotto());
+//        TriggerContext context = new SimpleTriggerContext();
+//        System.out.println(trigger.nextExecution(context));
+//    }
 
     @Test
     void shouldReturnEmptyListWhenThereIsNoDrawWithGivenType() {
@@ -249,5 +260,4 @@ class DrawServiceTest {
                 .usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(expectedResult);
     }
-
 }
