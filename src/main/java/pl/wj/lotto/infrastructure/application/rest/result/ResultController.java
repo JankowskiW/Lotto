@@ -18,7 +18,7 @@ public class ResultController {
 
     @GetMapping("/tickets/{id}")
     public TicketResultsDetailsDto getTicketResults(@PathVariable String id) {
-        return resultServicePort.getTicketResults(id);
+        return resultServicePort.getTicketResultsDetails(id);
     }
 
     @GetMapping("/draws/{id}")

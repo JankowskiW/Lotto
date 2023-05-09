@@ -11,7 +11,7 @@ public class ResultServiceAdapter implements ResultServicePort {
     private final ResultService resultService;
 
     @Override
-    public TicketResultsDetailsDto getTicketResults(String ticketId) {
+    public TicketResultsDetailsDto getTicketResultsDetails(String ticketId) {
         return resultService.getTicketResults(ticketId);
     }
 

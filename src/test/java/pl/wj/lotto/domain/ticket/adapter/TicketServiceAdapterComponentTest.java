@@ -38,8 +38,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class TicketServiceAdapterComponentTest {
     private TicketRepositoryPort ticketRepositoryPort;
-    private TicketServicePort ticketServicePort;
     private DrawRepositoryPort drawRepositoryPort;
+    private TicketServicePort ticketServicePort;
 
     private Clock clock;
 
