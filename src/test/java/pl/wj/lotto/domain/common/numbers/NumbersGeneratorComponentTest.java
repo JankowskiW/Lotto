@@ -38,9 +38,6 @@ class NumbersGeneratorComponentTest {
                 () -> assertThat(result.gameType())
                         .usingRecursiveComparison()
                         .isEqualTo(gameType),
-//                () -> assertThat(result.drawDateTimeSettings())
-//                        .usingRecursiveComparison()
-//                        .isEqualTo(settings.drawDateTimeSettings()),// TODO: Replace settings.drawDateTime to method from new DrawDateTimeChecker with CronTriggers
                 () -> assertThat(result.mainNumbers())
                         .hasSize(settings.getMainNumbersAmount()),
                 () -> assertThat(result.mainNumbers())
