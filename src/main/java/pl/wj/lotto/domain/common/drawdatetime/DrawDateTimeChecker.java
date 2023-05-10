@@ -37,7 +37,7 @@ public class DrawDateTimeChecker implements DrawDateTimeCheckerPort {
         if (numberOfDraws == 0) return generationDateTime;
         String cronExpression = gameTypeSettingsContainer.intervals().get(gameType);
         SimpleTriggerContext triggerContext = new SimpleTriggerContext(clock);
-        Instant generationInstant = generationDateTime.toInstant(ZoneOffset.of(clock.getZone().getId()));
+        Instant generationInstant = generationDateTime.toInstant(ZoneOffset.UTC);
         triggerContext.update(null, null, generationInstant);
         CronTrigger cronTrigger = new CronTrigger(cronExpression);
         LocalDateTime nextDrawTime = LocalDateTime.ofInstant(cronTrigger.nextExecution(triggerContext), clock.getZone());

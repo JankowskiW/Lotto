@@ -8,10 +8,7 @@ import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.gametype.GameTypeFakeConfig;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -19,11 +16,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class DrawDateTimeCheckerTest {
     private Clock clock;
     private DrawDateTimeCheckerPort drawDateTimeCheckerPort;
+    private GameTypeSettingsContainer gameTypeSettingsContainer;
 
     @BeforeEach
     void setUp() {
         clock = new ClockFakeConfig().clock();
-        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeFakeConfig().gameTypeSettingsContainer();
+        gameTypeSettingsContainer = new GameTypeFakeConfig().gameTypeSettingsContainer();
         drawDateTimeCheckerPort = new DrawDateTimeChecker(clock, gameTypeSettingsContainer);
     }
 
@@ -34,8 +32,7 @@ class DrawDateTimeCheckerTest {
         GameType gameType = GameType.LOTTO;
         LocalDateTime currentDateTime = LocalDateTime.now(clock);
         LocalDate currentDate = currentDateTime.toLocalDate();
-        LocalTime currentTime = currentDateTime.toLocalTime();
-        LocalTime nextDrawTime = currentTime.plusHours(1);
+        LocalTime nextDrawTime = LocalTime.of(22,0);
         LocalDateTime expectedResult = LocalDateTime.of(currentDate, nextDrawTime);
 
         // when
@@ -49,6 +46,11 @@ class DrawDateTimeCheckerTest {
     @Test
     void shouldReturnTheSameDayNextWeekButEarlierIfThereIsDrawMoreThanOnceButJustInOneDayPerWeekAndThereIsNoMoreDrawsInCurrentDay() {
         // given
+//        clock = Clock.fixed();
+        // TODO: fix tests
+        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeFakeConfig().gameTypeSettingsContainer();
+        drawDateTimeCheckerPort = new DrawDateTimeChecker(clock, gameTypeSettingsContainer);
+
         GameType gameType = GameType.LOTTO;
         LocalDateTime currentDateTime = LocalDateTime.now(clock);
         LocalDate currentDate = currentDateTime.toLocalDate();
