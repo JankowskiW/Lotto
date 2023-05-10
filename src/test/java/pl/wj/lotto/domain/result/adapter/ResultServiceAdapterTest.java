@@ -30,6 +30,12 @@ import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.gametype.GameTypeConfig;
+import pl.wj.lotto.infrastructure.gametype.properties.interval.GameTypeIntervalProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.EjpSettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.KenoSettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.LottoSettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.Q600SettingsProperties;
 import pl.wj.lotto.infrastructure.numbersreceiver.fake.NumbersReceiverFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.ticket.TicketFakeAdapter;
@@ -58,8 +64,17 @@ class ResultServiceAdapterTest {
         ticketRepositoryPort = new TicketFakeAdapter();
         DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
         NumbersReceiverPort numbersReceiverPort = new NumbersReceiverFakeAdapter();
-        NumbersGeneratorPort numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort);
-        NumbersValidatorPort numbersValidatorPort = new NumbersValidator();
+
+        LottoSettingsProperties lottoSettingsProperties = new LottoSettingsProperties();
+        Q600SettingsProperties q600SettingsProperties = new Q600SettingsProperties();
+        EjpSettingsProperties ejpSettingsProperties = new EjpSettingsProperties();
+        KenoSettingsProperties kenoSettingsProperties = new KenoSettingsProperties();
+        GameTypeIntervalProperties gameTypeIntervalProperties = GameTypeIntervalProperties.builder().build();
+        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeConfig().gameTypeSettingsContainer1(
+                lottoSettingsProperties, q600SettingsProperties, ejpSettingsProperties, kenoSettingsProperties, gameTypeIntervalProperties);
+
+        NumbersGeneratorPort numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort, gameTypeSettingsContainer);
+        NumbersValidatorPort numbersValidatorPort = new NumbersValidator(gameTypeSettingsContainer);
         TicketService ticketService = new TicketService(clock, ticketRepositoryPort,
                 drawDateTimeCheckerPort, numbersGeneratorPort, numbersValidatorPort);
         TicketServicePort ticketServicePort = new TicketServiceAdapter(ticketService);
@@ -78,12 +93,10 @@ class ResultServiceAdapterTest {
         String userId = "some-user-id";
         Numbers ticketNumbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
         Numbers drawNumbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,7))
                 .build();
         ticket = Ticket.builder()

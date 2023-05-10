@@ -2,7 +2,6 @@ package pl.wj.lotto.domain.ticket.mapper;
 
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
-import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
@@ -17,7 +16,6 @@ public class TicketMapper {
         GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(ticketRequestDto.mainNumbers())
                 .extraNumbers(ticketRequestDto.extraNumbers())
                 .build();
@@ -64,7 +62,6 @@ public class TicketMapper {
         GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(ticketRequestDto.mainNumbers())
                 .extraNumbers(ticketRequestDto.extraNumbers())
                 .build();

@@ -1,14 +1,17 @@
 package pl.wj.lotto.domain.common.numbers;
 
+import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.gametype.GameTypeSettings;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.GameTypeSettingsProperties;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class NumbersValidator implements NumbersValidatorPort {
+    private final GameTypeSettingsContainer gameTypeSettingsContainer;
 
     public boolean validate(Numbers numbers) {
         if (numbers.mainNumbers().stream().distinct().count() != (long) numbers.mainNumbers().size() ||
@@ -23,43 +26,29 @@ public class NumbersValidator implements NumbersValidatorPort {
     }
 
     private boolean validateLotto(List<Integer> mainNumbers) {
-        GameTypeSettings requirements = GameTypeSettingsContainer.getGameTypeSettings(GameType.LOTTO);
-        if (mainNumbers.size() != requirements.minAmountOfMainNumbers())
-            return false;
-        if (mainNumbers.stream().anyMatch(n -> (n < requirements.minValueOfMainNumbers() || n > requirements.maxValueOfMainNumbers())))
-            return false;
-        return true;
+        GameTypeSettingsProperties requirements = gameTypeSettingsContainer.settings().get(GameType.LOTTO);
+        return mainNumbers.size() == requirements.getMainNumbersAmount() &&
+                mainNumbers.stream().noneMatch(n -> (n < requirements.getMainNumbersMinValue() || n > requirements.getMainNumbersMaxValue()));
     }
 
     private boolean validateQuick600(List<Integer> mainNumbers) {
-        GameTypeSettings requirements = GameTypeSettingsContainer.getGameTypeSettings(GameType.Q600);
-        if (mainNumbers.size() != requirements.minAmountOfMainNumbers())
-            return false;
-        if (mainNumbers.stream().anyMatch(n -> (n < requirements.minValueOfMainNumbers() || n > requirements.maxValueOfMainNumbers())))
-            return false;
-        return true;
+        GameTypeSettingsProperties requirements = gameTypeSettingsContainer.settings().get(GameType.Q600);
+        return mainNumbers.size() == requirements.getMainNumbersAmount() &&
+                mainNumbers.stream().noneMatch(n -> (n < requirements.getMainNumbersMinValue() || n > requirements.getMainNumbersMaxValue()));
     }
 
     private boolean validateEurojackpot(List<Integer> mainNumbers, List<Integer> extraNumbers) {
-        GameTypeSettings requirements = GameTypeSettingsContainer.getGameTypeSettings(GameType.EJP);
-        if (mainNumbers.size() != requirements.minAmountOfMainNumbers())
-            return false;
-        if (mainNumbers.stream().anyMatch(n -> (n < requirements.minValueOfMainNumbers() || n > requirements.maxValueOfMainNumbers())))
-            return false;
-        if (extraNumbers.size() != requirements.minAmountOfExtraNumbers())
-            return false;
-        if (extraNumbers.stream().anyMatch(n -> (n < requirements.minValueOfExtraNumbers() || n > requirements.maxValueOfExtraNumbers())))
-            return false;
-        return true;
+        GameTypeSettingsProperties requirements = gameTypeSettingsContainer.settings().get(GameType.EJP);
+        return mainNumbers.size() == requirements.getMainNumbersAmount() &&
+                extraNumbers.size() == requirements.getExtraNumbersAmount() &&
+                mainNumbers.stream().noneMatch(n -> (n < requirements.getMainNumbersMinValue() || n > requirements.getMainNumbersMaxValue())) &&
+                extraNumbers.stream().noneMatch(n -> (n < requirements.getExtraNumbersMinValue() || n > requirements.getExtraNumbersMaxValue()));
     }
 
     private boolean validateKeno(List<Integer> mainNumbers) {
-        GameTypeSettings requirements = GameTypeSettingsContainer.getGameTypeSettings(GameType.KENO);
-        if (mainNumbers.size() < requirements.minAmountOfMainNumbers() || mainNumbers.size() > requirements.maxAmountOfMainNumbers())
-            return false;
-        if (mainNumbers.stream().anyMatch(n -> (n < requirements.minValueOfMainNumbers() || n > requirements.maxValueOfMainNumbers())))
-            return false;
-        return true;
+        GameTypeSettingsProperties requirements = gameTypeSettingsContainer.settings().get(GameType.KENO);
+        return mainNumbers.size() >= requirements.getMainTicketNumbersMinAmount() && mainNumbers.size() <= requirements.getMainTicketNumbersMaxAmount() &&
+                mainNumbers.stream().noneMatch(n -> (n < requirements.getMainNumbersMinValue() || n > requirements.getMainNumbersMaxValue()));
     }
 
 

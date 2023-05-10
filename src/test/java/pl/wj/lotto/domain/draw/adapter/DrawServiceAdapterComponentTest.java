@@ -3,7 +3,6 @@ package pl.wj.lotto.domain.draw.adapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
@@ -45,21 +44,18 @@ class DrawServiceAdapterComponentTest {
         GameType gameType = GameType.EJP;
         Numbers numbersEJP = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1,2))
                 .build();
         drawRepositoryPort.save(Draw.builder().type(gameType).numbers(numbersEJP).build());
         numbersEJP = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1,3))
                 .build();
         drawRepositoryPort.save(Draw.builder().type(gameType).numbers(numbersEJP).build());
         Numbers numbersLotto = Numbers.builder()
                 .gameType(GameType.LOTTO)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(GameType.LOTTO).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,8))
                 .build();
         drawRepositoryPort.save(Draw.builder().type(GameType.LOTTO).numbers(numbersLotto).build());
@@ -95,7 +91,6 @@ class DrawServiceAdapterComponentTest {
                 .drawDateTime(LocalDateTime.now(clock))
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(mainNumbers)
                         .build())
                 .build();
@@ -117,7 +112,6 @@ class DrawServiceAdapterComponentTest {
         List<Integer> mainNumbers = List.of(1,2,3,4,5,6);
         Numbers numbersLotto = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(mainNumbers)
                 .build();
         Draw draw = Draw.builder()
@@ -132,7 +126,6 @@ class DrawServiceAdapterComponentTest {
                 .drawDateTime(LocalDateTime.now(clock))
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(mainNumbers)
                         .build())
                 .build();
@@ -153,7 +146,6 @@ class DrawServiceAdapterComponentTest {
         List<Integer> mainNumbers = List.of(1,2,3,4,5,6);
         Numbers numbersLotto = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(mainNumbers)
                 .build();
         Draw draw = Draw.builder()
@@ -185,7 +177,6 @@ class DrawServiceAdapterComponentTest {
                 .numberOfDraws(2)
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(List.of(1,2,3,4,5,6))
                         .build())
                 .generationDateTime(now.minusDays(6))

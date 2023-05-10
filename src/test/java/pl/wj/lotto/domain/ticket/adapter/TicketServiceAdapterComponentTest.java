@@ -24,6 +24,12 @@ import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.gametype.GameTypeConfig;
+import pl.wj.lotto.infrastructure.gametype.properties.interval.GameTypeIntervalProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.EjpSettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.KenoSettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.LottoSettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.Q600SettingsProperties;
 import pl.wj.lotto.infrastructure.numbersreceiver.fake.NumbersReceiverFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.ticket.TicketFakeAdapter;
@@ -47,8 +53,17 @@ class TicketServiceAdapterComponentTest {
     void setUp() {
         clock = new ClockFakeConfig().clock();
         NumbersReceiverPort numbersReceiverPort = new NumbersReceiverFakeAdapter();
-        NumbersGeneratorPort numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort);
-        NumbersValidatorPort numbersValidatorPort = new NumbersValidator();
+
+        LottoSettingsProperties lottoSettingsProperties = new LottoSettingsProperties();
+        Q600SettingsProperties q600SettingsProperties = new Q600SettingsProperties();
+        EjpSettingsProperties ejpSettingsProperties = new EjpSettingsProperties();
+        KenoSettingsProperties kenoSettingsProperties = new KenoSettingsProperties();
+        GameTypeIntervalProperties gameTypeIntervalProperties = GameTypeIntervalProperties.builder().build();
+        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeConfig().gameTypeSettingsContainer1(
+                lottoSettingsProperties, q600SettingsProperties, ejpSettingsProperties, kenoSettingsProperties, gameTypeIntervalProperties);
+
+        NumbersGeneratorPort numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort, gameTypeSettingsContainer);
+        NumbersValidatorPort numbersValidatorPort = new NumbersValidator(gameTypeSettingsContainer);
         DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
         drawRepositoryPort = new DrawFakeAdapter();
         ticketRepositoryPort = new TicketFakeAdapter();
@@ -153,7 +168,6 @@ class TicketServiceAdapterComponentTest {
                 .drawDateTime(now)
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(winningNumbers)
                         .build())
                 .build();
@@ -163,7 +177,6 @@ class TicketServiceAdapterComponentTest {
                         .drawDateTime(now)
                         .numbers(Numbers.builder()
                                 .gameType(gameType)
-                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                                 .mainNumbers(winningNumbers)
                                 .build())
                         .build());
@@ -174,7 +187,6 @@ class TicketServiceAdapterComponentTest {
                         .numberOfDraws(1)
                         .numbers(Numbers.builder()
                                 .gameType(gameType)
-                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                                 .mainNumbers(winningNumbers)
                                 .build())
                         .generationDateTime(now.minusHours(2))
@@ -193,7 +205,6 @@ class TicketServiceAdapterComponentTest {
                         .numberOfDraws(1)
                         .numbers(Numbers.builder()
                                 .gameType(gameType)
-                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                                 .mainNumbers(List.of(1,2,3,4,5,7))
                                 .build())
                         .generationDateTime(now.minusHours(1))
@@ -227,7 +238,6 @@ class TicketServiceAdapterComponentTest {
                         .numberOfDraws(1)
                         .numbers(Numbers.builder()
                                 .gameType(gameType)
-                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                                 .mainNumbers(List.of(1,2,3,4,5,6))
                                 .build())
                         .generationDateTime(now.minusHours(2))

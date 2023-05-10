@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
@@ -116,13 +115,12 @@ class DrawServiceTest {
         LocalDateTime drawDateTime = LocalDateTime.now();
         GameType gameType = GameType.LOTTO;
         Numbers numbers = Numbers.builder()
-                .gameType(GameType.LOTTO)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
+                .gameType(gameType)
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
         Draw draw = Draw.builder()
                 .id(id)
-                .type(GameType.LOTTO)
+                .type(gameType)
                 .numbers(numbers)
                 .drawDateTime(drawDateTime)
                 .build();
@@ -160,7 +158,6 @@ class DrawServiceTest {
                 .drawDateTime(LocalDateTime.now(fixedClock))
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(List.of(1,2,3,4,5,6))
                         .build())
                 .build();
@@ -169,7 +166,6 @@ class DrawServiceTest {
                 .drawDateTime(LocalDateTime.now(fixedClock))
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(List.of(1,2,3,4,5,6))
                         .build())
                 .build();
@@ -208,7 +204,6 @@ class DrawServiceTest {
                 .numberOfDraws(2)
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(List.of(1,2,3,4,5,6))
                         .build())
                 .generationDateTime(now.minusDays(6))

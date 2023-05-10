@@ -6,6 +6,12 @@ import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
+import pl.wj.lotto.infrastructure.gametype.GameTypeConfig;
+import pl.wj.lotto.infrastructure.gametype.properties.interval.GameTypeIntervalProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.EjpSettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.KenoSettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.LottoSettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.Q600SettingsProperties;
 
 import java.util.List;
 
@@ -16,7 +22,14 @@ class NumbersValidatorTest {
 
     @BeforeEach
     void setUp() {
-        numbersValidatorPort = new NumbersValidator();
+        LottoSettingsProperties lottoSettingsProperties = new LottoSettingsProperties();
+        Q600SettingsProperties q600SettingsProperties = new Q600SettingsProperties();
+        EjpSettingsProperties ejpSettingsProperties = new EjpSettingsProperties();
+        KenoSettingsProperties kenoSettingsProperties = new KenoSettingsProperties();
+        GameTypeIntervalProperties gameTypeIntervalProperties = GameTypeIntervalProperties.builder().build();
+        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeConfig().gameTypeSettingsContainer1(
+                lottoSettingsProperties, q600SettingsProperties, ejpSettingsProperties, kenoSettingsProperties, gameTypeIntervalProperties);
+        numbersValidatorPort = new NumbersValidator(gameTypeSettingsContainer);
     }
 
     @Test
@@ -25,7 +38,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.LOTTO;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,6,6))
                 .build();
 
@@ -43,7 +55,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.LOTTO;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
 
@@ -60,7 +71,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.LOTTO;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .build();
 
@@ -77,7 +87,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.LOTTO;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,1000))
                 .build();
 
@@ -95,7 +104,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.Q600;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
 
@@ -112,7 +120,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.Q600;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .build();
 
@@ -129,7 +136,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.Q600;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,1000))
                 .build();
 
@@ -147,7 +153,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.EJP;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1,2))
                 .build();
@@ -165,7 +170,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.EJP;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4))
                 .extraNumbers(List.of(1,2))
                 .build();
@@ -183,7 +187,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.EJP;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,1000))
                 .extraNumbers(List.of(1,2))
                 .build();
@@ -201,7 +204,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.EJP;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1))
                 .build();
@@ -219,7 +221,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.EJP;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1,1000))
                 .build();
@@ -238,7 +239,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.KENO;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,6,7,8,9,10))
                 .build();
 
@@ -255,7 +255,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.KENO;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,6,7,8,9,10,11))
                 .build();
 
@@ -272,7 +271,6 @@ class NumbersValidatorTest {
         GameType gameType = GameType.KENO;
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,6,7,8,9,1000))
                 .build();
 

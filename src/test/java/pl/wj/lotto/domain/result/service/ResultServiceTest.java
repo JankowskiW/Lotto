@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
@@ -54,7 +53,6 @@ class ResultServiceTest {
         double prize2 = 2000;
         Numbers ticketNumbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
         Ticket ticket = Ticket.builder()
@@ -72,7 +70,6 @@ class ResultServiceTest {
                         .type(gameType)
                         .numbers(Numbers.builder()
                                 .gameType(gameType)
-                                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                                 .mainNumbers(List.of(1,2,3,4,5,6))
                                 .build())
                         .drawDateTime(LocalDateTime.now(clock).minusDays(6))
@@ -82,7 +79,6 @@ class ResultServiceTest {
                 .type(gameType)
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(List.of(1,2,3,7,8,9))
                         .build())
                 .drawDateTime(LocalDateTime.now(clock).minusDays(2))
@@ -135,7 +131,6 @@ class ResultServiceTest {
                 .drawDateTime(LocalDateTime.now(clock))
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(List.of(1,2,3,4,5,6))
                         .build())
                 .build();

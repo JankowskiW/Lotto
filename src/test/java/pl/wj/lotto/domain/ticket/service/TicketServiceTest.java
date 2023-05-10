@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTimeSettings;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
@@ -71,7 +70,6 @@ class TicketServiceTest {
         List<Integer> extraNumbers = List.of(1,2);
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(mainNumbers)
                 .extraNumbers(extraNumbers)
                 .build();
@@ -198,7 +196,6 @@ class TicketServiceTest {
                 .numberOfDraws(1)
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                         .mainNumbers(List.of(1,2,3,4,5,6))
                         .build())
                 .generationDateTime(now)

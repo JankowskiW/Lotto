@@ -2,25 +2,27 @@ package pl.wj.lotto.domain.common.numbers;
 
 import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.gametype.GameTypeSettings;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
+import pl.wj.lotto.infrastructure.gametype.properties.settings.GameTypeSettingsProperties;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 public class NumbersGenerator implements NumbersGeneratorPort {
     private final NumbersReceiverPort numbersReceiverPort;
+    private final GameTypeSettingsContainer gameTypeSettingsContainer;
+
     public Numbers generate(GameType gameType, boolean sorted) {
-        GameTypeSettings settings = GameTypeSettingsContainer.getGameTypeSettings(gameType);
+        GameTypeSettingsProperties settings = gameTypeSettingsContainer.settings().get(gameType);
         List<Integer> mainNumbers = numbersReceiverPort.receive(
-                settings.minValueOfMainNumbers(), settings.maxValueOfMainNumbers(), settings.minAmountOfMainNumbers());
+                settings.getMainNumbersMinValue(), settings.getMainNumbersMaxValue(), settings.getMainNumbersAmount());
         List<Integer> extraNumbers = null;
         if (gameType == GameType.EJP) {
             extraNumbers = numbersReceiverPort.receive(
-                    settings.minValueOfExtraNumbers(), settings.maxValueOfExtraNumbers(), settings.minAmountOfExtraNumbers());
+                    settings.getExtraNumbersMinValue(), settings.getExtraNumbersMaxValue(), settings.getExtraNumbersAmount());
         }
         if (sorted) {
             mainNumbers = mainNumbers.stream().sorted().toList();
@@ -28,7 +30,6 @@ public class NumbersGenerator implements NumbersGeneratorPort {
         }
         return Numbers.builder()
                 .gameType(gameType)
-                .drawDateTimeSettings(GameTypeSettingsContainer.getGameTypeSettings(gameType).drawDateTimeSettings())
                 .mainNumbers(mainNumbers)
                 .extraNumbers(extraNumbers)
                 .build();
