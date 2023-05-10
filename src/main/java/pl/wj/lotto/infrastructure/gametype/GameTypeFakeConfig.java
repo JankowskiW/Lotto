@@ -12,15 +12,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@Profile("!fake")
-public class GameTypeConfig {
+@Profile("fake")
+public class GameTypeFakeConfig {
     @Bean
-    public GameTypeSettingsContainer gameTypeSettingsContainer(
-            LottoSettingsProperties lottoSettingsProperties,
-            Q600SettingsProperties q600SettingsProperties,
-            EjpSettingsProperties ejpSettingsProperties,
-            KenoSettingsProperties kenoSettingsProperties,
-            GameTypeIntervalProperties gameTypeIntervalProperties) {
+    public GameTypeSettingsContainer gameTypeSettingsContainer() {
+        LottoSettingsProperties lottoSettingsProperties = new LottoSettingsProperties();
+        Q600SettingsProperties q600SettingsProperties = new Q600SettingsProperties();
+        EjpSettingsProperties ejpSettingsProperties = new EjpSettingsProperties();
+        KenoSettingsProperties kenoSettingsProperties = new KenoSettingsProperties();
+        GameTypeIntervalProperties gameTypeIntervalProperties = GameTypeIntervalProperties.builder().build();
 
         Map<GameType, GameTypeSettingsProperties> settings = new HashMap<>();
         settings.put(GameType.LOTTO, lottoSettingsProperties);

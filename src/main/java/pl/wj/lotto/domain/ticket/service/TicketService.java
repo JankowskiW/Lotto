@@ -38,8 +38,7 @@ public class TicketService {
             throw new RuntimeException("Given numbers are invalid");
         }
         ticket.setGenerationDateTime(LocalDateTime.now(clock));
-        LocalDateTime lastDrawDateTime = drawDateTimeCheckerPort.getLastDrawDateTimeForTicket(
-                ticket.getNumbers().drawDateTimeSettings(), ticket.getNumberOfDraws(), ticket.getGenerationDateTime());
+        LocalDateTime lastDrawDateTime = drawDateTimeCheckerPort.getLastDrawDateTimeForTicket(ticket.getGameType(), ticket.getNumberOfDraws(), ticket.getGenerationDateTime());
         ticket.setLastDrawDateTime(lastDrawDateTime);
         ticket.setGenerationDateTime(LocalDateTime.now(clock));
         ticket = ticketRepositoryPort.save(ticket);
@@ -58,16 +57,15 @@ public class TicketService {
             ticket.setUserId("");
         }
         TicketResponseDto ticketResponseDto = TicketMapper.toTicketResponseDto(ticket);
-        LocalDateTime nextDrawDateTime = drawDateTimeCheckerPort.getNextDrawDateTime(ticket.getNumbers().drawDateTimeSettings());
+        LocalDateTime nextDrawDateTime = drawDateTimeCheckerPort.getNextDrawDateTime(ticket.getGameType());
         return ticketResponseDto.withNextDrawDateTime(nextDrawDateTime);
     }
 
     public List<TicketResponseDto> getUserTickets(String userId) {
         List<Ticket> tickets = ticketRepositoryPort.getByUserId(userId);
         List<TicketResponseDto> ticketResponseDtos = TicketMapper.toTicketResponseDtos(tickets);
-        return ticketResponseDtos.stream()
-                .map(tr -> tr.withNextDrawDateTime(drawDateTimeCheckerPort.getNextDrawDateTimeForTicket(
-                        tr.numbers().drawDateTimeSettings(), tr.generationDateTime()))).toList();
+        return ticketResponseDtos.stream().map(tr -> tr.withNextDrawDateTime(
+                drawDateTimeCheckerPort.getNextDrawDateTimeForTicket(tr.numbers().gameType(), tr.generationDateTime()))).toList();
     }
 
     public List<PlayerNumbersDto> getPlayersDrawNumbers(DrawResultDto drawResultDto) {

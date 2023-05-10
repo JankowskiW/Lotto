@@ -6,12 +6,7 @@ import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
-import pl.wj.lotto.infrastructure.gametype.GameTypeConfig;
-import pl.wj.lotto.infrastructure.gametype.properties.interval.GameTypeIntervalProperties;
-import pl.wj.lotto.infrastructure.gametype.properties.settings.EjpSettingsProperties;
-import pl.wj.lotto.infrastructure.gametype.properties.settings.KenoSettingsProperties;
-import pl.wj.lotto.infrastructure.gametype.properties.settings.LottoSettingsProperties;
-import pl.wj.lotto.infrastructure.gametype.properties.settings.Q600SettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.GameTypeFakeConfig;
 
 import java.util.List;
 
@@ -22,13 +17,7 @@ class NumbersValidatorTest {
 
     @BeforeEach
     void setUp() {
-        LottoSettingsProperties lottoSettingsProperties = new LottoSettingsProperties();
-        Q600SettingsProperties q600SettingsProperties = new Q600SettingsProperties();
-        EjpSettingsProperties ejpSettingsProperties = new EjpSettingsProperties();
-        KenoSettingsProperties kenoSettingsProperties = new KenoSettingsProperties();
-        GameTypeIntervalProperties gameTypeIntervalProperties = GameTypeIntervalProperties.builder().build();
-        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeConfig().gameTypeSettingsContainer1(
-                lottoSettingsProperties, q600SettingsProperties, ejpSettingsProperties, kenoSettingsProperties, gameTypeIntervalProperties);
+        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeFakeConfig().gameTypeSettingsContainer();
         numbersValidatorPort = new NumbersValidator(gameTypeSettingsContainer);
     }
 

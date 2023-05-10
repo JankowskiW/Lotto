@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTimeSettings;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
@@ -93,7 +92,7 @@ class TicketServiceTest {
                     t.setGenerationDateTime(generationDateTime);
                     return t;
                 });
-        given(drawDateTimeCheckerPort.getNextDrawDateTime(any(DrawDateTimeSettings.class))).willReturn(nextDrawDateTime);
+        given(drawDateTimeCheckerPort.getNextDrawDateTime(any(GameType.class))).willReturn(nextDrawDateTime);
 
         // when
         TicketResponseDto result = ticketService.addTicket(ticketRequestDto);

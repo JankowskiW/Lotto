@@ -1,70 +1,46 @@
 package pl.wj.lotto.domain.common.drawdatetime;
 
 import lombok.RequiredArgsConstructor;
-import pl.wj.lotto.domain.common.drawdatetime.model.DrawDateTimeSettings;
+import org.springframework.scheduling.TriggerContext;
+import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
+import pl.wj.lotto.domain.common.gametype.GameType;
+import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 
-import java.time.*;
-import java.util.concurrent.TimeUnit;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @RequiredArgsConstructor
 public class DrawDateTimeChecker implements DrawDateTimeCheckerPort {
     private final Clock clock;
+    private final GameTypeSettingsContainer gameTypeSettingsContainer;
 
     @Override
-    public LocalDateTime getNextDrawDateTime(DrawDateTimeSettings drawDateTimeSettings) {
-        LocalDateTime now = LocalDateTime.now(clock);
-        LocalDate nextDrawDate = findNextDrawDate(drawDateTimeSettings, now);
-        LocalTime nextDrawTime = findNextDrawTime(drawDateTimeSettings, now, nextDrawDate);
-        return LocalDateTime.of(nextDrawDate, nextDrawTime);
+    public LocalDateTime getNextDrawDateTime(GameType gameType) {
+        TriggerContext triggerContext = new SimpleTriggerContext(clock);
+        CronTrigger trigger = new CronTrigger(gameTypeSettingsContainer.intervals().get(gameType));
+        Instant nextDrawDateTime = trigger.nextExecution(triggerContext);
+        return LocalDateTime.ofInstant(nextDrawDateTime, clock.getZone());
     }
 
     @Override
-    public LocalDateTime getNextDrawDateTimeForTicket(
-            DrawDateTimeSettings drawDateTimeSettings, LocalDateTime generationDateTime) {
-        LocalDate nextDrawDate = findNextDrawDate(drawDateTimeSettings, generationDateTime);
-        LocalTime nextDrawTime = findNextDrawTime(drawDateTimeSettings, generationDateTime, nextDrawDate);
-        return LocalDateTime.of(nextDrawDate, nextDrawTime);
+    public LocalDateTime getNextDrawDateTimeForTicket(GameType gameType, LocalDateTime lastDrawTime) {
+        LocalDateTime nextDrawDateTime = getNextDrawDateTime(gameType);
+        return nextDrawDateTime.isBefore(lastDrawTime) ? nextDrawDateTime : lastDrawTime;
     }
 
     @Override
-    public LocalDateTime getLastDrawDateTimeForTicket(
-            DrawDateTimeSettings drawDateTimeSettings, int numberOfDraws, LocalDateTime generationDateTime) {
+    public LocalDateTime getLastDrawDateTimeForTicket(GameType gameType, int numberOfDraws, LocalDateTime generationDateTime) {
         if (numberOfDraws == 0) return generationDateTime;
-        LocalDateTime lastDrawDateTime = getNextDrawDateTimeForTicket(drawDateTimeSettings, generationDateTime);
-        return getLastDrawDateTimeForTicket(drawDateTimeSettings, numberOfDraws - 1, lastDrawDateTime);
-    }
-
-    private LocalDate findNextDrawDate(DrawDateTimeSettings drawDateTimeSettings, LocalDateTime now) {
-        LocalTime nowTime = now.toLocalTime();
-        LocalDate nowDate = now.toLocalDate();
-        DayOfWeek nowDay = now.getDayOfWeek();
-        if (drawDateTimeSettings.daysOfWeek().contains(nowDay) && nowTime.isBefore(drawDateTimeSettings.toTime()))
-            return nowDate;
-        DayOfWeek nextDrawDay = drawDateTimeSettings.daysOfWeek()
-                .stream()
-                .filter(d -> d.compareTo(nowDay) > 0)
-                .findFirst()
-                .orElse(drawDateTimeSettings.daysOfWeek().get(0));
-        long daysToAdd = (7 + nextDrawDay.compareTo(nowDay)) % 7;
-        daysToAdd = daysToAdd == 0 ? 7 : daysToAdd;
-        return nowDate.plusDays(daysToAdd);
-    }
-
-    private LocalTime findNextDrawTime(DrawDateTimeSettings drawDateTimeSettings, LocalDateTime now, LocalDate nextDrawDate) {
-        LocalTime nextDrawTime = drawDateTimeSettings.fromTime();
-        if (drawDateTimeSettings.timeInterval() > 0 && now.toLocalDate().equals(nextDrawDate)) {
-            while(!nextDrawTime.isAfter(now.toLocalTime()))
-                nextDrawTime = increaseByInterval(nextDrawTime, drawDateTimeSettings.timeInterval(), drawDateTimeSettings.timeIntervalUnit());
-        }
-        return nextDrawTime;
-    }
-
-    private LocalTime increaseByInterval(LocalTime time, int interval, TimeUnit timeUnit) {
-        return switch(timeUnit) {
-            case MINUTES -> time.plusMinutes(interval);
-            case HOURS -> time.plusHours(interval);
-            default -> throw new RuntimeException("Parameter timeUnit must be MINUTES or HOURS");
-        };
+        String cronExpression = gameTypeSettingsContainer.intervals().get(gameType);
+        SimpleTriggerContext triggerContext = new SimpleTriggerContext(clock);
+        Instant generationInstant = generationDateTime.toInstant(ZoneOffset.of(clock.getZone().getId()));
+        triggerContext.update(null, null, generationInstant);
+        CronTrigger cronTrigger = new CronTrigger(cronExpression);
+        LocalDateTime nextDrawTime = LocalDateTime.ofInstant(cronTrigger.nextExecution(triggerContext), clock.getZone());
+        return getLastDrawDateTimeForTicket(gameType, numberOfDraws - 1, nextDrawTime);
     }
 }

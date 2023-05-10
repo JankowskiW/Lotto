@@ -30,12 +30,7 @@ import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
-import pl.wj.lotto.infrastructure.gametype.GameTypeConfig;
-import pl.wj.lotto.infrastructure.gametype.properties.interval.GameTypeIntervalProperties;
-import pl.wj.lotto.infrastructure.gametype.properties.settings.EjpSettingsProperties;
-import pl.wj.lotto.infrastructure.gametype.properties.settings.KenoSettingsProperties;
-import pl.wj.lotto.infrastructure.gametype.properties.settings.LottoSettingsProperties;
-import pl.wj.lotto.infrastructure.gametype.properties.settings.Q600SettingsProperties;
+import pl.wj.lotto.infrastructure.gametype.GameTypeFakeConfig;
 import pl.wj.lotto.infrastructure.numbersreceiver.fake.NumbersReceiverFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.ticket.TicketFakeAdapter;
@@ -62,17 +57,9 @@ class ResultServiceAdapterTest {
         clock = new ClockFakeConfig().clock();
         ResultCheckerPort resultCheckerPort = new ResultChecker();
         ticketRepositoryPort = new TicketFakeAdapter();
-        DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock);
+        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeFakeConfig().gameTypeSettingsContainer();
+        DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock, gameTypeSettingsContainer);
         NumbersReceiverPort numbersReceiverPort = new NumbersReceiverFakeAdapter();
-
-        LottoSettingsProperties lottoSettingsProperties = new LottoSettingsProperties();
-        Q600SettingsProperties q600SettingsProperties = new Q600SettingsProperties();
-        EjpSettingsProperties ejpSettingsProperties = new EjpSettingsProperties();
-        KenoSettingsProperties kenoSettingsProperties = new KenoSettingsProperties();
-        GameTypeIntervalProperties gameTypeIntervalProperties = GameTypeIntervalProperties.builder().build();
-        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeConfig().gameTypeSettingsContainer1(
-                lottoSettingsProperties, q600SettingsProperties, ejpSettingsProperties, kenoSettingsProperties, gameTypeIntervalProperties);
-
         NumbersGeneratorPort numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort, gameTypeSettingsContainer);
         NumbersValidatorPort numbersValidatorPort = new NumbersValidator(gameTypeSettingsContainer);
         TicketService ticketService = new TicketService(clock, ticketRepositoryPort,
