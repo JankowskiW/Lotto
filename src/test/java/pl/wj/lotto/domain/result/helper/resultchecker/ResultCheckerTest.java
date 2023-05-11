@@ -9,6 +9,7 @@ import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.result.model.dto.TicketResultDto;
+import pl.wj.lotto.domain.result.model.dto.TicketResultsDetailsDto;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 
@@ -205,6 +206,11 @@ class ResultCheckerTest {
         // given
         GameType gameType = GameType.LOTTO;
         LocalDateTime now = LocalDateTime.now();
+        String drawId1 = "some-draw-id-1";
+        String drawId2 = "some-draw-id-2";
+        String ticketId = "some-ticket-id";
+        String userId = "some-user-id";
+
         Numbers lottoNumbers1 = Numbers.builder()
                 .gameType(gameType)
                 .mainNumbers(List.of(1,2,3,4,5,6))
@@ -218,23 +224,23 @@ class ResultCheckerTest {
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
 
-        List<Draw> draws = new ArrayList<>();
-        draws.add(Draw.builder()
-                .id("some-draw-id-1")
+        List<Draw> ticketDraws = new ArrayList<>();
+        ticketDraws.add(Draw.builder()
+                .id(drawId1)
                 .type(gameType)
                 .drawDateTime(now)
                 .numbers(lottoNumbers1)
                 .build());
-        draws.add(Draw.builder()
-                .id("some-draw-id-1")
+        ticketDraws.add(Draw.builder()
+                .id(drawId2)
                 .type(gameType)
                 .drawDateTime(now.minusDays(1))
                 .numbers(lottoNumbers2)
                 .build());
 
         Ticket ticket = Ticket.builder()
-                .id("some-ticket-id")
-                .userId("some-user-id")
+                .id(ticketId)
+                .userId(userId)
                 .gameType(gameType)
                 .numberOfDraws(2)
                 .numbers(ticketNumbers)
@@ -242,13 +248,309 @@ class ResultCheckerTest {
                 .lastDrawDateTime(now)
                 .build();
 
-        List<TicketResultDto> expectedResult = new ArrayList<>();
+        List<TicketResultDto> ticketResultDtos = new ArrayList<>();
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId1)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(lottoNumbers1)
+                .level("1")
+                .prize(0.0)
+                .build());
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId2)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(lottoNumbers2)
+                .level("2")
+                .prize(0.0)
+                .build());
 
+        TicketResultsDetailsDto expectedResult = TicketResultsDetailsDto.builder()
+                .ticketId(ticketId)
+                .results(ticketResultDtos)
+                .totalPrize(0.0)
+                .build();
 
         // when
+        TicketResultsDetailsDto result = resultChecker.getResultsForTicket(ticket, ticketDraws);
 
         // then
-
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
     }
+
+    @Test
+    void shouldReturnResultsForQ600Ticket() {
+        // given
+        GameType gameType = GameType.Q600;
+        LocalDateTime now = LocalDateTime.now();
+        String drawId = "some-draw-id";
+        String ticketId = "some-ticket-id";
+        String userId = "some-user-id";
+
+        Numbers q600Numbers = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,2,3,4,5,6))
+                .build();
+        Numbers ticketNumbers = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,2,3,7,8,9))
+                .build();
+
+        List<Draw> ticketDraws = new ArrayList<>();
+        ticketDraws.add(Draw.builder()
+                .id(drawId)
+                .type(gameType)
+                .drawDateTime(now)
+                .numbers(q600Numbers)
+                .build());
+
+        Ticket ticket = Ticket.builder()
+                .id(ticketId)
+                .userId(userId)
+                .gameType(gameType)
+                .numberOfDraws(1)
+                .numbers(ticketNumbers)
+                .generationDateTime(now.minusDays(2))
+                .lastDrawDateTime(now)
+                .build();
+
+        List<TicketResultDto> ticketResultDtos = new ArrayList<>();
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(q600Numbers)
+                .level("4")
+                .prize(0.0)
+                .build());
+
+        TicketResultsDetailsDto expectedResult = TicketResultsDetailsDto.builder()
+                .ticketId(ticketId)
+                .results(ticketResultDtos)
+                .totalPrize(0.0)
+                .build();
+
+        // when
+        TicketResultsDetailsDto result = resultChecker.getResultsForTicket(ticket, ticketDraws);
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
+    }
+
+    @Test
+    void shouldReturnResultsForEjpTicket() {
+        // given
+        GameType gameType = GameType.EJP;
+        LocalDateTime now = LocalDateTime.now();
+        String drawId = "some-draw-id";
+        String ticketId = "some-ticket-id";
+        String userId = "some-user-id";
+
+        Numbers ejpNumbers1 = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,2,3,4,5))
+                .extraNumbers(List.of(1,2))
+                .build();
+        Numbers ejpNumbers2 = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,2,3,4,6))
+                .extraNumbers(List.of(1,3))
+                .build();
+        Numbers ejpNumbers3 = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,2,3,6,7))
+                .extraNumbers(List.of(3,4))
+                .build();
+        Numbers ejpNumbers4 = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,2,6,7,8))
+                .extraNumbers(List.of(1,2))
+                .build();
+        Numbers ejpNumbers5 = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,6,7,8,9))
+                .extraNumbers(List.of(1,2))
+                .build();
+        Numbers ejpNumbers6 = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(6,7,8,9,10))
+                .extraNumbers(List.of(1,2))
+                .build();
+
+        Numbers ticketNumbers = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,2,3,4,5))
+                .extraNumbers(List.of(1,2))
+                .build();
+
+        List<Draw> ticketDraws = new ArrayList<>();
+        ticketDraws.add(Draw.builder()
+                .id(drawId)
+                .type(gameType)
+                .drawDateTime(now.minusDays(17))
+                .numbers(ejpNumbers1)
+                .build());
+        ticketDraws.add(Draw.builder()
+                .id(drawId)
+                .type(gameType)
+                .drawDateTime(now.minusDays(14))
+                .numbers(ejpNumbers2)
+                .build());
+        ticketDraws.add(Draw.builder()
+                .id(drawId)
+                .type(gameType)
+                .drawDateTime(now.minusDays(10))
+                .numbers(ejpNumbers3)
+                .build());
+        ticketDraws.add(Draw.builder()
+                .id(drawId)
+                .type(gameType)
+                .drawDateTime(now.minusDays(7))
+                .numbers(ejpNumbers4)
+                .build());
+        ticketDraws.add(Draw.builder()
+                .id(drawId)
+                .type(gameType)
+                .drawDateTime(now.minusDays(3))
+                .numbers(ejpNumbers5)
+                .build());
+        ticketDraws.add(Draw.builder()
+                .id(drawId)
+                .type(gameType)
+                .drawDateTime(now)
+                .numbers(ejpNumbers6)
+                .build());
+
+        Ticket ticket = Ticket.builder()
+                .id(ticketId)
+                .userId(userId)
+                .gameType(gameType)
+                .numberOfDraws(6)
+                .numbers(ticketNumbers)
+                .generationDateTime(now.minusDays(21))
+                .lastDrawDateTime(now)
+                .build();
+
+        List<TicketResultDto> ticketResultDtos = new ArrayList<>();
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(ejpNumbers1)
+                .level("1")
+                .prize(0.0)
+                .build());
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(ejpNumbers2)
+                .level("5")
+                .prize(0.0)
+                .build());
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(ejpNumbers3)
+                .level("10")
+                .prize(0.0)
+                .build());
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(ejpNumbers4)
+                .level("8")
+                .prize(0.0)
+                .build());
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(ejpNumbers5)
+                .level("11")
+                .prize(0.0)
+                .build());
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(ejpNumbers6)
+                .level("0")
+                .prize(0.0)
+                .build());
+
+        TicketResultsDetailsDto expectedResult = TicketResultsDetailsDto.builder()
+                .ticketId(ticketId)
+                .results(ticketResultDtos)
+                .totalPrize(0.0)
+                .build();
+
+        // when
+        TicketResultsDetailsDto result = resultChecker.getResultsForTicket(ticket, ticketDraws);
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
+    }
+
+    @Test
+    void shouldReturnResultsForKenoTicket() {
+        // given
+        GameType gameType = GameType.KENO;
+        LocalDateTime now = LocalDateTime.now();
+        String drawId = "some-draw-id";
+        String ticketId = "some-ticket-id";
+        String userId = "some-user-id";
+
+        Numbers kenoNumbers = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20))
+                .build();
+        Numbers ticketNumbers = Numbers.builder()
+                .gameType(gameType)
+                .mainNumbers(List.of(1,2,3,4,5))
+                .build();
+
+        List<Draw> ticketDraws = new ArrayList<>();
+        ticketDraws.add(Draw.builder()
+                .id(drawId)
+                .type(gameType)
+                .drawDateTime(now)
+                .numbers(kenoNumbers)
+                .build());
+
+        Ticket ticket = Ticket.builder()
+                .id(ticketId)
+                .userId(userId)
+                .gameType(gameType)
+                .numberOfDraws(1)
+                .numbers(ticketNumbers)
+                .generationDateTime(now.minusDays(2))
+                .lastDrawDateTime(now)
+                .build();
+
+        List<TicketResultDto> ticketResultDtos = new ArrayList<>();
+        ticketResultDtos.add(TicketResultDto.builder()
+                .drawId(drawId)
+                .ticketNumbers(ticketNumbers)
+                .winningNumbers(kenoNumbers)
+                .level("5;5")
+                .prize(0.0)
+                .build());
+
+        TicketResultsDetailsDto expectedResult = TicketResultsDetailsDto.builder()
+                .ticketId(ticketId)
+                .results(ticketResultDtos)
+                .totalPrize(0.0)
+                .build();
+
+        // when
+        TicketResultsDetailsDto result = resultChecker.getResultsForTicket(ticket, ticketDraws);
+
+        // then
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
+    }
+
 
 }
