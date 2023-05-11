@@ -125,7 +125,8 @@ public class ResultChecker implements ResultCheckerPort {
                 case 4 -> mainNumbersPossibleLevels = new ArrayList<>(List.of(4, 5, 7));
                 case 3 -> mainNumbersPossibleLevels = new ArrayList<>(List.of(6, 9, 10));
                 case 2 -> mainNumbersPossibleLevels = new ArrayList<>(List.of(8, 12));
-                default -> mainNumbersPossibleLevels = new ArrayList<>(List.of(11));
+                case 1 -> mainNumbersPossibleLevels = new ArrayList<>(List.of(11));
+                default -> mainNumbersPossibleLevels = new ArrayList<>();
             }
             switch(correctExtraNumbersAmount) {
                 case 2 -> extraNumbersPossibleLevels = List.of(1, 4, 6, 8, 11);
