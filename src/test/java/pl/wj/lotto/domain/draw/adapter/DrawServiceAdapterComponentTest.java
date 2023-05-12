@@ -3,10 +3,13 @@ package pl.wj.lotto.domain.draw.adapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.wj.lotto.domain.common.gametype.GameType;
+import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
+import pl.wj.lotto.domain.common.numbers.NumbersGenerator;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
+import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
+import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
@@ -14,6 +17,8 @@ import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.draw.service.DrawService;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.gametype.GameTypeFakeConfig;
+import pl.wj.lotto.infrastructure.numbersreceiver.fake.NumbersReceiverFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 
 import java.time.Clock;
@@ -27,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class DrawServiceAdapterComponentTest {
     private DrawRepositoryPort drawRepositoryPort;
     private DrawServicePort drawServicePort;
+    private NumbersGeneratorPort numbersGeneratorPort;
     private Clock clock;
 
 
@@ -34,7 +40,10 @@ class DrawServiceAdapterComponentTest {
     void setUp() {
         clock = new ClockFakeConfig().clock();
         drawRepositoryPort = new DrawFakeAdapter();
-        drawServicePort = new DrawServiceAdapter(new DrawService(clock, drawRepositoryPort));
+        GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeFakeConfig().gameTypeSettingsContainer();
+        NumbersReceiverPort numbersReceiverPort = new NumbersReceiverFakeAdapter();
+        numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort, gameTypeSettingsContainer);
+        drawServicePort = new DrawServiceAdapter(new DrawService(clock, drawRepositoryPort, numbersGeneratorPort));
     }
 
     @Test
@@ -80,23 +89,17 @@ class DrawServiceAdapterComponentTest {
     void shouldSaveNewDrawAndReturnDrawResponseDto() {
         // given
         GameType gameType = GameType.LOTTO;
-        List<Integer> mainNumbers = List.of(1,2,3,4,5,6);
-        DrawRequestDto drawRequestDto = DrawRequestDto.builder()
-                .typeId(gameType.getId())
-                .mainNumbers(mainNumbers)
-                .build();
         DrawResponseDto expectedResult = DrawResponseDto.builder()
                 .id(null)
                 .typeName(gameType.getName())
                 .drawDateTime(LocalDateTime.now(clock))
                 .numbers(Numbers.builder()
                         .gameType(gameType)
-                        .mainNumbers(mainNumbers)
                         .build())
                 .build();
 
         // when
-        DrawResponseDto result = drawServicePort.addDraw(drawRequestDto);
+        DrawResponseDto result = drawServicePort.addDraw(gameType);
 
         // then
         assertThat(result)

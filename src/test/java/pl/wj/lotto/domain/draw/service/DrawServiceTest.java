@@ -100,7 +100,7 @@ class DrawServiceTest {
                 );
 
         // when
-        DrawResponseDto result = drawService.addDraw(drawRequestDto);
+        DrawResponseDto result = drawService.addDraw(gameType);
 
         // then
         assertThat(result)

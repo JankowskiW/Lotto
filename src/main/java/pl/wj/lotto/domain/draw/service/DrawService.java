@@ -3,9 +3,9 @@ package pl.wj.lotto.domain.draw.service;
 import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
+import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
@@ -19,6 +19,7 @@ import java.util.List;
 public class DrawService {
     private final Clock clock;
     private final DrawRepositoryPort drawRepositoryPort;
+    private final NumbersGeneratorPort numbersGeneratorPort;
 
 
     public List<DrawResponseDto> getGameTypeDraws(int gameTypeId) {
@@ -27,9 +28,12 @@ public class DrawService {
         return DrawMapper.toDrawResponseDtos(draws);
     }
 
-    public DrawResponseDto addDraw(DrawRequestDto drawRequestDto) {
-        Draw draw = DrawMapper.toDraw(drawRequestDto);
-        draw.setDrawDateTime(LocalDateTime.now(clock));
+    public DrawResponseDto addDraw(GameType gameType) {
+        Draw draw = Draw.builder()
+                .type(gameType)
+                .drawDateTime(LocalDateTime.now(clock))
+                .numbers(numbersGeneratorPort.generate(gameType,false))
+                .build();
         draw = drawRepositoryPort.save(draw);
         return DrawMapper.toDrawResponseDto(draw);
     }

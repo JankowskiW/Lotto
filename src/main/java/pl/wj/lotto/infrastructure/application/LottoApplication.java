@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = {"pl.wj.lotto.infrastructure.persistence.database"})
 @ComponentScan(basePackages = {"pl.wj.lotto.infrastructure"})
 public class LottoApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(LottoApplication.class, args);
     }
