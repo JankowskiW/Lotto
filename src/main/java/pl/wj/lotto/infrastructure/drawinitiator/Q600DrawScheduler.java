@@ -14,7 +14,8 @@ public class Q600DrawScheduler {
     private final DrawServicePort drawServicePort;
 
     @Scheduled(cron = "${lotto.game-type.config.interval.q600}")
-    public void initiateLottoDraw() {
+    public void initiateQ600Draw() {
+        log.info("Quick 600 draw initiated");
         drawServicePort.addDraw(GameType.Q600);
     }
 }

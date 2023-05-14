@@ -14,7 +14,8 @@ public class EjpDrawScheduler {
     private final DrawServicePort drawServicePort;
 
     @Scheduled(cron = "${lotto.game-type.config.interval.ejp}")
-    public void initiateLottoDraw() {
+    public void initiateEjpDraw() {
+        log.info("Eurojackpot draw initiated");
         drawServicePort.addDraw(GameType.EJP);
     }
 }

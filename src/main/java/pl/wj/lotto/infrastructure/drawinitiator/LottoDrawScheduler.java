@@ -15,6 +15,7 @@ public class LottoDrawScheduler {
 
     @Scheduled(cron = "${lotto.game-type.config.interval.lotto}")
     public void initiateLottoDraw() {
+        log.info("Lotto draw initiated");
         drawServicePort.addDraw(GameType.LOTTO);
     }
 }

@@ -14,7 +14,8 @@ public class KenoDrawScheduler {
     private final DrawServicePort drawServicePort;
 
     @Scheduled(cron = "${lotto.game-type.config.interval.keno}")
-    public void initiateLottoDraw() {
+    public void initiateKenoDraw() {
+        log.info("Keno draw initiated");
         drawServicePort.addDraw(GameType.KENO);
     }
 }
