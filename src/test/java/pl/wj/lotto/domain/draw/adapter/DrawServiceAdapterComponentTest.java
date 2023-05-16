@@ -16,7 +16,7 @@ import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.draw.service.DrawService;
 import pl.wj.lotto.domain.ticket.model.Ticket;
-import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.application.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.gametype.GameTypeFakeConfig;
 import pl.wj.lotto.infrastructure.numbersreceiver.fake.NumbersReceiverFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
@@ -88,24 +88,20 @@ class DrawServiceAdapterComponentTest {
     @Test
     void shouldSaveNewDrawAndReturnDrawResponseDto() {
         // given
+        int lottoMainNumbersAmount = 6;
         GameType gameType = GameType.LOTTO;
-        DrawResponseDto expectedResult = DrawResponseDto.builder()
-                .id(null)
-                .typeName(gameType.getName())
-                .drawDateTime(LocalDateTime.now(clock))
-                .numbers(Numbers.builder()
-                        .gameType(gameType)
-                        .build())
-                .build();
 
         // when
         DrawResponseDto result = drawServicePort.addDraw(gameType);
 
         // then
-        assertThat(result)
-                .usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(expectedResult);
+        assertAll(
+                () -> assertThat(result.id()).isNotBlank(),
+                () -> assertThat(result.typeName()).isEqualTo(gameType.getName()),
+                () -> assertThat(result.numbers().gameType()).isEqualTo(gameType),
+                () -> assertThat(result.numbers().mainNumbers()).hasSize(lottoMainNumbersAmount),
+                () -> assertThat(result.numbers().extraNumbers()).isNull()
+        );
     }
 
     @Test

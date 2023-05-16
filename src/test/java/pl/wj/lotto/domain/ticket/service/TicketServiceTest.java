@@ -18,7 +18,7 @@ import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
-import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.application.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
 
 import java.time.Clock;

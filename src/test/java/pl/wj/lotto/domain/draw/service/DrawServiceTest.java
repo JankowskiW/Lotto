@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
+import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
@@ -14,7 +15,7 @@ import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.ticket.model.Ticket;
-import pl.wj.lotto.infrastructure.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.application.clock.config.ClockFakeConfig;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -25,8 +26,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +35,8 @@ class DrawServiceTest {
     private Clock clock;
     @Mock
     private DrawRepositoryPort drawRepositoryPort;
+    @Mock
+    private NumbersGeneratorPort numbersGeneratorPort;
     @InjectMocks
     private DrawService drawService;
 
@@ -89,6 +91,12 @@ class DrawServiceTest {
         DrawResponseDto expectedResult = DrawMapper.toDrawResponseDto(draw);
         given(clock.instant()).willReturn(fixedClock.instant());
         given(clock.getZone()).willReturn(fixedClock.getZone());
+        given(numbersGeneratorPort.generate(any(GameType.class),anyBoolean()))
+                .willReturn(Numbers.builder()
+                        .gameType(gameType)
+                        .mainNumbers(drawRequestDto.mainNumbers())
+                        .extraNumbers(drawRequestDto.extraNumbers())
+                        .build());
         given(drawRepositoryPort.save(any(Draw.class)))
                 .willAnswer(
                         i -> {
