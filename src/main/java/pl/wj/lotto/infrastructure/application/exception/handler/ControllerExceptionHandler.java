@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.wj.lotto.infrastructure.application.exception.body.ExceptionBody;
-import pl.wj.lotto.infrastructure.application.exception.definition.ResourceAlreadyExistsException;
-import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFoundException;
+import pl.wj.lotto.infrastructure.application.exception.definition.*;
 
 import java.time.ZonedDateTime;
 
@@ -26,6 +25,30 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ExceptionBody handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
         return handleException(e.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler({DrawResultCalculateException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionBody handleDrawResultCalculateException(DrawResultCalculateException e) {
+        return handleException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({EnumParseException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionBody handleEnumParseException(EnumParseException e) {
+        return handleException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({NumbersReceiverException.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionBody handleNumbersReceiverException(NumbersReceiverException e) {
+        return handleException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler({NumbersValidationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleNumbersValidationException(NumbersValidationException e) {
+        return handleException(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
