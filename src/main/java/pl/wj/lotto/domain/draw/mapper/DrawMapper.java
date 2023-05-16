@@ -1,5 +1,7 @@
 package pl.wj.lotto.domain.draw.mapper;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
@@ -12,6 +14,7 @@ import pl.wj.lotto.infrastructure.persistence.database.draw.entity.DrawEntity;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DrawMapper {
     public static List<DrawResponseDto> toDrawResponseDtos(List<Draw> draws) {
         return draws.stream().map(DrawMapper::toDrawResponseDto).collect(Collectors.toList());

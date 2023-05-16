@@ -1,5 +1,7 @@
 package pl.wj.lotto.domain.ticket.mapper;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
@@ -11,6 +13,7 @@ import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntit
 
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TicketMapper {
     public static Ticket toTicket(TicketRequestDto ticketRequestDto) {
         GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
