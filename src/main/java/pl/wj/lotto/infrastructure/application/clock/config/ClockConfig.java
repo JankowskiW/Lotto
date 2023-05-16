@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.clock.config;
+package pl.wj.lotto.infrastructure.application.clock.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

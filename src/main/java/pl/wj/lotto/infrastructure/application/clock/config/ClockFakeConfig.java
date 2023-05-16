@@ -1,9 +1,9 @@
-package pl.wj.lotto.infrastructure.clock.config;
+package pl.wj.lotto.infrastructure.application.clock.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import pl.wj.lotto.infrastructure.clock.AdjustableClock;
+import pl.wj.lotto.infrastructure.application.clock.AdjustableClock;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

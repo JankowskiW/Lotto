@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.clock;
+package pl.wj.lotto.infrastructure.application.clock;
 
 import java.time.*;
 
