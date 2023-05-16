@@ -17,6 +17,8 @@
         <java.version>17</java.version>
         <mockito.version>5.2.0</mockito.version>
         <java-jwt.version>4.3.0</java-jwt.version>
+        <spring-data-redis.version>3.0.3</spring-data-redis.version>
+        <jedis.version>4.3.2</jedis.version>
     </properties>
     <dependencies>
         <dependency>
@@ -53,6 +55,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!--        REDIS-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring-data-redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
         </dependency>
 
         <!--        TESTS-->
