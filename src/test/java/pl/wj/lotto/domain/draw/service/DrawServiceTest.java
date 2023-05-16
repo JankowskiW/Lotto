@@ -16,6 +16,7 @@ import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.infrastructure.application.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFoundException;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -152,7 +153,7 @@ class DrawServiceTest {
 
         // when && then
         assertThatThrownBy(() -> drawService.getDraw(id))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("Draw not found");
     }
 
@@ -196,7 +197,7 @@ class DrawServiceTest {
 
         // when && then
         assertThatThrownBy(() -> drawService.getDrawResult(drawId))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("Draw not found");
     }
 

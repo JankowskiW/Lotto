@@ -19,6 +19,8 @@ import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.infrastructure.application.clock.config.ClockFakeConfig;
+import pl.wj.lotto.infrastructure.application.exception.definition.NumbersValidationException;
+import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFoundException;
 import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
 
 import java.time.Clock;
@@ -120,7 +122,7 @@ class TicketServiceTest {
 
         // when && then
         assertThatThrownBy(() -> ticketService.addTicket(ticketRequestDto))
-                .isInstanceOf(RuntimeException.class)
+                .isInstanceOf(NumbersValidationException.class)
                 .hasMessage("Given numbers are invalid");
     }
 
@@ -220,7 +222,7 @@ class TicketServiceTest {
 
         // when && then
         assertThatThrownBy(() -> ticketService.getTicket(ticketId))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Ticket not exists");
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("Ticket not found");
     }
 }
