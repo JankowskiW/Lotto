@@ -1,11 +1,11 @@
 package pl.wj.lotto.domain.user.port.in;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import pl.wj.lotto.domain.user.model.dto.UserRegisterRequestDto;
 import pl.wj.lotto.domain.user.model.dto.UserResponseDto;
+import pl.wj.lotto.domain.user.model.dto.UserSecurityDto;
 
 public interface UserServicePort {
-    UserDetails getUser(String username);
+    UserSecurityDto getUser(String username);
 
     UserResponseDto addUser(UserRegisterRequestDto userRegisterRequestDto);
 }

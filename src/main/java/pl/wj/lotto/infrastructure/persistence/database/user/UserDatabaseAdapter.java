@@ -1,12 +1,13 @@
 package pl.wj.lotto.infrastructure.persistence.database.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import pl.wj.lotto.domain.user.mapper.UserMapper;
 import pl.wj.lotto.domain.user.model.User;
 import pl.wj.lotto.domain.user.port.out.UserRepositoryPort;
 import pl.wj.lotto.infrastructure.persistence.database.user.entity.UserEntity;
 import pl.wj.lotto.infrastructure.persistence.database.user.repository.UserRepository;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserDatabaseAdapter implements UserRepositoryPort {
@@ -20,7 +21,7 @@ public class UserDatabaseAdapter implements UserRepositoryPort {
     }
 
     @Override
-    public UserDetails findByUsername(String username) {
+    public Optional<UserEntity> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 }

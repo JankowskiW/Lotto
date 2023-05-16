@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import pl.wj.lotto.domain.user.model.User;
 import pl.wj.lotto.domain.user.model.dto.UserRegisterRequestDto;
 import pl.wj.lotto.domain.user.model.dto.UserResponseDto;
+import pl.wj.lotto.domain.user.model.dto.UserSecurityDto;
 import pl.wj.lotto.infrastructure.persistence.database.user.entity.UserEntity;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -36,6 +37,13 @@ public class UserMapper {
         return UserResponseDto.builder()
                 .id(user.id())
                 .username(user.username())
+                .build();
+    }
+
+    public static UserSecurityDto toUserSecurityDto(User user) {
+        return UserSecurityDto.builder()
+                .username(user.username())
+                .password(user.password())
                 .build();
     }
 }

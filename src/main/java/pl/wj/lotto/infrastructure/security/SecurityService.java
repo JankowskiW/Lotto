@@ -22,7 +22,6 @@ public class SecurityService {
 
     public JwtResponseDto login(UserLoginRequestDto userLoginRequestDto) {
         User user = getAuthenticatedUser(userLoginRequestDto.username(), userLoginRequestDto.password());
-        System.out.println(user.getUsername());
         return JwtResponseDto.builder()
                 .token(createToken(user))
                 .username(user.getUsername())
@@ -32,7 +31,6 @@ public class SecurityService {
     private User getAuthenticatedUser(String username, String password) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
-        System.out.println(authentication.getPrincipal());
         return (User) authentication.getPrincipal();
     }
 

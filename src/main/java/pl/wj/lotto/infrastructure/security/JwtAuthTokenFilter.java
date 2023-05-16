@@ -1,5 +1,6 @@
 package pl.wj.lotto.infrastructure.security;
 
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -17,7 +18,6 @@ import pl.wj.lotto.infrastructure.security.properties.SecurityProperties;
 
 import java.io.IOException;
 import java.util.Collections;
-
 
 @RequiredArgsConstructor
 @Component
