@@ -15,10 +15,17 @@ public class NumbersGenerator implements NumbersGeneratorPort {
     private final NumbersReceiverPort numbersReceiverPort;
     private final GameTypeSettingsContainer gameTypeSettingsContainer;
 
+    @Override
     public Numbers generate(GameType gameType, boolean sorted) {
         GameTypeSettingsProperties settings = gameTypeSettingsContainer.settings().get(gameType);
+        return generate(gameType, settings.getMainNumbersAmount(), sorted);
+    }
+
+    @Override
+    public Numbers generate(GameType gameType, int numbersAmount, boolean sorted) {
+        GameTypeSettingsProperties settings = gameTypeSettingsContainer.settings().get(gameType);
         List<Integer> mainNumbers = numbersReceiverPort.receive(
-                settings.getMainNumbersMinValue(), settings.getMainNumbersMaxValue(), settings.getMainNumbersAmount());
+                settings.getMainNumbersMinValue(), settings.getMainNumbersMaxValue(), numbersAmount);
         List<Integer> extraNumbers = null;
         if (gameType == GameType.EJP) {
             extraNumbers = numbersReceiverPort.receive(

@@ -1,7 +1,6 @@
 package pl.wj.lotto.domain.draw.adapter;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
@@ -32,7 +31,6 @@ public class DrawServiceAdapter implements DrawServicePort {
     }
 
     @Override
-    @Cacheable("drawsResults")
     public DrawResultDto getDrawResult(String drawId) {
         return drawService.getDrawResult(drawId);
     }

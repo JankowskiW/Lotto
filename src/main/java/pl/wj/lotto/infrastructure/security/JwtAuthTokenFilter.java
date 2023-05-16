@@ -23,6 +23,7 @@ import java.util.Collections;
 @Component
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
     private final SecurityProperties securityProperties;
+    private static final String TOKEN_PREFIX = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -38,7 +39,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     private UsernamePasswordAuthenticationToken getAuthenticationToken(String authorization) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(securityProperties.secretKey())).build();
-        DecodedJWT jwt = verifier.verify(authorization.substring(7));
+        DecodedJWT jwt = verifier.verify(authorization.substring(TOKEN_PREFIX.length()));
         return new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, Collections.emptyList());
     }
 }

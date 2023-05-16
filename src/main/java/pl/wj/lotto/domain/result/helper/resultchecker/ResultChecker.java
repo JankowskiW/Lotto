@@ -87,23 +87,31 @@ public class ResultChecker implements ResultCheckerPort {
     }
 
     private Map<String, Integer> getResultForLottoDraw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {
-        return getResultForGamesWithSimpleRules(winningNumbers, mainNumbers, LOTTO_LEVELS_AMOUNT);
-    }
-
-    private Map<String, Integer> getResultForQuick600Draw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {
-        return getResultForGamesWithSimpleRules(winningNumbers, mainNumbers, Q600_LEVELS_AMOUNT);
-    }
-
-    private Map<String, Integer> getResultForGamesWithSimpleRules(
-            List<Integer> winningNumbers, List<List<Integer>> mainNumbers, Integer levelsAmount) {
         Map<String, Integer> results = new HashMap<>();
-        for (int i = 1; i <= levelsAmount; i++)
+        for (int i = 1; i <= LOTTO_LEVELS_AMOUNT; i++)
             results.put(String.valueOf(i), 0);
 
         for(List<Integer> numbers : mainNumbers) {
             int correctNumbersAmount = (int) numbers.stream().filter(winningNumbers::contains).count();
-            if (correctNumbersAmount <= winningNumbers.size() - levelsAmount) continue;
+            if (correctNumbersAmount <= winningNumbers.size() - LOTTO_LEVELS_AMOUNT) continue;
             String level = String.valueOf(winningNumbers.size() - correctNumbersAmount + 1);
+            if (!results.containsKey(level)) throw new DrawResultCalculateException("Cannot find LOTTO " + level + " level");
+            int newWinnersAmount = results.get(level) + 1;
+            results.put(level, newWinnersAmount);
+        }
+        return results;
+    }
+
+    private Map<String, Integer> getResultForQuick600Draw(List<Integer> winningNumbers, List<List<Integer>> mainNumbers) {
+        Map<String, Integer> results = new HashMap<>();
+        for (int i = 1; i <= Q600_LEVELS_AMOUNT; i++)
+            results.put(String.valueOf(i), 0);
+
+        for(List<Integer> numbers : mainNumbers) {
+            int correctNumbersAmount = (int) numbers.stream().filter(winningNumbers::contains).count();
+            if (correctNumbersAmount <= winningNumbers.size() - Q600_LEVELS_AMOUNT) continue;
+            String level = String.valueOf(winningNumbers.size() - correctNumbersAmount + 1);
+            if (!results.containsKey(level)) throw new DrawResultCalculateException("Cannot find Q600 " + level + " level");
             int newWinnersAmount = results.get(level) + 1;
             results.put(level, newWinnersAmount);
         }
@@ -138,6 +146,7 @@ public class ResultChecker implements ResultCheckerPort {
             if (mainNumbersPossibleLevels.size() == 0) continue;
             if (mainNumbersPossibleLevels.size() > 1) throw new DrawResultCalculateException("Unexpected value during calculating Eurojackpot draw results");
             String level = String.valueOf(mainNumbersPossibleLevels.get(0));
+            if (!results.containsKey(level)) throw new DrawResultCalculateException("Cannot find EJP " + level + " level");
             int newWinnersAmount = results.get(level) + 1;
             results.put(level, newWinnersAmount);
         }
@@ -154,6 +163,7 @@ public class ResultChecker implements ResultCheckerPort {
             int selectedNumbersAmount = numbers.size();
             int correctNumbersAmount = (int) numbers.stream().filter(winningNumbers::contains).count();
             String level = selectedNumbersAmount + ";" + correctNumbersAmount;
+            if (!results.containsKey(level)) throw new DrawResultCalculateException("Cannot find KENO " + level + " level");
             int newWinnersAmount = results.get(level) + 1;
             results.put(level, newWinnersAmount);
         }
