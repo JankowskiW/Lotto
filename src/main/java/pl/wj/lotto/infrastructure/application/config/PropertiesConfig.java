@@ -8,6 +8,7 @@ import pl.wj.lotto.infrastructure.gametype.properties.settings.KenoSettingsPrope
 import pl.wj.lotto.infrastructure.gametype.properties.settings.LottoSettingsProperties;
 import pl.wj.lotto.infrastructure.gametype.properties.settings.Q600SettingsProperties;
 import pl.wj.lotto.infrastructure.numbersreceiver.http.NumbersRetrieverHttpConfigProperties;
+import pl.wj.lotto.infrastructure.security.properties.SecurityProperties;
 
 @Configuration
 @EnableConfigurationProperties({
@@ -16,7 +17,8 @@ import pl.wj.lotto.infrastructure.numbersreceiver.http.NumbersRetrieverHttpConfi
         Q600SettingsProperties.class,
         EjpSettingsProperties.class,
         KenoSettingsProperties.class,
-        GameTypeIntervalProperties.class
+        GameTypeIntervalProperties.class,
+        SecurityProperties.class
 })
 public class PropertiesConfig {
 }
