@@ -9,6 +9,7 @@ import pl.wj.lotto.domain.result.model.dto.TicketResultsDetailsDto;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
+import pl.wj.lotto.infrastructure.application.exception.definition.DrawResultCalculateException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,7 +136,7 @@ public class ResultChecker implements ResultCheckerPort {
             }
             mainNumbersPossibleLevels.retainAll(extraNumbersPossibleLevels);
             if (mainNumbersPossibleLevels.size() == 0) continue;
-            if (mainNumbersPossibleLevels.size() > 1) throw new RuntimeException("Unexpected value during calculating Eurojackpot draw results");
+            if (mainNumbersPossibleLevels.size() > 1) throw new DrawResultCalculateException("Unexpected value during calculating Eurojackpot draw results");
             String level = String.valueOf(mainNumbersPossibleLevels.get(0));
             int newWinnersAmount = results.get(level) + 1;
             results.put(level, newWinnersAmount);

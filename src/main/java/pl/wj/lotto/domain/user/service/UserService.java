@@ -8,6 +8,7 @@ import pl.wj.lotto.domain.user.model.dto.UserRegisterRequestDto;
 import pl.wj.lotto.domain.user.model.dto.UserResponseDto;
 import pl.wj.lotto.domain.user.model.dto.UserSecurityDto;
 import pl.wj.lotto.domain.user.port.out.UserRepositoryPort;
+import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFoundException;
 import pl.wj.lotto.infrastructure.persistence.database.user.entity.UserEntity;
 
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class UserService {
 
 
     public UserSecurityDto getUser(String username) {
-        UserEntity userEntity = userRepositoryPort.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        UserEntity userEntity = userRepositoryPort.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return UserMapper.toUserSecurityDto(UserMapper.toUser(userEntity));
     }
 }

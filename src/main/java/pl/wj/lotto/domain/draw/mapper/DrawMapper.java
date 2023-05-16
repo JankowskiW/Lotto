@@ -3,7 +3,7 @@ package pl.wj.lotto.domain.draw.mapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
+import pl.wj.lotto.domain.common.gametype.GameTypeParser;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
@@ -30,7 +30,7 @@ public class DrawMapper {
     }
 
     public static Draw toDraw(DrawRequestDto drawRequestDto) {
-        GameType gameType = GameTypeExtractor.getGameTypeById(drawRequestDto.typeId());
+        GameType gameType = GameTypeParser.getGameTypeById(drawRequestDto.typeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
                 .mainNumbers(drawRequestDto.mainNumbers())

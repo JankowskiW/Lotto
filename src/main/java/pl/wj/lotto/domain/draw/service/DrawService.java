@@ -2,7 +2,7 @@ package pl.wj.lotto.domain.draw.service;
 
 import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
+import pl.wj.lotto.domain.common.gametype.GameTypeParser;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
@@ -10,6 +10,7 @@ import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.ticket.model.Ticket;
+import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFoundException;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public class DrawService {
 
 
     public List<DrawResponseDto> getGameTypeDraws(int gameTypeId) {
-        GameType type = GameTypeExtractor.getGameTypeById(gameTypeId);
+        GameType type = GameTypeParser.getGameTypeById(gameTypeId);
         List<Draw> draws = drawRepositoryPort.findAllByType(type);
         return DrawMapper.toDrawResponseDtos(draws);
     }
@@ -39,12 +40,12 @@ public class DrawService {
     }
 
     public DrawResponseDto getDraw(String id) {
-        Draw draw = drawRepositoryPort.findById(id).orElseThrow(() -> new RuntimeException("Draw not found"));
+        Draw draw = drawRepositoryPort.findById(id).orElseThrow(() -> new ResourceNotFoundException("Draw not found"));
         return DrawMapper.toDrawResponseDto(draw);
     }
 
     public DrawResultDto getDrawResult(String drawId) {
-        return drawRepositoryPort.findDrawResultById(drawId).orElseThrow(() -> new RuntimeException("Draw not found"));
+        return drawRepositoryPort.findDrawResultById(drawId).orElseThrow(() -> new ResourceNotFoundException("Draw not found"));
     }
 
     public List<Draw> getDrawsForTicket(Ticket ticket) {

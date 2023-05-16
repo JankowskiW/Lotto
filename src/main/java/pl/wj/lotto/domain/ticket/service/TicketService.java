@@ -13,6 +13,8 @@ import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
+import pl.wj.lotto.infrastructure.application.exception.definition.NumbersValidationException;
+import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFoundException;
 import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
 
 import java.time.Clock;
@@ -35,7 +37,7 @@ public class TicketService {
             ticket.setNumbers(numbers);
         }
         if (!numbersValidatorPort.validate(ticket.getNumbers())) {
-            throw new RuntimeException("Given numbers are invalid");
+            throw new NumbersValidationException("Given numbers are invalid");
         }
         ticket.setGenerationDateTime(LocalDateTime.now(clock));
         LocalDateTime lastDrawDateTime = drawDateTimeCheckerPort.getLastDrawDateTimeForTicket(ticket.getGameType(), ticket.getNumberOfDraws(), ticket.getGenerationDateTime());
@@ -75,7 +77,7 @@ public class TicketService {
     }
 
     public Ticket getTicket(String ticketId) {
-        TicketEntity ticketEntity = ticketRepositoryPort.findById(ticketId).orElseThrow(() -> new RuntimeException("Ticket not exists"));
+        TicketEntity ticketEntity = ticketRepositoryPort.findById(ticketId).orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
         return TicketMapper.toTicket(ticketEntity);
     }
 }

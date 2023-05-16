@@ -3,7 +3,7 @@ package pl.wj.lotto.domain.ticket.mapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.gametype.GameTypeExtractor;
+import pl.wj.lotto.domain.common.gametype.GameTypeParser;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TicketMapper {
     public static Ticket toTicket(TicketRequestDto ticketRequestDto) {
-        GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
+        GameType gameType = GameTypeParser.getGameTypeById(ticketRequestDto.gameTypeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
                 .mainNumbers(ticketRequestDto.mainNumbers())
@@ -62,7 +62,7 @@ public class TicketMapper {
     }
 
     public static TicketResponseDto toTicketResponseDto(TicketRequestDto ticketRequestDto) {
-        GameType gameType = GameTypeExtractor.getGameTypeById(ticketRequestDto.gameTypeId());
+        GameType gameType = GameTypeParser.getGameTypeById(ticketRequestDto.gameTypeId());
         Numbers numbers = Numbers.builder()
                 .gameType(gameType)
                 .mainNumbers(ticketRequestDto.mainNumbers())
