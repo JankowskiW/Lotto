@@ -63,6 +63,7 @@ public class ControllerExceptionHandler {
         return handleException(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
+
     private ExceptionBody handleException(String message, HttpStatus httpStatus) {
         ExceptionBody response = new ExceptionBody(message, httpStatus, ZonedDateTime.now());
         log.error(String.format("[%s]: %s", response.httpStatus(), response.message()));

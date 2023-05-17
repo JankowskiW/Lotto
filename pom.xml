@@ -19,6 +19,7 @@
         <java-jwt.version>4.3.0</java-jwt.version>
         <spring-data-redis.version>3.0.3</spring-data-redis.version>
         <jedis.version>4.3.2</jedis.version>
+        <swagger.version>2.0.2</swagger.version>
     </properties>
     <dependencies>
         <dependency>
@@ -67,6 +68,13 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
+        </dependency>
+
+        <!--        SWAGGER-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${swagger.version}</version>
         </dependency>
 
         <!--        TESTS-->
