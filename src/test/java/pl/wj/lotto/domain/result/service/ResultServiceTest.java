@@ -59,7 +59,7 @@ class ResultServiceTest {
                 .id(ticketId)
                 .userId(userId)
                 .gameType(gameType)
-                .numberOfDraws(2)
+                .drawsAmount(2)
                 .numbers(ticketNumbers)
                 .generationDateTime(LocalDateTime.now(clock).minusDays(7))
                 .lastDrawDateTime(LocalDateTime.now(clock).minusHours(1))

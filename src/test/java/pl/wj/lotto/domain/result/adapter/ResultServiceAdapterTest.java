@@ -89,7 +89,7 @@ class ResultServiceAdapterTest {
         ticket = Ticket.builder()
                 .userId(userId)
                 .gameType(gameType)
-                .numberOfDraws(1)
+                .drawsAmount(1)
                 .numbers(ticketNumbers)
                 .generationDateTime(now.minusDays(5))
                 .lastDrawDateTime(now.minusDays(1))

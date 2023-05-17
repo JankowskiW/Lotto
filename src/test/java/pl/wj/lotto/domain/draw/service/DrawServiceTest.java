@@ -210,7 +210,7 @@ class DrawServiceTest {
                 .id("some-ticket-id")
                 .userId("some-user-id")
                 .gameType(gameType)
-                .numberOfDraws(2)
+                .drawsAmount(2)
                 .numbers(Numbers.builder()
                         .gameType(gameType)
                         .mainNumbers(List.of(1,2,3,4,5,6))

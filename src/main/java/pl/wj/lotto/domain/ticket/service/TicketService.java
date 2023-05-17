@@ -41,7 +41,7 @@ public class TicketService {
         }
 
         ticket.setGenerationDateTime(LocalDateTime.now(clock));
-        LocalDateTime lastDrawDateTime = drawDateTimeCheckerPort.getLastDrawDateTimeForTicket(ticket.getGameType(), ticket.getNumberOfDraws(), ticket.getGenerationDateTime());
+        LocalDateTime lastDrawDateTime = drawDateTimeCheckerPort.getLastDrawDateTimeForTicket(ticket.getGameType(), ticket.getDrawsAmount(), ticket.getGenerationDateTime());
         ticket.setLastDrawDateTime(lastDrawDateTime);
         ticket.setGenerationDateTime(LocalDateTime.now(clock));
         ticket = ticketRepositoryPort.save(ticket);

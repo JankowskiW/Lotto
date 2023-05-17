@@ -33,14 +33,14 @@ public class DrawDateTimeChecker implements DrawDateTimeCheckerPort {
     }
 
     @Override
-    public LocalDateTime getLastDrawDateTimeForTicket(GameType gameType, int numberOfDraws, LocalDateTime generationDateTime) {
-        if (numberOfDraws == 0) return generationDateTime;
+    public LocalDateTime getLastDrawDateTimeForTicket(GameType gameType, int drawsAmount, LocalDateTime generationDateTime) {
+        if (drawsAmount == 0) return generationDateTime;
         String cronExpression = gameTypeSettingsContainer.intervals().get(gameType);
         SimpleTriggerContext triggerContext = new SimpleTriggerContext(clock);
         Instant generationInstant = generationDateTime.toInstant(ZoneOffset.UTC);
         triggerContext.update(null, null, generationInstant);
         CronTrigger cronTrigger = new CronTrigger(cronExpression);
         LocalDateTime nextDrawTime = LocalDateTime.ofInstant(cronTrigger.nextExecution(triggerContext), clock.getZone());
-        return getLastDrawDateTimeForTicket(gameType, numberOfDraws - 1, nextDrawTime);
+        return getLastDrawDateTimeForTicket(gameType, drawsAmount - 1, nextDrawTime);
     }
 }

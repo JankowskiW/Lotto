@@ -8,5 +8,5 @@ public interface DrawDateTimeCheckerPort {
     LocalDateTime getNextDrawDateTime(GameType gameType);
     LocalDateTime getNextDrawDateTimeForTicket(GameType gameType, LocalDateTime lastDrawTime);
 
-    LocalDateTime getLastDrawDateTimeForTicket(GameType gameType, int numberOfDraws, LocalDateTime generationDateTime);
+    LocalDateTime getLastDrawDateTimeForTicket(GameType gameType, int drawsAmount, LocalDateTime generationDateTime);
 }

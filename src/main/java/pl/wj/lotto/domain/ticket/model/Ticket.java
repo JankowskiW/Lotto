@@ -15,7 +15,7 @@ public class Ticket {
     String id;
     String userId;
     GameType gameType;
-    int numberOfDraws;
+    int drawsAmount;
     Numbers numbers;
     LocalDateTime generationDateTime;
     LocalDateTime lastDrawDateTime;

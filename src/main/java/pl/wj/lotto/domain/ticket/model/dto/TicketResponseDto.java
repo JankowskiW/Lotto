@@ -12,7 +12,7 @@ public record TicketResponseDto(
         String id,
         String userId,
         String gameTypeName,
-        int numberOfDraws,
+        int drawsAmount,
         Numbers numbers,
         LocalDateTime nextDrawDateTime,
         LocalDateTime generationDateTime
