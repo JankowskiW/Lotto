@@ -1,5 +1,8 @@
 package pl.wj.lotto.infrastructure.persistence.fake.draw;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
@@ -16,8 +19,8 @@ import java.util.stream.Collectors;
 
 public class DrawFakeAdapter implements DrawRepositoryPort {
     private final Map<String, Draw> drawsTable = new ConcurrentHashMap<>();
-    public List<Draw> findAllByType(GameType type) {
-        return drawsTable.values().stream().filter(d -> d.getType().equals(type)).collect(Collectors.toList());
+    public Page<Draw> findAllByType(GameType type, Pageable pageable) {
+        return new PageImpl<>(drawsTable.values().stream().filter(d -> d.getType().equals(type)).collect(Collectors.toList()));
     }
 
     @Override

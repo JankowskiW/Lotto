@@ -2,6 +2,7 @@ package pl.wj.lotto.domain.draw.mapper;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeParser;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
@@ -70,5 +71,13 @@ public class DrawMapper {
                 .drawDateTime(draw.getDrawDateTime())
                 .numbers(draw.getNumbers())
                 .build();
+    }
+
+    public static Page<Draw> toDrawsPage(Page<DrawEntity> drawEntitiesPage) {
+        return drawEntitiesPage.map(DrawMapper::toDraw);
+    }
+
+    public static Page<DrawResponseDto> toDrawResponseDtosPage(Page<Draw> drawsPage) {
+        return drawsPage.map(DrawMapper::toDrawResponseDto);
     }
 }

@@ -1,6 +1,10 @@
 package pl.wj.lotto.domain.draw.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeParser;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
@@ -23,10 +27,11 @@ public class DrawService {
     private final NumbersGeneratorPort numbersGeneratorPort;
 
 
-    public List<DrawResponseDto> getGameTypeDraws(int gameTypeId) {
+    public Page<DrawResponseDto> getGameTypeDraws(int gameTypeId, int pageNumber, int pageSize) {
         GameType type = GameTypeParser.getGameTypeById(gameTypeId);
-        List<Draw> draws = drawRepositoryPort.findAllByType(type);
-        return DrawMapper.toDrawResponseDtos(draws);
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.by("drawDateTime").descending());
+        Page<Draw> drawsPage = drawRepositoryPort.findAllByType(type, pageable);
+        return DrawMapper.toDrawResponseDtosPage(drawsPage);
     }
 
     public DrawResponseDto addDraw(GameType gameType) {

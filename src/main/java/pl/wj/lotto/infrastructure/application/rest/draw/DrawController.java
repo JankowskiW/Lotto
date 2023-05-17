@@ -1,11 +1,10 @@
 package pl.wj.lotto.infrastructure.application.rest.draw;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/draws")
@@ -14,8 +13,9 @@ public class DrawController {
     private final DrawServicePort drawServicePort;
 
     @GetMapping
-    public List<DrawResponseDto> getGameTypeDraws(@RequestParam(name = "gameType") int gameTypeId) {
-        return drawServicePort.getGameTypeDraws(gameTypeId);
+    public Page<DrawResponseDto> getGameTypeDraws(@RequestParam(name = "gameType") int gameTypeId,
+                                                  @RequestParam int pageNumber, @RequestParam int pageSize) {
+        return drawServicePort.getGameTypeDraws(gameTypeId, pageNumber, pageSize);
     }
 
     @GetMapping("/{id}")

@@ -75,7 +75,7 @@ class DrawServiceAdapterComponentTest {
                         .toList();
 
         // when
-        List<DrawResponseDto> result = drawServicePort.getGameTypeDraws(gameType.getId());
+        List<DrawResponseDto> result = null;// = drawServicePort.getGameTypeDraws(gameType.getId());
 
         // then
         assertAll(

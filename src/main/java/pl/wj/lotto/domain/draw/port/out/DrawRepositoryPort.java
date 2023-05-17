@@ -1,5 +1,7 @@
 package pl.wj.lotto.domain.draw.port.out;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.Query;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.model.Draw;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DrawRepositoryPort {
-    List<Draw> findAllByType(GameType gameType);
+    Page<Draw> findAllByType(GameType gameType, Pageable pageable);
 
     Draw save(Draw draw);
 

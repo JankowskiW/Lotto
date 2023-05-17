@@ -1,6 +1,7 @@
 package pl.wj.lotto.domain.draw.adapter;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
@@ -16,8 +17,8 @@ public class DrawServiceAdapter implements DrawServicePort {
     private final DrawService drawService;
 
     @Override
-    public List<DrawResponseDto> getGameTypeDraws(int gameTypeId) {
-        return drawService.getGameTypeDraws(gameTypeId);
+    public Page<DrawResponseDto> getGameTypeDraws(int gameTypeId, int pageNumber, int pageSize) {
+        return drawService.getGameTypeDraws(gameTypeId, pageNumber, pageSize);
     }
 
     @Override

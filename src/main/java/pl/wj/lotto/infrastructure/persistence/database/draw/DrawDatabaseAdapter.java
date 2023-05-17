@@ -1,6 +1,8 @@
 package pl.wj.lotto.infrastructure.persistence.database.draw;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
@@ -17,9 +19,9 @@ import java.util.Optional;
 public class DrawDatabaseAdapter implements DrawRepositoryPort {
     private final DrawRepository drawRepository;
 
-    public List<Draw> findAllByType(GameType type) {
-        List<DrawEntity> drawEntities = drawRepository.findAllByType(type);
-        return DrawMapper.toDraws(drawEntities);
+    public Page<Draw> findAllByType(GameType type, Pageable pageable) {
+        Page<DrawEntity> drawEntitiesPage = drawRepository.findAllByType(type, pageable);
+        return DrawMapper.toDrawsPage(drawEntitiesPage);
     }
 
     @Override
