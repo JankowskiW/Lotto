@@ -19,6 +19,7 @@ public class RequestValidationExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RequestValidationExceptionBody handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error(String.format("[%s] MethodArgumentNotValidException has been thrown", HttpStatus.BAD_REQUEST.value()));
         return new RequestValidationExceptionBody(
                 extractMessagesFromException(e),
                 HttpStatus.BAD_REQUEST,

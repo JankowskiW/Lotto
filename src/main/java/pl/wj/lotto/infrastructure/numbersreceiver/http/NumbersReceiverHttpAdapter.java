@@ -1,7 +1,6 @@
 package pl.wj.lotto.infrastructure.numbersreceiver.http;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
-@Log4j2
 public class NumbersReceiverHttpAdapter implements NumbersReceiverPort {
     private static final String SERVICE_PATH = "/api/v1.0/random";
     private static final String SERVICE_LOWER_BOUND_PARAM = "min";
@@ -37,7 +35,6 @@ public class NumbersReceiverHttpAdapter implements NumbersReceiverPort {
                 approachNumber++;
                 if (approachNumber > APPROACH_LIMIT) {
                     String message = String.format("Cannot generate numbers ([%d - %d] x %d), try again.", lowerBound, upperBound, amount);
-                    log.error(message);
                     throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message);
                 }
                 response = executeGetRequest(lowerBound, upperBound, amount);
@@ -45,7 +42,6 @@ public class NumbersReceiverHttpAdapter implements NumbersReceiverPort {
             } while((long) numbers.size() < amount);
         } catch (ResourceAccessException e) {
             String message = String.format("Error while numbers generating through http client: %s", e.getMessage());
-            log.error(message);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message);
         }
         return numbers.stream().limit(amount).toList();
@@ -53,21 +49,17 @@ public class NumbersReceiverHttpAdapter implements NumbersReceiverPort {
 
     private ResponseEntity<Set<Integer>> executeGetRequest(int lowerBound, int upperBound, int amount) throws ResourceAccessException {
         HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
         final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(headers);
         final String url = UriComponentsBuilder.fromHttpUrl(createServiceURL())
                 .queryParam(SERVICE_LOWER_BOUND_PARAM, lowerBound)
                 .queryParam(SERVICE_UPPER_BOUND_PARAM, upperBound)
                 .queryParam(SERVICE_AMOUNT_PARAM, amount)
                 .toUriString();
-        log.info(url);
         ResponseEntity<Set<Integer>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {});
-
-        log.info(response.getBody());
         return response;
     }
 
@@ -78,7 +70,6 @@ public class NumbersReceiverHttpAdapter implements NumbersReceiverPort {
     private Set<Integer> getGeneratedNumbers(ResponseEntity<Set<Integer>> response) {
         if (response.getBody() == null) {
             String message = "Numbers response body was null";
-            log.error(message);
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, message);
         }
         return new HashSet<>(response.getBody());
