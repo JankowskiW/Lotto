@@ -2,6 +2,7 @@ package pl.wj.lotto.domain.draw.adapter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
 import pl.wj.lotto.domain.common.numbers.NumbersGenerator;
@@ -32,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class DrawServiceAdapterComponentTest {
     private DrawRepositoryPort drawRepositoryPort;
     private DrawServicePort drawServicePort;
-    private NumbersGeneratorPort numbersGeneratorPort;
     private Clock clock;
 
 
@@ -42,7 +42,7 @@ class DrawServiceAdapterComponentTest {
         drawRepositoryPort = new DrawFakeAdapter();
         GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeFakeConfig().gameTypeSettingsContainer();
         NumbersReceiverPort numbersReceiverPort = new NumbersReceiverFakeAdapter();
-        numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort, gameTypeSettingsContainer);
+        NumbersGeneratorPort numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort, gameTypeSettingsContainer);
         drawServicePort = new DrawServiceAdapter(new DrawService(clock, drawRepositoryPort, numbersGeneratorPort));
     }
 
@@ -50,6 +50,8 @@ class DrawServiceAdapterComponentTest {
     void shouldReturnDrawResponseDtosOfSpecificDrawType() {
         // given
         int expectedSize = 2;
+        int pageNumber = 1;
+        int pageSize = 5;
         GameType gameType = GameType.EJP;
         Numbers numbersEJP = Numbers.builder()
                 .gameType(gameType)
@@ -75,7 +77,7 @@ class DrawServiceAdapterComponentTest {
                         .toList();
 
         // when
-        List<DrawResponseDto> result = null;// = drawServicePort.getGameTypeDraws(gameType.getId());
+        Page<DrawResponseDto> result  = drawServicePort.getGameTypeDraws(gameType.getId(), pageNumber, pageSize);
 
         // then
         assertAll(

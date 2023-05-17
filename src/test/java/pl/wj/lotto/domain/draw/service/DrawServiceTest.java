@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import pl.wj.lotto.domain.common.gametype.GameType;
@@ -22,7 +23,6 @@ import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFo
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,10 +49,12 @@ class DrawServiceTest {
     void shouldReturnEmptyListWhenThereIsNoDrawWithGivenType() {
         // given
         GameType gameType = GameType.EJP;
+        int pageNumber = 1;
+        int pageSize = 10;
         given(drawRepositoryPort.findAllByType(any(GameType.class), any(Pageable.class))).willReturn(new PageImpl<>(List.of()));
 
         // when
-        List<DrawResponseDto> result = null; //drawService.getGameTypeDraws(gameType.getId());
+        Page<DrawResponseDto> result = drawService.getGameTypeDraws(gameType.getId(), pageNumber, pageSize);
 
         // then
         assertThat(result)
@@ -63,13 +65,35 @@ class DrawServiceTest {
     @Test
     void shouldReturnDrawsWithGivenType() {
         // given
+        int pageNumber = 1;
+        int pageSize = 10;
         GameType gameType = GameType.EJP;
-        List<Draw> draws = new ArrayList<>();
+        Draw draw1 = Draw.builder()
+                .id("some-id-1")
+                .type(gameType)
+                .drawDateTime(LocalDateTime.now())
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .mainNumbers(List.of(1,2,3,4,5))
+                        .extraNumbers(List.of(1,2))
+                        .build())
+                .build();
+        Draw draw2 = Draw.builder()
+                .id("some-id-2")
+                .type(gameType)
+                .drawDateTime(LocalDateTime.now())
+                .numbers(Numbers.builder()
+                        .gameType(gameType)
+                        .mainNumbers(List.of(6,7,8,9,10))
+                        .extraNumbers(List.of(4,5))
+                        .build())
+                .build();
+        List<Draw> draws = List.of(draw1, draw2);
         List<DrawResponseDto> expectedResult = DrawMapper.toDrawResponseDtos(draws);
         given(drawRepositoryPort.findAllByType(any(GameType.class), any(Pageable.class))).willReturn(new PageImpl<>(draws));
 
         // when
-        List<DrawResponseDto> result = null;//= drawService.getGameTypeDraws(gameType.getId());
+        Page<DrawResponseDto> result = drawService.getGameTypeDraws(gameType.getId(), pageNumber, pageSize);
 
         // then
         assertThat(result)
