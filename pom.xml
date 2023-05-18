@@ -22,6 +22,7 @@
         <swagger.version>2.0.2</swagger.version>
         <testcontainers.version>1.17.6</testcontainers.version>
         <wiremock-jre8.version>2.35.0</wiremock-jre8.version>
+        <awaitility.version>4.2.0</awaitility.version>
     </properties>
     <dependencies>
         <dependency>
@@ -107,6 +108,14 @@
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock-jre8-standalone</artifactId>
             <version>${wiremock-jre8.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--        AWAITILITY-->
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
 
