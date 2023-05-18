@@ -52,7 +52,7 @@ public class NumbersReceiverHttpIsolationIntegrationTest {
                         .withStatus(HttpStatus.OK.value())
                         .withHeader(CONTENT_TYPE_HEADER.getKey(), CONTENT_TYPE_HEADER.getValue())
                         .withBody(helper.createBodyWithNumbers())));
-        List<Integer> expectedResponse = helper.getGeneratedNumbers();
+        List<Integer> expectedResult = helper.getGeneratedNumbers();
 
         // when
         List<Integer> result = numbersReceiverPort.receive(LOWER_BOUND, UPPER_BOUND, AMOUNT);
@@ -60,7 +60,7 @@ public class NumbersReceiverHttpIsolationIntegrationTest {
         // then
         assertThat(result)
                 .isNotNull()
-                .containsExactlyInAnyOrderElementsOf(expectedResponse);
+                .containsExactlyInAnyOrderElementsOf(expectedResult);
     }
 
     @Test

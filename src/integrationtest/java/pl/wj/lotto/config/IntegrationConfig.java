@@ -15,7 +15,7 @@ import java.time.ZoneId;
 public class IntegrationConfig {
     @Bean
     @Primary
-    AdjustableClock clock() {
+    public AdjustableClock clock() {
         ZoneId zoneId = ZoneId.systemDefault();
         LocalDate localDate = LocalDate.now(zoneId).minusDays(1);
         LocalTime localTime = LocalTime.now(zoneId);
