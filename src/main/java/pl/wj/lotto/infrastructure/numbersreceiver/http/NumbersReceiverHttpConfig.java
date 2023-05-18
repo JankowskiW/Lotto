@@ -32,7 +32,7 @@ public class NumbersReceiverHttpConfig {
     }
 
     @Bean
-    public NumbersReceiverPort numberGeneratorPort(RestTemplate restTemplate) {
+    public NumbersReceiverPort numbersReceiverPort(RestTemplate restTemplate) {
         return new NumbersReceiverHttpAdapter(restTemplate, properties.uri(), properties.port());
     }
 }

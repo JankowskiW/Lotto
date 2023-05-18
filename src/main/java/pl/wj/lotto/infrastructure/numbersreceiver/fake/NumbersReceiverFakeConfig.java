@@ -9,7 +9,7 @@ import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
 @Profile("fake")
 public class NumbersReceiverFakeConfig {
     @Bean
-    public NumbersReceiverPort numberGeneratorPort() {
+    public NumbersReceiverPort numbersReceiverPort() {
         return new NumbersReceiverFakeAdapter();
     }
 }
