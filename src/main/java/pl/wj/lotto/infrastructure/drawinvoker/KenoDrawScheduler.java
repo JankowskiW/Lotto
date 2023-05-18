@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.drawinitiator;
+package pl.wj.lotto.infrastructure.drawinvoker;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +14,8 @@ public class KenoDrawScheduler {
     private final DrawServicePort drawServicePort;
 
     @Scheduled(cron = "${lotto.game-type.config.interval.keno}")
-    public void initiateKenoDraw() {
-        log.info("Keno draw initiated");
+    public void invokeKenoDraw() {
+        log.info("Keno draw invoked");
         drawServicePort.addDraw(GameType.KENO);
     }
 }

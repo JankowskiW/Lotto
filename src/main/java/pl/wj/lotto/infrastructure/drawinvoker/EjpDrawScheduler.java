@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.drawinitiator;
+package pl.wj.lotto.infrastructure.drawinvoker;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +14,8 @@ public class EjpDrawScheduler {
     private final DrawServicePort drawServicePort;
 
     @Scheduled(cron = "${lotto.game-type.config.interval.ejp}")
-    public void initiateEjpDraw() {
-        log.info("Eurojackpot draw initiated");
+    public void invokeEjpDraw() {
+        log.info("Eurojackpot draw invoked");
         drawServicePort.addDraw(GameType.EJP);
     }
 }

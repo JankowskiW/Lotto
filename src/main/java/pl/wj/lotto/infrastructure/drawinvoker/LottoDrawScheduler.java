@@ -1,4 +1,4 @@
-package pl.wj.lotto.infrastructure.drawinitiator;
+package pl.wj.lotto.infrastructure.drawinvoker;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -10,12 +10,12 @@ import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 @Component
 @RequiredArgsConstructor
 @Log4j2
-public class Q600DrawScheduler {
+public class LottoDrawScheduler {
     private final DrawServicePort drawServicePort;
 
-    @Scheduled(cron = "${lotto.game-type.config.interval.q600}")
-    public void initiateQ600Draw() {
-        log.info("Quick 600 draw initiated");
-        drawServicePort.addDraw(GameType.Q600);
+    @Scheduled(cron = "${lotto.game-type.config.interval.lotto}")
+    public void invokeLottoDraw() {
+        log.info("Lotto draw invoked");
+        drawServicePort.addDraw(GameType.LOTTO);
     }
 }
