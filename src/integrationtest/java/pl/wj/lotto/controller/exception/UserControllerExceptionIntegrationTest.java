@@ -1,4 +1,4 @@
-package pl.wj.lotto.controller.error;
+package pl.wj.lotto.controller.exception;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -14,7 +14,7 @@ import pl.wj.lotto.BaseIntegrationTest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserControllerErrorsIntegrationTest extends BaseIntegrationTest {
+public class UserControllerExceptionIntegrationTest extends BaseIntegrationTest {
     private static final String CONTENT_TYPE = MediaType.APPLICATION_JSON_VALUE;
     private static final String USERS_URL = "/users";
     private static final String REGISTER_URL = USERS_URL + "/register";
@@ -41,7 +41,7 @@ public class UserControllerErrorsIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldReturnConflictWhenUserAlreadyExistsInDatabase() throws Exception {
+    void shouldReturnConflictStatusWhenUserAlreadyExistsInDatabase() throws Exception {
         // step 1: Created first user
         // given
         RequestBuilder firstRegisterRequestBuilder = post(REGISTER_URL).content(REQUEST_BODY).contentType(CONTENT_TYPE);
@@ -60,7 +60,7 @@ public class UserControllerErrorsIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    void shouldReturnNotFoundWhenUserDoesNotExistInDatabase() throws Exception {
+    void shouldReturnNotFoundStatusWhenUserDoesNotExistInDatabase() throws Exception {
         // given
         RequestBuilder loginRequestBuilder = post(LOGIN_URL).content(LOGIN_REQUEST_BODY).contentType(CONTENT_TYPE);
         // when

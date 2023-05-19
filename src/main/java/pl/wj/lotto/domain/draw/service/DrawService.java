@@ -49,8 +49,8 @@ public class DrawService {
         return DrawMapper.toDrawResponseDto(draw);
     }
 
-    public DrawResultDto getDrawResult(String drawId) {
-        return drawRepositoryPort.findDrawResultById(drawId).orElseThrow(() -> new ResourceNotFoundException("Draw not found"));
+    public DrawResultDto getDrawResult(String id) {
+        return drawRepositoryPort.findDrawResultById(id).orElseThrow(() -> new ResourceNotFoundException("Draw not found"));
     }
 
     public List<Draw> getDrawsForTicket(Ticket ticket) {
