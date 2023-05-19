@@ -13,7 +13,7 @@ public class ResultServiceAdapter implements ResultServicePort {
 
     @Override
     public TicketResultsDetailsDto getTicketResultsDetails(String ticketId) {
-        return resultService.getTicketResults(ticketId);
+        return resultService.getTicketResultsDetails(ticketId);
     }
 
     @Override

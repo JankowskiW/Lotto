@@ -113,7 +113,7 @@ class ResultServiceTest {
         given(resultCheckerPort.getResultsForTicket(any(Ticket.class), anyList())).willReturn(ticketResultsDetailsDto);
 
         // when
-        TicketResultsDetailsDto result = resultService.getTicketResults(ticketId);
+        TicketResultsDetailsDto result = resultService.getTicketResultsDetails(ticketId);
 
         // then
         assertThat(result)

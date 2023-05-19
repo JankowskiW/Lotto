@@ -14,7 +14,7 @@ import pl.wj.lotto.BaseIntegrationTest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserControllerExceptionIntegrationTest extends BaseIntegrationTest {
+public class UserControllerExceptionsIntegrationTest extends BaseIntegrationTest {
     private static final String CONTENT_TYPE = MediaType.APPLICATION_JSON_VALUE;
     private static final String USERS_URL = "/users";
     private static final String REGISTER_URL = USERS_URL + "/register";

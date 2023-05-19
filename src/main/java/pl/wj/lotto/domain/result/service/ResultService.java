@@ -21,7 +21,7 @@ public class ResultService {
     private final DrawServicePort drawServicePort;
 
 
-    public TicketResultsDetailsDto getTicketResults(String ticketId) {
+    public TicketResultsDetailsDto getTicketResultsDetails(String ticketId) {
         Ticket ticket = ticketServicePort.getTicket(ticketId);
         List<Draw> ticketDraws = drawServicePort.getDrawsForTicket(ticket);
         return resultCheckerPort.getResultsForTicket(ticket, ticketDraws);
