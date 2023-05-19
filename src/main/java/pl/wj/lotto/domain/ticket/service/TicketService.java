@@ -45,8 +45,8 @@ public class TicketService {
         ticket.setLastDrawDateTime(lastDrawDateTime);
         ticket.setGenerationDateTime(LocalDateTime.now(clock));
         ticket = ticketRepositoryPort.save(ticket);
-        if (ticket.getUserId() != null && !ticket.getUserId().isBlank()) {
-            // TODO: get user email address and user notification settings by user id and send messages
+        // TODO: get user email address and user notification settings by user id and send messages
+
 //            NotificationSettings notificationSettings = userServicePort.getNotificationSettings();
 //            if (notificationSettings.contains("SMS")) {
 //                notificationPort = new SmsNotificationAdapter();
@@ -56,9 +56,6 @@ public class TicketService {
 //                notificationPort = new SmsNotificationAdapter();
 //                notificationPort.send("email@email.com", "Message");
 //            }
-        } else {
-            ticket.setUserId("");
-        }
         TicketResponseDto ticketResponseDto = TicketMapper.toTicketResponseDto(ticket);
         LocalDateTime nextDrawDateTime = drawDateTimeCheckerPort.getNextDrawDateTime(ticket.getGameType());
         return ticketResponseDto.withNextDrawDateTime(nextDrawDateTime);

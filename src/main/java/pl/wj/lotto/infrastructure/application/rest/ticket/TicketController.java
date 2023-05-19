@@ -20,8 +20,8 @@ public class TicketController {
         return ticketServicePort.addTicket(ticketRequestDto);
     }
 
-    @GetMapping("/users/{id}")
-    public List<TicketResponseDto> getUserTickets(@PathVariable String id) {
-        return ticketServicePort.getUserTickets(id);
+    @GetMapping("/users/{userId}")
+    public List<TicketResponseDto> getUserTickets(@PathVariable String userId) {
+        return ticketServicePort.getUserTickets(userId);
     }
 }
