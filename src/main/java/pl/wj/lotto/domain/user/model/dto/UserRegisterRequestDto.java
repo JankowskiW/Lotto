@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record UserRegisterRequestDto(
-        @NotBlank(message = "{user.username.not-blank")
+        @NotBlank(message = "{user.username.not-blank}")
         String username,
-        @NotBlank(message = "{user.password.not-blank")
+        @NotBlank(message = "{user.password.not-blank}")
         String password) {}
