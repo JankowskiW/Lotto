@@ -1,11 +1,13 @@
 package pl.wj.lotto.domain.user.model;
 
 import lombok.Builder;
+import lombok.With;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@With
 @Builder
 public record User(
         String id,

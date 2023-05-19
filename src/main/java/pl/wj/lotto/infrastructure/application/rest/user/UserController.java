@@ -2,10 +2,8 @@ package pl.wj.lotto.infrastructure.application.rest.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import pl.wj.lotto.domain.user.model.dto.UserLoginRequestDto;
 import pl.wj.lotto.domain.user.model.dto.UserRegisterRequestDto;
 import pl.wj.lotto.domain.user.model.dto.UserResponseDto;
@@ -21,6 +19,7 @@ public class UserController {
     private final SecurityServicePort securityServicePort;
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDto registerUser(@Valid @RequestBody UserRegisterRequestDto userRegisterRequestDto) {
         return userServicePort.addUser(userRegisterRequestDto);
     }
