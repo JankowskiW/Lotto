@@ -9,5 +9,5 @@ import java.util.List;
 public record Numbers (
         GameType gameType,
         List<Integer> mainNumbers,
-        List<Integer> extraNumbers) {
-}
+        List<Integer> extraNumbers
+) {}

@@ -16,5 +16,4 @@ public record TicketResponseDto(
         Numbers numbers,
         LocalDateTime nextDrawDateTime,
         LocalDateTime generationDateTime
-        ) {
-}
+        ) {}

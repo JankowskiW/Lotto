@@ -8,7 +8,6 @@ import java.util.List;
 
 @Builder
 public record TicketRequestDto(
-        String id,
         @NotBlank(message = "{ticket.user-id.not-blank}")
         String userId,
         @Min(value = 1, message = "{ticket.game-type-id.positive-number}")

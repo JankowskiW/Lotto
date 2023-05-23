@@ -24,7 +24,6 @@ public class TicketMapper {
                 .build();
 
         return Ticket.builder()
-                .id(ticketRequestDto.id())
                 .userId(ticketRequestDto.userId())
                 .gameType(gameType)
                 .drawsAmount(ticketRequestDto.drawsAmount())

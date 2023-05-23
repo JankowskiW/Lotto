@@ -18,6 +18,7 @@ import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFo
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -54,7 +55,8 @@ public class DrawService {
     }
 
     public List<Draw> getDrawsForTicket(Ticket ticket) {
-        return drawRepositoryPort.findAllByTypeAndDrawDateTime(
+        List<Draw> draws = drawRepositoryPort.findAllByTypeAndDrawDateTime(
                 ticket.getGameType(), ticket.getGenerationDateTime(), ticket.getLastDrawDateTime());
+        return draws == null ? new ArrayList<>() : draws;
     }
 }

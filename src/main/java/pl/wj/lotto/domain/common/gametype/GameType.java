@@ -1,10 +1,8 @@
 package pl.wj.lotto.domain.common.gametype;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 @Getter
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum GameType {
     LOTTO(1, "Lotto"),
     Q600(2, "Quick 600"),
