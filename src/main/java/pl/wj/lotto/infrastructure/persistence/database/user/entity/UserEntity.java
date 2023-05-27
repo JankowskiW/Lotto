@@ -12,5 +12,7 @@ public record UserEntity (
         String id,
         @Indexed(unique = true)
         String username,
-        String password
+        String password,
+        String phoneNumber,
+        String emailAddress
 ){}

@@ -28,4 +28,8 @@ public class UserService {
         UserEntity userEntity = userRepositoryPort.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return UserMapper.toUserSecurityDto(UserMapper.toUser(userEntity));
     }
+
+    public User findById(String userId) {
+        return userRepositoryPort.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
 }

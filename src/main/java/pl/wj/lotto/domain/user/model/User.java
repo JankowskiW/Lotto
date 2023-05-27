@@ -12,7 +12,9 @@ import java.util.Collection;
 public record User(
         String id,
         String username,
-        String password
+        String password,
+        String phoneNumber,
+        String emailAddress
 ) implements UserDetails {
 
     @Override

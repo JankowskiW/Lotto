@@ -24,4 +24,10 @@ public class UserDatabaseAdapter implements UserRepositoryPort {
     public Optional<UserEntity> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    @Override
+    public Optional<User> findById(String userId) {
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        return userEntity.map(UserMapper::toUser);
+    }
 }

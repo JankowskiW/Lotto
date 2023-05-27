@@ -14,6 +14,8 @@ public class UserMapper {
         return User.builder()
                 .username(userRegisterRequestDto.username())
                 .password(encodedPassword)
+                .phoneNumber(userRegisterRequestDto.phoneNumber())
+                .emailAddress(userRegisterRequestDto.emailAddress())
                 .build();
     }
 
@@ -22,6 +24,8 @@ public class UserMapper {
                 .id(userEntity.id())
                 .username(userEntity.username())
                 .password(userEntity.password())
+                .phoneNumber(userEntity.phoneNumber())
+                .emailAddress(userEntity.emailAddress())
                 .build();
     }
 
@@ -30,6 +34,8 @@ public class UserMapper {
                 .id(user.id())
                 .username(user.username())
                 .password(user.password())
+                .phoneNumber(user.phoneNumber())
+                .emailAddress(user.emailAddress())
                 .build();
     }
 
@@ -37,6 +43,8 @@ public class UserMapper {
         return UserResponseDto.builder()
                 .id(user.id())
                 .username(user.username())
+                .phoneNumber(user.phoneNumber())
+                .emailAddress(user.emailAddress())
                 .build();
     }
 

@@ -27,4 +27,10 @@ public class UserFakeAdapter implements UserRepositoryPort {
                 .findFirst();
         return user.map(UserMapper::toUserEntity);
     }
+
+    @Override
+    public Optional<User> findById(String userId) {
+        if (!usersTable.containsKey(userId)) return Optional.empty();
+        return Optional.of(usersTable.get(userId));
+    }
 }

@@ -22,13 +22,15 @@ public class UserControllerExceptionsIntegrationTest extends BaseIntegrationTest
     private static final String REQUEST_BODY = """
                 {
                     "username" : "username",
-                    "password" : "password"
+                    "password" : "password",
+                    "emailAddress" : "email@address.com"
                 }
                 """.trim();
     private static final String LOGIN_REQUEST_BODY = """
                 {
                     "username" : "fake-username",
-                    "password" : "password"
+                    "password" : "password",
+                    "emailAddress" : "email@address.com"
                 }
                 """.trim();
 

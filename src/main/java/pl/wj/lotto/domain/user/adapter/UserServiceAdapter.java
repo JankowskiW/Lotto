@@ -1,6 +1,7 @@
 package pl.wj.lotto.domain.user.adapter;
 
 import lombok.RequiredArgsConstructor;
+import pl.wj.lotto.domain.user.model.User;
 import pl.wj.lotto.domain.user.model.dto.UserRegisterRequestDto;
 import pl.wj.lotto.domain.user.model.dto.UserResponseDto;
 import pl.wj.lotto.domain.user.model.dto.UserSecurityDto;
@@ -19,5 +20,10 @@ public class UserServiceAdapter implements UserServicePort {
     @Override
     public UserResponseDto addUser(UserRegisterRequestDto userRegisterRequestDto) {
         return userService.addUser(userRegisterRequestDto);
+    }
+
+    @Override
+    public User getUserById(String userId) {
+        return userService.findById(userId);
     }
 }
