@@ -85,7 +85,7 @@ class TicketServiceTest {
                 .build();
         given(clock.instant()).willReturn(fixedClock.instant());
         given(clock.getZone()).willReturn(fixedClock.getZone());
-        given(numbersGeneratorPort.generate(any(GameType.class), anyInt(), anyBoolean())).willReturn(numbers);
+        given(numbersGeneratorPort.generate(any(GameType.class), anyBoolean())).willReturn(numbers);
         given(ticketRepositoryPort.save(any(Ticket.class))).willAnswer(
                 i -> {
                     Ticket t = i.getArgument(0, Ticket.class);

@@ -42,7 +42,7 @@ public class DrawDatabaseAdapter implements DrawRepositoryPort {
     }
 
     @Override
-    public List<Draw> findAllByTypeAndDrawDateTime(GameType gameType, LocalDateTime generationDateTime, LocalDateTime lastDrawDateTime) {
-        return null;
+    public List<Draw> findByTypeAndDrawDateTimeBetween(GameType gameType, LocalDateTime drawDateTimeGT, LocalDateTime drawDateTimeLTE) {
+        return drawRepository.findByTypeAndDrawDateTimeBetween(gameType, drawDateTimeGT, drawDateTimeLTE);
     }
 }

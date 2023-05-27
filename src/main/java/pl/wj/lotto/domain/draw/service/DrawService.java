@@ -55,7 +55,7 @@ public class DrawService {
     }
 
     public List<Draw> getDrawsForTicket(Ticket ticket) {
-        List<Draw> draws = drawRepositoryPort.findAllByTypeAndDrawDateTime(
+        List<Draw> draws = drawRepositoryPort.findByTypeAndDrawDateTimeBetween(
                 ticket.getGameType(), ticket.getGenerationDateTime(), ticket.getLastDrawDateTime());
         return draws == null ? new ArrayList<>() : draws;
     }

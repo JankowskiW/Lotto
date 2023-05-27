@@ -257,7 +257,7 @@ class DrawServiceTest {
                 .numbers(Numbers.builder().build())
                 .build();
         List<Draw> expectedResult = List.of(firstDraw, secondDraw);
-        given(drawRepositoryPort.findAllByTypeAndDrawDateTime(any(GameType.class), any(LocalDateTime.class), any(LocalDateTime.class)))
+        given(drawRepositoryPort.findByTypeAndDrawDateTimeBetween(any(GameType.class), any(LocalDateTime.class), any(LocalDateTime.class)))
                 .willReturn(List.of(firstDraw, secondDraw));
 
         // when

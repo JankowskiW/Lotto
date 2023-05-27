@@ -11,7 +11,8 @@ import pl.wj.lotto.domain.user.model.dto.UserLoginRequestDto;
 import pl.wj.lotto.infrastructure.security.model.dto.JwtResponseDto;
 import pl.wj.lotto.infrastructure.security.properties.SecurityProperties;
 
-import java.time.*;
+import java.time.Duration;
+import java.time.Instant;
 
 @RequiredArgsConstructor
 public class SecurityService {

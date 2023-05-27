@@ -2,7 +2,6 @@ package pl.wj.lotto.domain.draw.port.out;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.Query;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
@@ -20,7 +19,5 @@ public interface DrawRepositoryPort {
 
     Optional<DrawResultDto> findDrawResultById(String drawId);
 
-
-    @Query(value="{ 'type' : $0, 'drawDateTime' : { $gt: ?1, $lte: ?2}}", fields = "{'type' :  1, 'drawDateTime' :  1, 'numbers' :  1}")
-    List<Draw> findAllByTypeAndDrawDateTime(GameType gameType, LocalDateTime generationDateTime, LocalDateTime lastDrawDateTime);
+    List<Draw> findByTypeAndDrawDateTimeBetween(GameType gameType, LocalDateTime drawDateTimeGT, LocalDateTime drawDateTimeLTE);
 }
