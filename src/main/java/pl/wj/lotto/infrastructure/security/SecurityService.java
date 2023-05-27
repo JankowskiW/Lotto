@@ -15,7 +15,6 @@ import java.time.*;
 
 @RequiredArgsConstructor
 public class SecurityService {
-    private final Clock clock;
     private final AuthenticationManager authenticationManager;
     private final SecurityProperties securityProperties;
 
@@ -35,7 +34,7 @@ public class SecurityService {
     }
 
     private String createToken(User user) {
-        Instant now = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
+        Instant now = Instant.now();
         return JWT.create()
                 .withSubject(user.getUsername())
                 .withIssuedAt(now)
