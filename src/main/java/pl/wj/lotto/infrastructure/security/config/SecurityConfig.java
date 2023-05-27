@@ -18,8 +18,6 @@ import pl.wj.lotto.infrastructure.security.adapter.SecurityServiceAdapter;
 import pl.wj.lotto.infrastructure.security.port.in.SecurityServicePort;
 import pl.wj.lotto.infrastructure.security.properties.SecurityProperties;
 
-import java.time.Clock;
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -31,8 +29,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityServicePort securityServicePort(Clock clock, AuthenticationManager authenticationManager, SecurityProperties securityProperties) {
-        SecurityService securityService = new SecurityService(clock, authenticationManager, securityProperties);
+    public SecurityServicePort securityServicePort(AuthenticationManager authenticationManager, SecurityProperties securityProperties) {
+        SecurityService securityService = new SecurityService(authenticationManager, securityProperties);
         return new SecurityServiceAdapter(securityService);
     }
 
