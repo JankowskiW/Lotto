@@ -14,12 +14,11 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import pl.wj.lotto.config.IntegrationConfig;
 import pl.wj.lotto.infrastructure.application.LottoApplication;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
-@SpringBootTest(classes = {LottoApplication.class, IntegrationConfig.class})
+@SpringBootTest(classes = LottoApplication.class)
 @ActiveProfiles("integration")
 @AutoConfigureMockMvc
 @Testcontainers
@@ -41,7 +40,7 @@ public class BaseIntegrationTest {
     @DynamicPropertySource
     public static void propertyOverride(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-        registry.add("job-offers.http.client.config.http.uri", () -> WIRE_MOCK_HOST);
-        registry.add("job-offers.http.client.config.http.port", () -> wireMockServer.getPort());
+        registry.add("lotto.http.client.config.http.uri", () -> WIRE_MOCK_HOST);
+        registry.add("lotto.http.client.config.http.port", () -> wireMockServer.getPort());
     }
 }

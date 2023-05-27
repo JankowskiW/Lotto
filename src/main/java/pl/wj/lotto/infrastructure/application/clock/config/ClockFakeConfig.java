@@ -10,7 +10,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 
 @Configuration
-@Profile("fake")
+@Profile({"fake", "integration"})
 public class ClockFakeConfig {
     @Bean
     public AdjustableClock clock() {

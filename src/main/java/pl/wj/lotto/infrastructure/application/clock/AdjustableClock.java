@@ -29,7 +29,7 @@ public class AdjustableClock extends Clock {
 
     @Override
     public Clock withZone(ZoneId zone) {
-        if (zone.equals(this.zone)) {  // intentional NPE
+        if (zone.equals(this.zone)) {
             return this;
         }
         return new AdjustableClock(instant, zone);
@@ -94,7 +94,7 @@ public class AdjustableClock extends Clock {
     }
 
     public void plusMinutes(int minutes) {
-        Duration offset = Duration.ofHours(minutes);
+        Duration offset = Duration.ofMinutes(minutes);
         advanceInTimeBy(offset);
     }
 }
