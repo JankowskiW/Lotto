@@ -19,7 +19,7 @@ Each game type has its own rules:
 - Quick 600 - there are 5 prize levels, user has to score at least 2 out of 6 numbers
 - Keno - system generates 20 numbers on every draw, user can choose at least 1 and at most 10 numbers and there are
   many various prize levels:
-![keno.PNG](docs%2Fkeno.PNG)
+![keno_prize_levels.PNG](docs%2Fkeno_prize_levels.PNG)
 - Eurojackpot - there are 12 prize levels, system generate 5 out of 50 and 2 out of 12 numbers and user has to score at
 least 3 numbers
 
