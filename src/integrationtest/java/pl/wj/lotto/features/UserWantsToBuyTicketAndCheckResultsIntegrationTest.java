@@ -51,12 +51,14 @@ public class UserWantsToBuyTicketAndCheckResultsIntegrationTest extends BaseInte
     private static final String NUMBER_GENERATOR_URL = "/api/v1.0/random";
     private static final String USERNAME = "user";
     private static final String USER_PASSWORD = "password";
+    private static final String USER_EMAIL_ADDRESS = "email@address.com";
     private static final String CREDENTIALS_BODY = """
                 {
                     "username":"%s",
-                    "password":"%s"
+                    "password":"%s",
+                    "emailAddress":"%s"
                 }
-                """.formatted(USERNAME, USER_PASSWORD).trim();
+                """.formatted(USERNAME, USER_PASSWORD,USER_EMAIL_ADDRESS).trim();
 
 
     @Test

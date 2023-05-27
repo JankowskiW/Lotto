@@ -47,7 +47,8 @@ public class RedisDrawResultsCacheIntegrationTest extends BaseIntegrationTest {
     private static final String REQUEST_BODY = """
                 {
                     "username" : "usrname",
-                    "password" : "pswd"
+                    "password" : "pswd",
+                    "emailAddress" : "email@address.com"
                 }
                 """.trim();
 

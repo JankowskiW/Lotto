@@ -33,7 +33,8 @@ public class RequestValidationIntegrationTest extends BaseIntegrationTest {
         RequestValidationExceptionBody resultBody = objectMapper.readValue(json, RequestValidationExceptionBody.class);
         assertThat(resultBody.messages()).containsExactlyInAnyOrder(
                 "password must not be blank",
-                "username must not be blank");
+                "username must not be blank",
+                "email address must not be blank");
     }
 
     @Test

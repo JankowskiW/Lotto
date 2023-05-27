@@ -18,6 +18,8 @@ import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
+import pl.wj.lotto.domain.user.model.User;
+import pl.wj.lotto.domain.user.port.in.UserServicePort;
 import pl.wj.lotto.infrastructure.application.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.application.exception.definition.NumbersValidationException;
 import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFoundException;
@@ -41,6 +43,8 @@ class TicketServiceTest {
     @Mock
     private TicketRepositoryPort ticketRepositoryPort;
     @Mock
+    private UserServicePort userServicePort;
+    @Mock
     private NotificationPort notificationPort;
     @Mock
     private DrawDateTimeCheckerPort drawDateTimeCheckerPort;
@@ -60,6 +64,11 @@ class TicketServiceTest {
         LocalDateTime generationDateTime = LocalDateTime.now();
         LocalDateTime nextDrawDateTime = LocalDateTime.now().plusDays(1);
         String userId = "some-user-id";
+        User user = User.builder()
+                .id(userId)
+                .password("some-password")
+                .emailAddress("some-email@address.com")
+                .build();
         String id = "some-id";
         TicketRequestDto ticketRequestDto = TicketRequestDto.builder()
                 .userId(userId)
@@ -94,6 +103,7 @@ class TicketServiceTest {
                     return t;
                 });
         given(drawDateTimeCheckerPort.getNextDrawDateTime(any(GameType.class))).willReturn(nextDrawDateTime);
+        given(userServicePort.getUserById(anyString())).willReturn(user);
 
         // when
         TicketResponseDto result = ticketService.addTicket(ticketRequestDto);

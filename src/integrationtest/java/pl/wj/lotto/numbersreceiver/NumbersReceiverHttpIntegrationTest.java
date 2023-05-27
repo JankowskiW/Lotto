@@ -2,15 +2,17 @@ package pl.wj.lotto.numbersreceiver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.wj.lotto.BaseIntegrationTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
+import pl.wj.lotto.infrastructure.application.LottoApplication;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NumbersReceiverHttpIntegrationTest extends BaseIntegrationTest {
+@SpringBootTest(classes = LottoApplication.class)
+public class NumbersReceiverHttpIntegrationTest {
     @Autowired
     private NumbersReceiverPort numbersReceiverPort;
 

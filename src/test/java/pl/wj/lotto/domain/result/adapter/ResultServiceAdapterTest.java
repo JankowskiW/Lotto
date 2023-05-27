@@ -2,10 +2,12 @@ package pl.wj.lotto.domain.result.adapter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.wj.lotto.domain.common.drawdatetime.DrawDateTimeChecker;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.gametype.GameTypeSettingsContainer;
+import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbers.NumbersGenerator;
 import pl.wj.lotto.domain.common.numbers.NumbersValidator;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
@@ -29,11 +31,17 @@ import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.port.in.TicketServicePort;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
 import pl.wj.lotto.domain.ticket.service.TicketService;
+import pl.wj.lotto.domain.user.adapter.UserServiceAdapter;
+import pl.wj.lotto.domain.user.port.in.UserServicePort;
+import pl.wj.lotto.domain.user.service.UserService;
 import pl.wj.lotto.infrastructure.application.clock.config.ClockFakeConfig;
 import pl.wj.lotto.infrastructure.gametype.GameTypeFakeConfig;
+import pl.wj.lotto.infrastructure.notification.fake.email.EmailNotificationFakeAdapter;
+import pl.wj.lotto.infrastructure.notification.fake.sms.SMSNotificationFakeAdapter;
 import pl.wj.lotto.infrastructure.numbersreceiver.fake.NumbersReceiverFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.draw.DrawFakeAdapter;
 import pl.wj.lotto.infrastructure.persistence.fake.ticket.TicketFakeAdapter;
+import pl.wj.lotto.infrastructure.persistence.fake.user.UserFakeAdapter;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -44,6 +52,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ResultServiceAdapterTest {
     private TicketRepositoryPort ticketRepositoryPort;
+    private UserServicePort userServicePort;
     private DrawRepositoryPort drawRepositoryPort;
     private ResultServicePort resultServicePort;
 
@@ -57,13 +66,19 @@ class ResultServiceAdapterTest {
         clock = new ClockFakeConfig().clock();
         ResultCheckerPort resultCheckerPort = new ResultChecker();
         ticketRepositoryPort = new TicketFakeAdapter();
+        UserService userService = new UserService(new UserFakeAdapter(), new BCryptPasswordEncoder());
+        userServicePort = new UserServiceAdapter(userService);
         GameTypeSettingsContainer gameTypeSettingsContainer = new GameTypeFakeConfig().gameTypeSettingsContainer();
         DrawDateTimeCheckerPort drawDateTimeCheckerPort = new DrawDateTimeChecker(clock, gameTypeSettingsContainer);
         NumbersReceiverPort numbersReceiverPort = new NumbersReceiverFakeAdapter();
         NumbersGeneratorPort numbersGeneratorPort = new NumbersGenerator(numbersReceiverPort, gameTypeSettingsContainer);
         NumbersValidatorPort numbersValidatorPort = new NumbersValidator(gameTypeSettingsContainer);
-        TicketService ticketService = new TicketService(clock, ticketRepositoryPort,
-                drawDateTimeCheckerPort, numbersGeneratorPort, numbersValidatorPort);
+        NotificationPort emailNotificationPort = new EmailNotificationFakeAdapter();
+        NotificationPort smsNotificationPort = new SMSNotificationFakeAdapter();
+        TicketService ticketService = new TicketService(
+                clock, ticketRepositoryPort, userServicePort,
+                drawDateTimeCheckerPort, numbersGeneratorPort, numbersValidatorPort,
+                emailNotificationPort, smsNotificationPort);
         TicketServicePort ticketServicePort = new TicketServiceAdapter(ticketService);
         drawRepositoryPort = new DrawFakeAdapter();
         DrawService drawService = new DrawService(clock, drawRepositoryPort, numbersGeneratorPort);
