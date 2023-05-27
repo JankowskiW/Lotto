@@ -7,13 +7,14 @@ import java.util.List;
 
 @Log4j2
 public class SmsNotificationAdapter implements NotificationPort {
+
     @Override
     public void send(List<String> recipients, String message) {
-        log.error("SMS configuration not found");
+        recipients.forEach(r -> log.info(String.format("SMS sent to: %s, with message: %s", r, message)));
     }
 
     @Override
     public void send(String recipient, String message) {
-        log.error("SMS configuration not found");
+        log.info(String.format("SMS sent to: %s, with message: %s", recipient, message));
     }
 }

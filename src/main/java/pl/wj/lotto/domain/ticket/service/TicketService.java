@@ -1,6 +1,7 @@
 package pl.wj.lotto.domain.ticket.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.notification.NotificationPort;
@@ -14,6 +15,8 @@ import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketRequestDto;
 import pl.wj.lotto.domain.ticket.model.dto.TicketResponseDto;
 import pl.wj.lotto.domain.ticket.port.out.TicketRepositoryPort;
+import pl.wj.lotto.domain.user.model.User;
+import pl.wj.lotto.domain.user.port.in.UserServicePort;
 import pl.wj.lotto.infrastructure.application.exception.definition.NumbersValidationException;
 import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFoundException;
 import pl.wj.lotto.infrastructure.persistence.database.ticket.entity.TicketEntity;
@@ -24,13 +27,16 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Log4j2
 public class TicketService {
     private final Clock clock;
     private final TicketRepositoryPort ticketRepositoryPort;
+    private final UserServicePort userServicePort;
     private final DrawDateTimeCheckerPort drawDateTimeCheckerPort;
     private final NumbersGeneratorPort numbersGeneratorPort;
     private final NumbersValidatorPort numbersValidatorPort;
-    private NotificationPort notificationPort;
+    private final NotificationPort emailNotificationPort;
+    private final NotificationPort smsNotificationPort;
 
     public TicketResponseDto addTicket(TicketRequestDto ticketRequestDto) {
         Ticket ticket = TicketMapper.toTicket(ticketRequestDto);
@@ -51,17 +57,17 @@ public class TicketService {
         ticket.setLastDrawDateTime(lastDrawDateTime);
         ticket.setGenerationDateTime(LocalDateTime.now(clock));
         ticket = ticketRepositoryPort.save(ticket);
-        // TODO: get user email address and user notification settings by user id and send messages
 
-//            NotificationSettings notificationSettings = userServicePort.getNotificationSettings();
-//            if (notificationSettings.contains("SMS")) {
-//                notificationPort = new SmsNotificationAdapter();
-//                notificationPort.send("700700700", "Message");
-//            }
-//            if (notificationSettings.contains("EMAIL")) {
-//                notificationPort = new SmsNotificationAdapter();
-//                notificationPort.send("email@email.com", "Message");
-//            }
+        try {
+            User user = userServicePort.getUserById(ticket.getUserId());
+            String message = "You have just bought a new ticket";
+            emailNotificationPort.send(user.emailAddress(), message);
+            if (user.phoneNumber() != null && !user.phoneNumber().isBlank()) {
+                smsNotificationPort.send(user.phoneNumber(), message);
+            }
+        } catch (ResourceNotFoundException resourceNotFoundException) {
+            log.warn("Cannot find user by given id but ticket has been generated");
+        }
         TicketResponseDto ticketResponseDto = TicketMapper.toTicketResponseDto(ticket);
         LocalDateTime nextDrawDateTime = drawDateTimeCheckerPort.getNextDrawDateTime(ticket.getGameType());
         return ticketResponseDto.withNextDrawDateTime(nextDrawDateTime);
