@@ -2,7 +2,7 @@ package pl.wj.lotto.domain.result.helper.resultchecker;
 
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.result.helper.resultchecker.port.in.ResultCheckerPort;
 import pl.wj.lotto.domain.result.model.dto.TicketResultDto;
 import pl.wj.lotto.domain.result.model.dto.TicketResultsDetailsDto;
@@ -23,10 +23,10 @@ public class ResultChecker implements ResultCheckerPort {
     private static final int KENO_MAX_NUMBERS_AMOUNT = 10;
 
     @Override
-    public Map<String, Integer> getResultsForDraw(DrawResultDto drawResultDto, List<PlayerNumbersDto> ticketNumbers) {
+    public Map<String, Integer> getResultsForDraw(DrawWinningNumbersDto drawWinningNumbersDto, List<PlayerNumbersDto> ticketNumbers) {
         Map<String, Integer> levelsWinnersAmount = new HashMap<>();
-        List<Integer> mainWinningNumbers = drawResultDto.numbers().mainNumbers();
-        switch(drawResultDto.type()) {
+        List<Integer> mainWinningNumbers = drawWinningNumbersDto.numbers().mainNumbers();
+        switch(drawWinningNumbersDto.type()) {
             case LOTTO -> {
                 List<List<Integer>> mainNumbers = ticketNumbers.stream().map(PlayerNumbersDto::mainNumbers).toList();
                 levelsWinnersAmount = getResultForLottoDraw(mainWinningNumbers, mainNumbers);
@@ -36,7 +36,7 @@ public class ResultChecker implements ResultCheckerPort {
                 levelsWinnersAmount = getResultForQuick600Draw(mainWinningNumbers, mainNumbers);
             }
             case EJP -> {
-                List<Integer> extraWinningNumbers = drawResultDto.numbers().extraNumbers();
+                List<Integer> extraWinningNumbers = drawWinningNumbersDto.numbers().extraNumbers();
                 levelsWinnersAmount = getResultForEurojackpotDraw(mainWinningNumbers, extraWinningNumbers, ticketNumbers);
             }
             case KENO -> {

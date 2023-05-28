@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.draw.service.DrawService;
 import pl.wj.lotto.domain.ticket.model.Ticket;
@@ -32,8 +32,8 @@ public class DrawServiceAdapter implements DrawServicePort {
     }
 
     @Override
-    public DrawResultDto getDrawResult(String drawId) {
-        return drawService.getDrawResult(drawId);
+    public DrawWinningNumbersDto getDrawWinningNumbers(String drawId) {
+        return drawService.getDrawWinningNumbers(drawId);
     }
 
     @Override

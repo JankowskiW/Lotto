@@ -7,7 +7,7 @@ import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import java.time.LocalDateTime;
 
 @Builder
-public record DrawResultDto (
+public record DrawWinningNumbersDto(
     GameType type,
     Numbers numbers,
     LocalDateTime drawDateTime

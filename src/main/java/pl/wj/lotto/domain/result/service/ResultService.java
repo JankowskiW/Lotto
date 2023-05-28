@@ -2,7 +2,7 @@ package pl.wj.lotto.domain.result.service;
 
 import lombok.RequiredArgsConstructor;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.result.helper.resultchecker.port.in.ResultCheckerPort;
 import pl.wj.lotto.domain.result.model.dto.DrawResultDetailsResponseDto;
@@ -28,12 +28,12 @@ public class ResultService {
     }
 
     public DrawResultDetailsResponseDto getDrawResultDetails(String drawId) {
-        DrawResultDto drawResultDto = drawServicePort.getDrawResult(drawId);
-        List<PlayerNumbersDto> playerNumbersDtos = ticketServicePort.getPlayersDrawNumbers(drawResultDto);
-        Map<String, Integer> results = resultCheckerPort.getResultsForDraw(drawResultDto, playerNumbersDtos);
+        DrawWinningNumbersDto drawWinningNumbersDto = drawServicePort.getDrawWinningNumbers(drawId);
+        List<PlayerNumbersDto> playerNumbersDtos = ticketServicePort.getPlayersDrawNumbers(drawWinningNumbersDto);
+        Map<String, Integer> results = resultCheckerPort.getResultsForDraw(drawWinningNumbersDto, playerNumbersDtos);
         return DrawResultDetailsResponseDto.builder()
                 .drawId(drawId)
-                .drawDateTime(drawResultDto.drawDateTime())
+                .drawDateTime(drawWinningNumbersDto.drawDateTime())
                 .results(results)
                 .build();
     }

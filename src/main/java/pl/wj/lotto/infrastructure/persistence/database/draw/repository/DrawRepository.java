@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.infrastructure.persistence.database.draw.entity.DrawEntity;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public interface DrawRepository extends MongoRepository<DrawEntity, String> {
     Page<DrawEntity> findAllByType(GameType gameType, Pageable pageable);
 
     @Query(value="{ 'id' : ?0}", fields = "{'type' :  1, 'drawDateTime' :  1, 'numbers' :  1}")
-    Optional<DrawResultDto> findDrawResultById(String drawId);
+    Optional<DrawWinningNumbersDto> findDrawWinningNumbersById(String drawId);
 
     List<Draw> findByTypeAndDrawDateTimeBetween(GameType gameType, LocalDateTime drawDateTimeGT, LocalDateTime drawDateTimeLTE);
 }

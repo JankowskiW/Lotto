@@ -7,7 +7,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.result.model.dto.TicketResultDto;
 import pl.wj.lotto.domain.result.model.dto.TicketResultsDetailsDto;
 import pl.wj.lotto.domain.ticket.model.Ticket;
@@ -36,7 +36,7 @@ class ResultCheckerTest {
                 .gameType(gameType)
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
-        DrawResultDto drawResultDto = DrawResultDto.builder()
+        DrawWinningNumbersDto drawWinningNumbersDto = DrawWinningNumbersDto.builder()
                 .type(gameType)
                 .drawDateTime(LocalDateTime.now())
                 .numbers(numbers)
@@ -62,7 +62,7 @@ class ResultCheckerTest {
         expectedResult.put("2", 1);
 
         // when
-        Map<String, Integer> result = resultChecker.getResultsForDraw(drawResultDto, ticketNumbers);
+        Map<String, Integer> result = resultChecker.getResultsForDraw(drawWinningNumbersDto, ticketNumbers);
 
         // then
         assertThat(result)
@@ -79,7 +79,7 @@ class ResultCheckerTest {
                 .gameType(gameType)
                 .mainNumbers(List.of(1,2,3,4,5,6))
                 .build();
-        DrawResultDto drawResultDto = DrawResultDto.builder()
+        DrawWinningNumbersDto drawWinningNumbersDto = DrawWinningNumbersDto.builder()
                 .type(gameType)
                 .drawDateTime(LocalDateTime.now())
                 .numbers(numbers)
@@ -105,7 +105,7 @@ class ResultCheckerTest {
         expectedResult.put("2", 1);
 
         // when
-        Map<String, Integer> result = resultChecker.getResultsForDraw(drawResultDto, ticketNumbers);
+        Map<String, Integer> result = resultChecker.getResultsForDraw(drawWinningNumbersDto, ticketNumbers);
 
         // then
         assertThat(result)
@@ -123,7 +123,7 @@ class ResultCheckerTest {
                 .mainNumbers(List.of(1,2,3,4,5))
                 .extraNumbers(List.of(1,2))
                 .build();
-        DrawResultDto drawResultDto = DrawResultDto.builder()
+        DrawWinningNumbersDto drawWinningNumbersDto = DrawWinningNumbersDto.builder()
                 .type(gameType)
                 .drawDateTime(LocalDateTime.now())
                 .numbers(numbers)
@@ -151,7 +151,7 @@ class ResultCheckerTest {
         expectedResult.put("4", 1);
 
         // when
-        Map<String, Integer> result = resultChecker.getResultsForDraw(drawResultDto, ticketNumbers);
+        Map<String, Integer> result = resultChecker.getResultsForDraw(drawWinningNumbersDto, ticketNumbers);
 
         // then
         assertThat(result)
@@ -168,7 +168,7 @@ class ResultCheckerTest {
                 .gameType(gameType)
                 .mainNumbers(List.of(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20))
                 .build();
-        DrawResultDto drawResultDto = DrawResultDto.builder()
+        DrawWinningNumbersDto drawWinningNumbersDto = DrawWinningNumbersDto.builder()
                 .type(gameType)
                 .drawDateTime(LocalDateTime.now())
                 .numbers(numbers)
@@ -193,7 +193,7 @@ class ResultCheckerTest {
         expectedResult.put("5;5", 1);
 
         // when
-        Map<String, Integer> result = resultChecker.getResultsForDraw(drawResultDto, ticketNumbers);
+        Map<String, Integer> result = resultChecker.getResultsForDraw(drawWinningNumbersDto, ticketNumbers);
 
         // then
         assertThat(result)

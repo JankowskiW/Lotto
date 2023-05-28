@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.infrastructure.persistence.database.draw.entity.DrawEntity;
 import pl.wj.lotto.infrastructure.persistence.database.draw.repository.DrawRepository;
@@ -37,8 +37,8 @@ public class DrawDatabaseAdapter implements DrawRepositoryPort {
     }
 
     @Override
-    public Optional<DrawResultDto> findDrawResultById(String drawId) {
-        return drawRepository.findDrawResultById(drawId);
+    public Optional<DrawWinningNumbersDto> findDrawWinningNumbersById(String drawId) {
+        return drawRepository.findDrawWinningNumbersById(drawId);
     }
 
     @Override

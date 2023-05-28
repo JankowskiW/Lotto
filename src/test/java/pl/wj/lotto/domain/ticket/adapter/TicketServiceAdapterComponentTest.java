@@ -15,7 +15,7 @@ import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
 import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
@@ -137,7 +137,7 @@ class TicketServiceAdapterComponentTest {
         GameType gameType = GameType.LOTTO;
         List<Integer> winningNumbers = List.of(1,2,3,4,5,6);
         List<PlayerNumbersDto> expectedResult = new ArrayList<>();
-        DrawResultDto drawResultDto = DrawResultDto.builder()
+        DrawWinningNumbersDto drawWinningNumbersDto = DrawWinningNumbersDto.builder()
                 .type(gameType)
                 .drawDateTime(now)
                 .numbers(Numbers.builder()
@@ -192,7 +192,7 @@ class TicketServiceAdapterComponentTest {
                .build());
 
         // when
-        List<PlayerNumbersDto> result = ticketServicePort.getPlayersDrawNumbers(drawResultDto);
+        List<PlayerNumbersDto> result = ticketServicePort.getPlayersDrawNumbers(drawWinningNumbersDto);
 
         // then
         assertThat(result)

@@ -12,7 +12,7 @@ import pl.wj.lotto.domain.common.numbersreceiver.NumbersReceiverPort;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.draw.service.DrawService;
@@ -155,10 +155,10 @@ class DrawServiceAdapterComponentTest {
                 .numbers(numbersLotto)
                 .build();
         draw = drawRepositoryPort.save(draw);
-        DrawResultDto expectedResult = DrawMapper.toDrawResultDto(draw);
+        DrawWinningNumbersDto expectedResult = DrawMapper.toDrawResultDto(draw);
 
         // when
-        DrawResultDto result = drawServicePort.getDrawResult(draw.getId());
+        DrawWinningNumbersDto result = drawServicePort.getDrawWinningNumbers(draw.getId());
 
         // then
         assertThat(result)

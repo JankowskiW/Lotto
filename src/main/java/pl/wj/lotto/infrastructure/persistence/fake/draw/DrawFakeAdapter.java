@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 
 import java.time.LocalDateTime;
@@ -37,7 +37,7 @@ public class DrawFakeAdapter implements DrawRepositoryPort {
     }
 
     @Override
-    public Optional<DrawResultDto> findDrawResultById(String drawId) {
+    public Optional<DrawWinningNumbersDto> findDrawWinningNumbersById(String drawId) {
         return Optional.of(DrawMapper.toDrawResultDto(drawsTable.get(drawId)));
     }
 

@@ -15,7 +15,7 @@ import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawRequestDto;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.infrastructure.application.clock.config.ClockFakeConfig;
@@ -188,7 +188,7 @@ class DrawServiceTest {
         // given
         GameType gameType = GameType.LOTTO;
         String drawId = "some-draw-id";
-        DrawResultDto drawResultDto = DrawResultDto.builder()
+        DrawWinningNumbersDto drawWinningNumbersDto = DrawWinningNumbersDto.builder()
                 .type(gameType)
                 .drawDateTime(LocalDateTime.now(fixedClock))
                 .numbers(Numbers.builder()
@@ -196,7 +196,7 @@ class DrawServiceTest {
                         .mainNumbers(List.of(1,2,3,4,5,6))
                         .build())
                 .build();
-        DrawResultDto expectedResult = DrawResultDto.builder()
+        DrawWinningNumbersDto expectedResult = DrawWinningNumbersDto.builder()
                 .type(gameType)
                 .drawDateTime(LocalDateTime.now(fixedClock))
                 .numbers(Numbers.builder()
@@ -204,10 +204,10 @@ class DrawServiceTest {
                         .mainNumbers(List.of(1,2,3,4,5,6))
                         .build())
                 .build();
-        given(drawRepositoryPort.findDrawResultById(anyString())).willReturn(Optional.of(drawResultDto));
+        given(drawRepositoryPort.findDrawWinningNumbersById(anyString())).willReturn(Optional.of(drawWinningNumbersDto));
 
         // when
-        DrawResultDto result = drawService.getDrawResult(drawId);
+        DrawWinningNumbersDto result = drawService.getDrawWinningNumbers(drawId);
 
         // then
         assertThat(result)
@@ -219,10 +219,10 @@ class DrawServiceTest {
     void shouldThrowExceptionWhenDrawNotExistsInDatabse() {
         // given
         String drawId = "some-draw-id";
-        given(drawRepositoryPort.findDrawResultById(anyString())).willReturn(Optional.empty());
+        given(drawRepositoryPort.findDrawWinningNumbersById(anyString())).willReturn(Optional.empty());
 
         // when && then
-        assertThatThrownBy(() -> drawService.getDrawResult(drawId))
+        assertThatThrownBy(() -> drawService.getDrawWinningNumbers(drawId))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessage("Draw not found");
     }

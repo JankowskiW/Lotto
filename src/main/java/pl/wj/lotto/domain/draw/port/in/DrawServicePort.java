@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface DrawServicePort {
 
     DrawResponseDto getDraw(String id);
 
-    DrawResultDto getDrawResult(String drawId);
+    DrawWinningNumbersDto getDrawWinningNumbers(String drawId);
 
     List<Draw> getDrawsForTicket(Ticket ticket);
 }

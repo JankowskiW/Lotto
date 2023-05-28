@@ -11,7 +11,7 @@ import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.draw.mapper.DrawMapper;
 import pl.wj.lotto.domain.draw.model.Draw;
 import pl.wj.lotto.domain.draw.model.dto.DrawResponseDto;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.draw.port.out.DrawRepositoryPort;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.infrastructure.application.exception.definition.ResourceNotFoundException;
@@ -50,8 +50,8 @@ public class DrawService {
         return DrawMapper.toDrawResponseDto(draw);
     }
 
-    public DrawResultDto getDrawResult(String id) {
-        return drawRepositoryPort.findDrawResultById(id).orElseThrow(() -> new ResourceNotFoundException("Draw not found"));
+    public DrawWinningNumbersDto getDrawWinningNumbers(String id) {
+        return drawRepositoryPort.findDrawWinningNumbersById(id).orElseThrow(() -> new ResourceNotFoundException("Draw not found"));
     }
 
     public List<Draw> getDrawsForTicket(Ticket ticket) {

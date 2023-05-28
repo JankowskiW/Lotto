@@ -8,7 +8,7 @@ import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
@@ -80,10 +80,10 @@ public class TicketService {
                 drawDateTimeCheckerPort.getNextDrawDateTimeForTicket(tr.numbers().gameType(), tr.generationDateTime()))).toList();
     }
 
-    public List<PlayerNumbersDto> getPlayersDrawNumbers(DrawResultDto drawResultDto) {
-        LocalDateTime drawDateTime = drawResultDto.drawDateTime().truncatedTo(ChronoUnit.MINUTES);
+    public List<PlayerNumbersDto> getPlayersDrawNumbers(DrawWinningNumbersDto drawWinningNumbersDto) {
+        LocalDateTime drawDateTime = drawWinningNumbersDto.drawDateTime().truncatedTo(ChronoUnit.MINUTES);
         List<TicketEntity> ticketEntities = ticketRepositoryPort.getPlayersDrawNumbersByGameTypeAndLastDrawDateTime(
-                drawResultDto.type(), drawDateTime);
+                drawWinningNumbersDto.type(), drawDateTime);
         return TicketMapper.toPlayerNumbersDtos(ticketEntities);
     }
 

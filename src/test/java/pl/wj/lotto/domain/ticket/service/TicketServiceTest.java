@@ -7,11 +7,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.drawdatetime.port.in.DrawDateTimeCheckerPort;
 import pl.wj.lotto.domain.common.gametype.GameType;
-import pl.wj.lotto.domain.common.notification.NotificationPort;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersGeneratorPort;
 import pl.wj.lotto.domain.common.numbers.port.in.NumbersValidatorPort;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.ticket.mapper.TicketMapper;
 import pl.wj.lotto.domain.ticket.model.Ticket;
 import pl.wj.lotto.domain.ticket.model.dto.PlayerNumbersDto;
@@ -44,8 +43,6 @@ class TicketServiceTest {
     private TicketRepositoryPort ticketRepositoryPort;
     @Mock
     private UserServicePort userServicePort;
-    @Mock
-    private NotificationPort notificationPort;
     @Mock
     private DrawDateTimeCheckerPort drawDateTimeCheckerPort;
     @Mock
@@ -166,7 +163,7 @@ class TicketServiceTest {
         // given
         LocalDateTime now = LocalDateTime.now(fixedClock);
         GameType gameType = GameType.LOTTO;
-        DrawResultDto drawResultDto = DrawResultDto.builder()
+        DrawWinningNumbersDto drawWinningNumbersDto = DrawWinningNumbersDto.builder()
                 .type(gameType)
                 .numbers(Numbers.builder().build())
                 .drawDateTime(now)
@@ -186,7 +183,7 @@ class TicketServiceTest {
                 any(GameType.class), any(LocalDateTime.class))).willReturn(ticketEntities);
 
         // when
-        List<PlayerNumbersDto> result = ticketService.getPlayersDrawNumbers(drawResultDto);
+        List<PlayerNumbersDto> result = ticketService.getPlayersDrawNumbers(drawWinningNumbersDto);
 
         // then
         assertThat(result)

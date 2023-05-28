@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.wj.lotto.domain.common.gametype.GameType;
 import pl.wj.lotto.domain.common.numbers.model.Numbers;
 import pl.wj.lotto.domain.draw.model.Draw;
-import pl.wj.lotto.domain.draw.model.dto.DrawResultDto;
+import pl.wj.lotto.domain.draw.model.dto.DrawWinningNumbersDto;
 import pl.wj.lotto.domain.draw.port.in.DrawServicePort;
 import pl.wj.lotto.domain.result.helper.resultchecker.port.in.ResultCheckerPort;
 import pl.wj.lotto.domain.result.model.dto.DrawResultDetailsResponseDto;
@@ -126,7 +126,7 @@ class ResultServiceTest {
         // given
         String drawId = "some-draw-id";
         GameType gameType = GameType.LOTTO;
-        DrawResultDto drawResultDto = DrawResultDto.builder()
+        DrawWinningNumbersDto drawWinningNumbersDto = DrawWinningNumbersDto.builder()
                 .type(gameType)
                 .drawDateTime(LocalDateTime.now(clock))
                 .numbers(Numbers.builder()
@@ -141,12 +141,12 @@ class ResultServiceTest {
         checkerResults.put("4", 10);
         DrawResultDetailsResponseDto expectedResult = DrawResultDetailsResponseDto.builder()
                 .drawId(drawId)
-                .drawDateTime(drawResultDto.drawDateTime())
+                .drawDateTime(drawWinningNumbersDto.drawDateTime())
                 .results(checkerResults)
                 .build();
-        given(drawServicePort.getDrawResult(anyString())).willReturn(drawResultDto);
-        given(ticketServicePort.getPlayersDrawNumbers(any(DrawResultDto.class))).willReturn(List.of());
-        given(resultCheckerPort.getResultsForDraw(any(DrawResultDto.class), anyList())).willReturn(checkerResults);
+        given(drawServicePort.getDrawWinningNumbers(anyString())).willReturn(drawWinningNumbersDto);
+        given(ticketServicePort.getPlayersDrawNumbers(any(DrawWinningNumbersDto.class))).willReturn(List.of());
+        given(resultCheckerPort.getResultsForDraw(any(DrawWinningNumbersDto.class), anyList())).willReturn(checkerResults);
 
         // when
         DrawResultDetailsResponseDto result = resultService.getDrawResultDetails(drawId);
