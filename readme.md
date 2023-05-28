@@ -52,7 +52,14 @@ Lotto Web Service is developed using following technologies: <br>
 
 ## C4 diagram
 
+### Level 1
+![C4_lvl_1.jpg](docs%2FC4_lvl_1.jpg)
 
+### Level 2
+![C4_lvl_2.jpg](docs%2FC4_lvl_2.jpg)
+
+### Level 3
+![C4_lvl_3.jpg](docs%2FC4_lvl_3.jpg)
 
 ## Setup
 
