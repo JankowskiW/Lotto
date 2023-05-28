@@ -74,3 +74,4 @@ You can find documentation at [Swagger](http://localhost:8080/swagger-ui/index.h
 
 * [shields.io](https://img.shields.io)
 * [simpleicons.org](https://simpleicons.org)
+* [online.visual-paradigm.com](https://online.visual-paradigm.com)
