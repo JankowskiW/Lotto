@@ -6,7 +6,7 @@ import pl.wj.lotto.domain.user.model.dto.UserResponseDto;
 import pl.wj.lotto.domain.user.model.dto.UserSecurityDto;
 
 public interface UserServicePort {
-    UserSecurityDto getUser(String username);
+    UserSecurityDto getUserByUsername(String username);
 
     UserResponseDto addUser(UserRegisterRequestDto userRegisterRequestDto);
 

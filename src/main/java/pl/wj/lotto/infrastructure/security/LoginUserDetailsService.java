@@ -12,6 +12,6 @@ public class LoginUserDetailsService implements UserDetailsService {
     private final UserServicePort userServicePort;
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return SecurityMapper.toSecurityUser(userServicePort.getUser(username));
+        return SecurityMapper.toSecurityUser(userServicePort.getUserByUsername(username));
     }
 }

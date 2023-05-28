@@ -13,8 +13,8 @@ public class UserServiceAdapter implements UserServicePort {
     private final UserService userService;
 
     @Override
-    public UserSecurityDto getUser(String username) {
-        return userService.getUser(username);
+    public UserSecurityDto getUserByUsername(String username) {
+        return userService.getUserByUsername(username);
     }
 
     @Override
@@ -24,6 +24,6 @@ public class UserServiceAdapter implements UserServicePort {
 
     @Override
     public User getUserById(String userId) {
-        return userService.findById(userId);
+        return userService.getUserById(userId);
     }
 }
